@@ -1,0 +1,20 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "adminUids": { ".read": false, ".write": false },
+    "rifa": {
+      "configuracao": { ".read": true, ".write": false },
+      "numeros": {
+        ".read": true,
+        "$numero": { ".write": false }
+      },
+      "reservas": { ".read": false, ".write": false },
+      "raspadinha": {
+        "premios": { ".read": false, ".write": false },
+        "novasChances": { ".read": false, ".write": false },
+        "jogadas": { ".read": false, ".write": false, "$jogada": { ".read": false, ".write": false } }
+      }
+    }
+  }
+}
