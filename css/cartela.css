@@ -1,1 +1,52 @@
 body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(135deg,#063d84,#0878e8 55%,#f43b9a);min-height:100vh;color:#12365b}main{width:min(100% - 20px,900px);margin:auto;padding:15px}.card{background:#fff;border-radius:22px;padding:18px;margin:12px 0;box-shadow:0 12px 30px #001b4a44}.hero{text-align:center;color:#fff;background:linear-gradient(90deg,#0878e8,#f43b9a)}.nav{display:flex;align-items:center;gap:10px}.nav h2{flex:1;text-align:center;margin:0}.nav button,.actions button,#ir{border:0;border-radius:12px;padding:12px 16px;font-weight:900;cursor:pointer;background:#0878e8;color:#fff}.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin-top:16px}.grid button{padding:12px 2px;border:1px solid #b9d5ef;border-radius:10px;background:#f7fbff;color:#064b8f;font-weight:900}.grid button.selected{background:#20b64b;color:#fff}.grid button.reserved{background:#dce3ea;color:#68727c;text-decoration:line-through}.summary{background:#eef7ff;border-radius:14px;padding:10px;margin-top:15px}.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.actions button:last-child{background:linear-gradient(90deg,#0878e8,#f43b9a)}input{width:100%;padding:14px;border:1px solid #b9d5ef;border-radius:12px;font-size:1rem;margin:8px 0;box-sizing:border-box}@media(max-width:500px){.grid{grid-template-columns:repeat(5,1fr)}.grid button{padding:10px 0;font-size:.8rem}.actions{grid-template-columns:1fr}.nav h2{font-size:1rem}}
+
+/* ✨ FUNDO ANIMADO — GILFEST 🍀 */
+body{
+  position:relative;
+  overflow-x:hidden;
+  background:linear-gradient(135deg,#064d35,#087f4f 50%,#0ca66a);
+}
+
+body::before{
+  content:"🍀     ✨     🍀     ⭐     ✨     🍀";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
+  font-size:34px;
+  line-height:2.8;
+  letter-spacing:18px;
+  opacity:.16;
+  transform:rotate(-8deg) scale(1.1);
+  animation:flutuar 18s ease-in-out infinite alternate;
+}
+
+body::after{
+  content:"✨     🍀     ⭐     🍀     ✨     🍀";
+  position:fixed;
+  inset:-20%;
+  pointer-events:none;
+  z-index:0;
+  font-size:24px;
+  line-height:4;
+  letter-spacing:28px;
+  opacity:.10;
+  animation:flutuar2 25s ease-in-out infinite alternate;
+}
+
+main{
+  position:relative;
+  z-index:1;
+}
+
+@keyframes flutuar{
+  0%{transform:translate3d(-2%,0,0) rotate(-8deg)}
+  50%{transform:translate3d(2%,3%,0) rotate(-3deg)}
+  100%{transform:translate3d(-1%,6%,0) rotate(-8deg)}
+}
+
+@keyframes flutuar2{
+  0%{transform:translate3d(3%,-2%,0) rotate(5deg)}
+  50%{transform:translate3d(-3%,4%,0) rotate(-3deg)}
+  100%{transform:translate3d(2%,8%,0) rotate(5deg)}
+}
