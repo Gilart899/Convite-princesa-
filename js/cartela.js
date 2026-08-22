@@ -1,6 +1,6 @@
 import {db,firebaseConfigured} from './firebase.js';
 import {ref,onValue} from 'https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js';
-import {CONFIG} from './config.js';
+import { CONFIG } from './config.js';
 const grid=document.getElementById('grid'),titulo=document.getElementById('titulo'),sel=document.getElementById('sel'),total=document.getElementById('total');let cartela=0,selecionados=[],status={};
 const pad=n=>String(n).padStart(3,'0');
 function render(){titulo.textContent=`CARTELA ${String(cartela+1).padStart(2,'0')}`;grid.innerHTML='';const inicio=cartela*100;for(let i=0;i<100;i++){const key=pad(inicio+i),b=document.createElement('button');b.textContent=key;const s=status[key];if(s&&s.status!=='disponivel'){b.disabled=true;b.className='reserved'}else{if(selecionados.includes(key))b.className='selected';b.onclick=()=>toggle(key)}grid.appendChild(b)}}
