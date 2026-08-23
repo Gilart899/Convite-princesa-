@@ -405,3 +405,132 @@ if (canvas && area && premio) {
   ajustarCanvas();
 
 }
+
+/* =========================================================
+   📲 COMPROVANTE → WHATSAPP
+========================================================= */
+
+const comprovante =
+  document.getElementById('comprovante');
+
+const comprovanteNome =
+  document.getElementById('comprovanteNome');
+
+const enviarWhatsApp =
+  document.getElementById('enviarWhatsApp');
+
+const comprovanteMsg =
+  document.getElementById('comprovanteMsg');
+
+
+if (
+  comprovante &&
+  comprovanteNome &&
+  enviarWhatsApp
+) {
+
+  comprovante.addEventListener(
+    'change',
+    () => {
+
+      const arquivo =
+        comprovante.files[0];
+
+      if (!arquivo) {
+
+        comprovanteNome.textContent =
+          'Nenhum arquivo selecionado.';
+
+        enviarWhatsApp.disabled = true;
+
+        if (comprovanteMsg) {
+          comprovanteMsg.textContent = '';
+        }
+
+        return;
+      }
+
+
+      const tamanhoMaximo =
+        10 * 1024 * 1024;
+
+
+      if (arquivo.size > tamanhoMaximo) {
+
+        comprovante.value = '';
+
+        comprovanteNome.textContent =
+          'Nenhum arquivo selecionado.';
+
+        enviarWhatsApp.disabled = true;
+
+        if (comprovanteMsg) {
+          comprovanteMsg.textContent =
+            '⚠️ O arquivo deve ter no máximo 10 MB.';
+        }
+
+        return;
+      }
+
+
+      comprovanteNome.textContent =
+        `✅ ${arquivo.name}`;
+
+      enviarWhatsApp.disabled = false;
+
+      if (comprovanteMsg) {
+        comprovanteMsg.textContent =
+          'Comprovante selecionado. Toque no botão para enviar pelo WhatsApp.';
+      }
+
+    }
+  );
+
+
+  enviarWhatsApp.addEventListener(
+    'click',
+    () => {
+
+      const arquivo =
+        comprovante.files[0];
+
+      if (!arquivo) {
+
+        if (comprovanteMsg) {
+          comprovanteMsg.textContent =
+            'Selecione o comprovante primeiro.';
+        }
+
+        return;
+      }
+
+
+      const numeroWhatsApp =
+        '5579999145044';
+
+
+      const mensagem =
+        'Olá! Estou enviando o comprovante de pagamento da Rifa Solidária — GILFEST.';
+
+
+      const url =
+        `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
+
+
+      window.open(
+        url,
+        '_blank'
+      );
+
+
+      if (comprovanteMsg) {
+
+        comprovanteMsg.textContent =
+          '📲 O WhatsApp foi aberto. Agora anexe o comprovante selecionado na conversa e envie.';
+
+      }
+
+    }
+  );
+
+}
