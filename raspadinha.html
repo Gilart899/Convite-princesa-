@@ -1,1 +1,187 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Raspadinha da Sorte</title><link rel="stylesheet" href="css/raspadinha.css"></head><body><main><section class="card"><h1>🍀 RASPADINHA DA SORTE</h1><p>A jogada só será criada pelo backend depois que a condição da rifa for confirmada.</p><div class="prizes"><div>🧉<br>Liquidificador</div><div>🔥<br>Ferro elétrico</div></div><div class="scratch">RASPE AQUI</div><p id="status">Nenhuma jogada carregada.</p></section></main></body></html>
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="utf-8">
+  <meta
+    name="viewport"
+    content="width=device-width,initial-scale=1,viewport-fit=cover"
+  >
+
+  <meta name="theme-color" content="#063d28">
+
+  <title>Raspadinha da Sorte — GILFEST</title>
+
+  <link
+    rel="stylesheet"
+    href="css/raspadinha.css"
+  >
+</head>
+
+<body>
+
+  <main>
+
+    <section class="card raspadinha-card">
+
+      <div class="topo">
+
+        <div class="trevo">🍀</div>
+
+        <span class="apoio">
+          APOIO GILFEST
+        </span>
+
+        <h1>
+          RASPADINHA
+          <strong>DA SORTE</strong>
+        </h1>
+
+        <p>
+          Sua sorte pode estar escondida aqui!
+        </p>
+
+      </div>
+
+
+      <div class="cartela">
+
+        <div class="cartela-brilho"></div>
+
+        <div class="cartela-conteudo">
+
+          <span class="mini-titulo">
+            🍀 BOA SORTE! 🍀
+          </span>
+
+          <div
+            id="resultado"
+            class="resultado"
+          >
+            <span class="resultado-icone">
+              🎁
+            </span>
+
+            <strong>
+              RASPE AQUI
+            </strong>
+
+            <small>
+              Descubra sua sorte
+            </small>
+          </div>
+
+        </div>
+
+        <canvas
+          id="scratchCanvas"
+          class="scratch-canvas"
+        ></canvas>
+
+      </div>
+
+
+      <div class="instrucoes">
+
+        <span>👆</span>
+
+        <div>
+          <strong>
+            Raspe com o dedo
+          </strong>
+
+          <small>
+            ou use o mouse para descobrir o resultado.
+          </small>
+        </div>
+
+      </div>
+
+
+      <section class="premios">
+
+        <div class="premios-titulo">
+
+          <span>🎁</span>
+
+          <div>
+            <strong>
+              PRÊMIOS DA SORTE
+            </strong>
+
+            <small>
+              Confira o que você pode ganhar
+            </small>
+          </div>
+
+        </div>
+
+
+        <div class="premios-grid">
+
+          <article class="premio">
+
+            <div class="premio-imagem">
+              🧉
+            </div>
+
+            <strong>
+              Liquidificador
+            </strong>
+
+            <small>
+              Prêmio da sorte
+            </small>
+
+          </article>
+
+
+          <article class="premio">
+
+            <div class="premio-imagem">
+              🔥
+            </div>
+
+            <strong>
+              Ferro elétrico
+            </strong>
+
+            <small>
+              Prêmio da sorte
+            </small>
+
+          </article>
+
+        </div>
+
+      </section>
+
+
+      <p
+        id="status"
+        class="status"
+      >
+        Nenhuma jogada carregada.
+      </p>
+
+
+      <a
+        class="voltar"
+        href="index.html"
+      >
+        ← Voltar para a rifa
+      </a>
+
+    </section>
+
+  </main>
+
+
+  <script
+    type="module"
+    src="js/raspadinha.js"
+  ></script>
+
+</body>
+
+</html>
