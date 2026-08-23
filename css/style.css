@@ -231,61 +231,48 @@ body::before {
   animation: estrelasSubindo 18s linear infinite;
 }
 
-/* 🍀 Trevinhos flutuantes */
+/* 🍀 TREVOS GRANDES FLUTUANDO NO FUNDO */
+
 body::after {
-  content: "🍀        🍀             🍀        🍀";
+  content: "🍀        🍀             🍀";
   position: fixed;
   left: 0;
-  bottom: -80px;
+  bottom: -100px;
   width: 100%;
-  height: 100px;
+  height: 120px;
 
-  font-size: 25px;
-  letter-spacing: 28px;
+  font-size: 48px;
+  letter-spacing: 45px;
   white-space: nowrap;
 
-  opacity: .22;
+  opacity: .38;
   pointer-events: none;
   z-index: -1;
 
-  animation: trevosFlutuando 22s linear infinite;
-}
-
-@keyframes estrelasSubindo {
-  from {
-    background-position:
-      0 100vh,
-      60px 100vh;
-  }
-
-  to {
-    background-position:
-      80px -100vh,
-      140px -100vh;
-  }
+  animation: trevosFlutuando 18s linear infinite;
 }
 
 @keyframes trevosFlutuando {
   0% {
-    transform: translateY(100px) translateX(-20px);
+    transform: translateY(120px) translateX(-40px) rotate(-5deg);
     opacity: 0;
   }
 
   15% {
-    opacity: .22;
+    opacity: .38;
   }
 
   50% {
-    transform: translateY(-45vh) translateX(35px);
-    opacity: .20;
+    transform: translateY(-45vh) translateX(50px) rotate(8deg);
+    opacity: .32;
   }
 
-  85% {
-    opacity: .12;
+  80% {
+    opacity: .25;
   }
 
   100% {
-    transform: translateY(-110vh) translateX(-20px);
+    transform: translateY(-115vh) translateX(-30px) rotate(-8deg);
     opacity: 0;
   }
 }
