@@ -1,1 +1,59 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Reserva — Rifa Solidária</title><link rel="stylesheet" href="css/reserva.css"></head><body><main><section class="card"><h1>📝 Confirmar participação</h1><p>Confira seus números e informe seus dados.</p><div id="numeros"></div><strong id="total"></strong><input id="nome" placeholder="Seu nome"><input id="telefone" inputmode="tel" placeholder="WhatsApp"><button id="reservar">ENVIAR RESERVA</button><a href="cartela.html">← Voltar aos números</a><p id="msg"></p></section></main><script type="module" src="js/reserva.js"></script></body></html>
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Reserva — Rifa Solidária</title>
+  <link rel="stylesheet" href="css/reserva.css">
+</head>
+
+<body>
+  <main>
+
+    <section class="card">
+
+      <h1>📝 Confirmar participação</h1>
+
+      <p>Confira seus números e informe seus dados.</p>
+
+      <div id="numeros"></div>
+
+      <strong id="total"></strong>
+
+      <div class="pix-box">
+        <h2>💚 Pagamento via PIX</h2>
+
+        <p class="pix-label">Chave PIX</p>
+
+        <div class="pix-row">
+          <input id="pix" type="text" readonly>
+          <button id="copiarPix" type="button">📋 COPIAR</button>
+        </div>
+
+        <p id="pixMsg" class="pix-msg"></p>
+      </div>
+
+      <input id="nome" placeholder="Seu nome">
+
+      <input
+        id="telefone"
+        inputmode="tel"
+        placeholder="WhatsApp"
+      >
+
+      <button id="reservar" type="button">
+        ENVIAR RESERVA
+      </button>
+
+      <a href="cartela.html">← Voltar aos números</a>
+
+      <p id="msg"></p>
+
+    </section>
+
+  </main>
+
+  <script type="module" src="js/reserva.js"></script>
+
+</body>
+</html>
