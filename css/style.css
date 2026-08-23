@@ -207,40 +207,85 @@
   color: #1766a5;
 }
 
-/* ✨ ANIMAÇÃO SUAVE DO FUNDO */
-body::before,
-body::after {
-  content: "";
-  position: fixed;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: -1;
+/* ✨🍀 FUNDO ANIMADO — BRILHOS + TREVINHOS */
+
+body {
+  position: relative;
+  overflow-x: hidden;
 }
 
+/* Camada dos brilhos */
 body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+
   background:
     radial-gradient(circle, rgba(255,255,255,.28) 0 3px, transparent 4px),
     radial-gradient(circle, rgba(255,255,255,.18) 0 2px, transparent 3px);
+
   background-size: 120px 120px, 180px 180px;
+
   animation: estrelasSubindo 18s linear infinite;
 }
 
+/* 🍀 Trevinhos flutuantes */
 body::after {
-  background:
-    radial-gradient(circle, rgba(255,255,255,.20) 0 4px, transparent 5px),
-    radial-gradient(circle, rgba(255,255,255,.15) 0 2px, transparent 3px);
-  background-size: 220px 220px, 150px 150px;
-  animation: estrelasSubindo 28s linear infinite reverse;
+  content: "🍀        🍀             🍀        🍀";
+  position: fixed;
+  left: 0;
+  bottom: -80px;
+  width: 100%;
+  height: 100px;
+
+  font-size: 25px;
+  letter-spacing: 28px;
+  white-space: nowrap;
+
+  opacity: .22;
+  pointer-events: none;
+  z-index: -1;
+
+  animation: trevosFlutuando 22s linear infinite;
 }
 
 @keyframes estrelasSubindo {
   from {
-    background-position: 0 100vh, 60px 100vh;
+    background-position:
+      0 100vh,
+      60px 100vh;
   }
 
   to {
-    background-position: 80px -100vh, 140px -100vh;
+    background-position:
+      80px -100vh,
+      140px -100vh;
+  }
+}
+
+@keyframes trevosFlutuando {
+  0% {
+    transform: translateY(100px) translateX(-20px);
+    opacity: 0;
+  }
+
+  15% {
+    opacity: .22;
+  }
+
+  50% {
+    transform: translateY(-45vh) translateX(35px);
+    opacity: .20;
+  }
+
+  85% {
+    opacity: .12;
+  }
+
+  100% {
+    transform: translateY(-110vh) translateX(-20px);
+    opacity: 0;
   }
 }
