@@ -131,3 +131,78 @@
   }
 
 }
+
+/* =========================================================
+   COMPROVANTE + WHATSAPP
+========================================================= */
+
+.upload-box {
+  text-align: center;
+}
+
+.upload-icon {
+  font-size: 2.5rem;
+  margin-bottom: 8px;
+}
+
+.upload-box strong {
+  display: block;
+  color: #12365b;
+  font-size: 1.05rem;
+}
+
+.upload-box small {
+  display: block;
+  margin-top: 6px;
+  color: #6b7c8f;
+}
+
+.upload-box input[type="file"] {
+  width: 100%;
+  margin-top: 16px;
+  padding: 12px;
+  border-radius: 12px;
+  background: #fff;
+  border: 1px solid #f0b4d2;
+  box-sizing: border-box;
+}
+
+.comprovante-nome {
+  margin: 12px 0;
+  font-size: .9rem;
+  font-weight: 700;
+  color: #1766a5;
+  word-break: break-word;
+}
+
+.whatsapp-btn {
+  width: 100%;
+  margin-top: 10px;
+  padding: 14px 16px;
+  border: 0;
+  border-radius: 14px;
+  background: #25d366;
+  color: #fff;
+  font-size: .95rem;
+  font-weight: 900;
+  cursor: pointer;
+  transition: transform .15s ease, opacity .15s ease;
+}
+
+.whatsapp-btn:hover {
+  transform: translateY(-1px);
+}
+
+.whatsapp-btn:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.comprovante-msg {
+  min-height: 20px;
+  margin: 10px 0 0;
+  font-size: .85rem;
+  font-weight: 700;
+  color: #1766a5;
+}
