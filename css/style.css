@@ -206,3 +206,41 @@
   font-weight: 700;
   color: #1766a5;
 }
+
+/* ✨ ANIMAÇÃO SUAVE DO FUNDO */
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+}
+
+body::before {
+  background:
+    radial-gradient(circle, rgba(255,255,255,.28) 0 3px, transparent 4px),
+    radial-gradient(circle, rgba(255,255,255,.18) 0 2px, transparent 3px);
+  background-size: 120px 120px, 180px 180px;
+  animation: estrelasSubindo 18s linear infinite;
+}
+
+body::after {
+  background:
+    radial-gradient(circle, rgba(255,255,255,.20) 0 4px, transparent 5px),
+    radial-gradient(circle, rgba(255,255,255,.15) 0 2px, transparent 3px);
+  background-size: 220px 220px, 150px 150px;
+  animation: estrelasSubindo 28s linear infinite reverse;
+}
+
+@keyframes estrelasSubindo {
+  from {
+    background-position: 0 100vh, 60px 100vh;
+  }
+
+  to {
+    background-position: 80px -100vh, 140px -100vh;
+  }
+}
