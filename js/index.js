@@ -1,79 +1,100 @@
 import { CONFIG } from './config.js';
 
-document.getElementById('abrirCartelas').onclick=()=>{
-  location.href='cartela.html';
+document.getElementById('abrirCartelas').onclick = () => {
+  location.href = 'cartela.html';
 };
 
-document.getElementById('sugerir').onclick=()=>{
-  location.href='cartela.html?sugerir=1';
+document.getElementById('sugerir').onclick = () => {
+  location.href = 'cartela.html?sugerir=1';
 };
+
+
+/* 🎟️ RASPADINHA DA SORTE */
+
+const raspadinha = document.querySelector('.scratch');
+
+if (raspadinha) {
+
+  raspadinha.style.cursor = 'pointer';
+
+  raspadinha.addEventListener('click', () => {
+    location.href = 'raspadinha.html';
+  });
+
+}
+
+
+/* 🔢 IR DIRETO PARA UM NÚMERO */
 
 document.getElementById('numeroDireto').addEventListener(
   'keydown',
-  e=>{
-    if(e.key==='Enter') irParaNumero();
+  e => {
+    if (e.key === 'Enter') {
+      irParaNumero();
+    }
   }
 );
 
 document.getElementById('numeroDireto').addEventListener(
   'input',
-  e=>{
-    e.target.value=e.target.value
-      .replace(/\D/g,'')
-      .slice(0,3);
+  e => {
+    e.target.value = e.target.value
+      .replace(/\D/g, '')
+      .slice(0, 3);
   }
 );
 
-function irParaNumero(){
+function irParaNumero() {
 
-  const raw=
+  const raw =
     document.getElementById('numeroDireto').value;
 
-  if(raw==='') return;
+  if (raw === '') return;
 
-  const n=Number(raw);
+  const n = Number(raw);
 
-  if(n<0 || n>999){
+  if (n < 0 || n > 999) {
     return alert(
       'Digite um número entre 000 e 999.'
     );
   }
 
-  location.href=
-    `cartela.html?numero=${String(n).padStart(3,'0')}`;
+  location.href =
+    `cartela.html?numero=${String(n).padStart(3, '0')}`;
 }
 
 
 /* 💚 COPIAR PIX */
 
-document.getElementById('copiarPix').onclick=async()=>{
+document.getElementById('copiarPix').onclick = async () => {
 
-  const chave=CONFIG.pixChave;
+  const chave = CONFIG.pixChave;
 
-  if(!chave){
+  if (!chave) {
     alert('Chave PIX não configurada.');
     return;
   }
 
-  try{
+  try {
 
-    if(navigator.clipboard){
+    if (navigator.clipboard) {
       await navigator.clipboard.writeText(chave);
-    }else{
+    } else {
       throw new Error('Clipboard indisponível');
     }
 
     alert('✅ Chave PIX copiada!');
 
-  }catch{
+  } catch {
 
-    try{
+    try {
 
-      const campo=document.createElement('textarea');
+      const campo =
+        document.createElement('textarea');
 
-      campo.value=chave;
-      campo.style.position='fixed';
-      campo.style.opacity='0';
+      campo.value = chave;
+      campo.style.position = 'fixed';
+      campo.style.opacity = '0';
 
       document.body.appendChild(campo);
 
@@ -86,7 +107,7 @@ document.getElementById('copiarPix').onclick=async()=>{
 
       alert('✅ Chave PIX copiada!');
 
-    }catch{
+    } catch {
 
       alert(
         'Não foi possível copiar automaticamente. ' +
