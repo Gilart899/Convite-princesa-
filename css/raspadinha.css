@@ -1,256 +1,594 @@
-<!doctype html>
-<html lang="pt-BR">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#0878e8">
-  <meta name="description" content="Rifa Solidária — em prol da saúde de Dona Bené.">
-  <title>Rifa Solidária — Dona Bené</title>
-  <link rel="stylesheet" href="css/style.css">
-</head>
+*{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  min-height:100vh;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  background:
+    radial-gradient(
+      circle at top,
+      rgba(8,120,232,.18),
+      transparent 35%
+    ),
+    linear-gradient(
+      160deg,
+      #031d16,
+      #063b2a 45%,
+      #021b13
+    );
+
+  color:#fff;
+}
+
+.bg-glow{
+  position:fixed;
+  inset:0;
 
-<body>
+  pointer-events:none;
 
-  <div class="bg-glow"></div>
+  background:
+    radial-gradient(
+      circle at 15% 20%,
+      rgba(0,255,150,.10),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 85% 75%,
+      rgba(8,120,232,.12),
+      transparent 30%
+    );
+
+  z-index:-1;
+}
+
+.topbar{
+  width:100%;
+  min-height:70px;
 
-  <header class="topbar">
-    <div class="brand">🍀 RIFA SOLIDÁRIA</div>
-    <span class="pill">GILFEST</span>
-  </header>
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
 
-  <main>
+  padding:12px 18px;
 
-    <section class="hero card">
+  background:
+    rgba(2,25,18,.88);
 
-      <div class="hero-copy">
+  border-bottom:
+    1px solid rgba(255,255,255,.10);
 
-        <span class="tag">♥ RIFA SOLIDÁRIA</span>
+  backdrop-filter:blur(12px);
+}
 
-        <h1>
-          Em prol da saúde de
-          <strong>Dona Bené</strong>
-        </h1>
+.brand{
+  color:#fff;
+  text-decoration:none;
 
-        <p>
-          Sua contribuição faz a diferença!
-        </p>
+  font-size:18px;
+  font-weight:900;
+  letter-spacing:.5px;
+}
 
-      </div>
+.logo-area{
+  height:45px;
+  display:flex;
+  align-items:center;
+}
 
-      <img
-        class="hero-photo"
-        src="img/mae.png"
-        alt="Dona Bené"
-      >
+.logo-area img{
+  max-height:45px;
+  max-width:130px;
 
-    </section>
+  object-fit:contain;
 
+  border-radius:8px;
+}
 
-    <section class="prize card">
+main{
+  width:min(720px,94%);
+  margin:22px auto 40px;
+}
 
-      <div>
+.card{
+  margin-bottom:16px;
 
-        <span class="tag blue">🎁 PRÊMIO</span>
+  padding:20px;
 
-        <h2>
-          Geladeira<br>
-          <strong>Midea Frost Free</strong>
-        </h2>
+  border-radius:22px;
 
-        <p class="price">
-          R$ 10,00
-          <small>por número</small>
-        </p>
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.10),
+      rgba(255,255,255,.045)
+    );
 
-        <p>
-          ℹ️ Sorteio:
-          <strong>30/12/2026 às 20:00</strong>
-        </p>
+  border:
+    1px solid rgba(255,255,255,.10);
 
-      </div>
+  box-shadow:
+    0 18px 45px rgba(0,0,0,.25);
 
-      <img
-        src="img/1783887880857.png"
-        alt="Prêmio da rifa"
-      >
+  backdrop-filter:blur(12px);
+}
 
-    </section>
+.intro{
+  text-align:center;
+}
 
+.tag{
+  display:inline-block;
 
-    <section class="search card">
+  padding:8px 13px;
 
-      <div>
+  border-radius:999px;
 
-        <h2>
-          Digite seu número de 000 a 999
-        </h2>
+  background:#0878e8;
 
-        <input
-          id="numeroDireto"
-          inputmode="numeric"
-          maxlength="3"
-          placeholder="Ex.: 750"
-        >
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.6px;
+}
 
-        <small>
-          Digite um número para verificar a disponibilidade
-          e marcar na cartela.
-        </small>
+.tag.green{
+  background:#159447;
+}
 
-      </div>
+.tag.blue{
+  background:#0878e8;
+}
 
-      <button
-        class="pix"
-        id="copiarPix"
-      >
-        💠 Copiar chave PIX
-      </button>
+.intro h1{
+  margin:15px 0 8px;
 
-    </section>
+  font-size:
+    clamp(26px,7vw,42px);
 
+  line-height:1.05;
+}
 
-    <section class="steps-grid">
+.intro p{
+  margin:0;
 
-      <article class="card steps">
+  color:rgba(255,255,255,.75);
 
-        <span class="tag blue">
-          COMO PARTICIPAR
-        </span>
+  line-height:1.5;
+}
 
-        <ol>
-          <li>
-            Escolha seus números de 000 a 999
-          </li>
+.numero-card label{
+  display:block;
 
-          <li>
-            Faça o pagamento via PIX
-          </li>
+  margin-bottom:8px;
 
-          <li>
-            Envie o comprovante e aguarde a confirmação
-          </li>
-        </ol>
+  font-weight:800;
+}
 
-      </article>
+.numero-form{
+  display:flex;
+  gap:10px;
+}
 
+.numero-form input{
+  flex:1;
+  min-width:0;
 
-      <!-- RASPADINHA DA SORTE -->
+  height:52px;
 
-      <article
-        class="card scratch"
-        onclick="location.href='raspadinha.html'"
-        style="cursor:pointer;"
-        role="link"
-        tabindex="0"
-        onkeydown="if(event.key==='Enter' || event.key===' ') location.href='raspadinha.html'"
-      >
+  border:0;
+  outline:none;
 
-        <img
-          src="img/liquidificador.png"
-          alt="Raspadinha da sorte"
-        >
+  border-radius:14px;
 
-        <h2>
-          RASPADINHA<br>
-          <strong>DA SORTE</strong>
-        </h2>
+  padding:0 16px;
 
-        <p>
-          Após a confirmação, sua jogada poderá ser liberada.
-        </p>
+  background:#fff;
+  color:#111;
 
-        <small>
-          🍀 Toque aqui para entrar
-        </small>
+  font-size:20px;
+  font-weight:800;
 
-      </article>
+  text-align:center;
 
+  letter-spacing:3px;
+}
 
-      <article class="card upload">
+button{
+  border:0;
+  cursor:pointer;
 
-        <span class="tag blue">
-          ENVIE SEU COMPROVANTE
-        </span>
+  font-weight:900;
 
-        <div class="upload-box">
+  border-radius:14px;
 
-          ☁️<br>
+  transition:
+    transform .15s ease,
+    opacity .15s ease;
+}
 
-          <strong>
-            Selecione o comprovante
-          </strong>
+button:active{
+  transform:scale(.97);
+}
 
-          <input
-            id="comprovante"
-            type="file"
-            accept="image/*,application/pdf"
-          >
+.primary{
+  min-height:52px;
 
-        </div>
+  padding:0 18px;
 
-      </article>
+  color:#fff;
 
-    </section>
+  background:
+    linear-gradient(
+      135deg,
+      #0878e8,
+      #0056b3
+    );
+}
 
+.secondary{
+  width:100%;
 
-    <section class="luck card">
+  min-height:50px;
 
-      <span>🍀</span>
+  padding:0 18px;
 
-      <div>
+  color:#fff;
 
-        <h2>
-          NÚMERO DA SORTE
-        </h2>
+  background:
+    rgba(255,255,255,.10);
 
-        <p>
-          Não é sorte, é fé, é esperança,
-          é solidariedade!
-        </p>
+  border:
+    1px solid rgba(255,255,255,.15);
+}
 
-      </div>
+.mensagem{
+  min-height:20px;
 
-    </section>
+  margin:12px 0 0;
 
+  text-align:center;
 
-    <section class="card choose">
+  font-weight:700;
+}
 
-      <h2>
-        Escolha seus números
-      </h2>
+.hidden{
+  display:none !important;
+}
 
-      <p>
-        Você pode selecionar de 1 a 10 números.
-      </p>
+.scratch-section{
+  text-align:center;
+}
 
-      <button
-        class="primary"
-        id="abrirCartelas"
-      >
-        ESCOLHER NÚMEROS →
-      </button>
+.scratch-header h2{
+  margin:
+    15px 0 6px;
 
-      <button
-        class="secondary"
-        id="sugerir"
-      >
-        🍀 SUGERIR UM NÚMERO
-      </button>
+  font-size:28px;
+}
 
-    </section>
+.scratch-header p{
+  margin:0;
 
-  </main>
+  color:rgba(255,255,255,.72);
+}
 
+.scratch-wrapper{
+  width:100%;
 
-  <footer>
-    Rifa Solidária • GilFest • Em benefício de Dona Bené
-  </footer>
+  display:flex;
+  justify-content:center;
 
+  margin-top:22px;
+}
 
-  <script
-    type="module"
-    src="js/index.js"
-  ></script>
+.scratch-card{
+  position:relative;
 
-</body>
-</html>
+  width:min(430px,100%);
+
+  aspect-ratio:1.65;
+
+  overflow:hidden;
+
+  border-radius:24px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #fff,
+      #e8f4ef
+    );
+
+  box-shadow:
+    0 20px 50px rgba(0,0,0,.35);
+}
+
+.prize-content{
+  position:absolute;
+  inset:0;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+
+  padding:20px;
+
+  color:#063b2a;
+}
+
+.prize-logo{
+  height:40px;
+  margin-bottom:5px;
+}
+
+.prize-logo img{
+  max-height:40px;
+  max-width:110px;
+
+  object-fit:contain;
+}
+
+.prize-label{
+  font-size:11px;
+  font-weight:900;
+
+  letter-spacing:2px;
+
+  opacity:.65;
+}
+
+.resultado{
+  margin-top:7px;
+
+  font-size:
+    clamp(25px,8vw,42px);
+
+  font-weight:1000;
+
+  line-height:1;
+
+  text-align:center;
+}
+
+.prize-subtitle{
+  margin:9px 0 0;
+
+  font-size:12px;
+  font-weight:800;
+
+  opacity:.65;
+}
+
+#scratchCanvas{
+  position:absolute;
+  inset:0;
+
+  width:100%;
+  height:100%;
+
+  touch-action:none;
+
+  cursor:crosshair;
+}
+
+.scratch-help{
+  margin:15px 0 0;
+
+  font-size:13px;
+
+  color:rgba(255,255,255,.65);
+}
+
+.premios{
+  text-align:center;
+}
+
+.premios-grid{
+  display:grid;
+
+  grid-template-columns:
+    repeat(3,1fr);
+
+  gap:12px;
+
+  margin-top:18px;
+}
+
+.premio{
+  padding:12px;
+
+  border-radius:18px;
+
+  background:
+    rgba(255,255,255,.06);
+
+  border:
+    1px solid rgba(255,255,255,.08);
+}
+
+.imagem-premio{
+  width:100%;
+  height:120px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.imagem-premio img{
+  width:100%;
+  height:100%;
+
+  object-fit:contain;
+}
+
+.premio h3{
+  margin:8px 0 3px;
+
+  font-size:15px;
+}
+
+.premio p{
+  margin:0;
+
+  font-size:11px;
+
+  color:rgba(255,255,255,.6);
+}
+
+.apoio{
+  display:flex;
+
+  align-items:center;
+  justify-content:center;
+
+  gap:15px;
+
+  text-align:center;
+
+  position:relative;
+  overflow:hidden;
+}
+
+.apoio .trevo{
+  position:absolute;
+
+  left:-18px;
+  bottom:-20px;
+
+  width:90px;
+
+  opacity:.22;
+
+  transform:rotate(-15deg);
+}
+
+.apoio-logo{
+  height:55px;
+
+  display:flex;
+  align-items:center;
+}
+
+.apoio-logo img{
+  max-height:55px;
+  max-width:120px;
+
+  object-fit:contain;
+
+  border-radius:8px;
+}
+
+.apoio span{
+  display:block;
+
+  font-size:10px;
+  font-weight:800;
+
+  letter-spacing:2px;
+
+  opacity:.6;
+}
+
+.apoio strong{
+  display:block;
+
+  font-size:20px;
+
+  color:#fff;
+}
+
+.voltar{
+  padding:12px;
+}
+
+footer{
+  padding:25px 15px 35px;
+
+  text-align:center;
+
+  font-size:12px;
+
+  color:rgba(255,255,255,.5);
+}
+
+@media(max-width:600px){
+
+  .topbar{
+    padding:10px 13px;
+  }
+
+  .brand{
+    font-size:15px;
+  }
+
+  .logo-area img{
+    max-width:100px;
+  }
+
+  main{
+    width:94%;
+  }
+
+  .card{
+    padding:16px;
+    border-radius:18px;
+  }
+
+  .numero-form{
+    flex-direction:column;
+  }
+
+  .numero-form input{
+    width:100%;
+  }
+
+  .primary{
+    width:100%;
+  }
+
+  .premios-grid{
+    grid-template-columns:1fr;
+  }
+
+  .premio{
+    display:grid;
+
+    grid-template-columns:100px 1fr;
+
+    column-gap:12px;
+
+    align-items:center;
+
+    text-align:left;
+  }
+
+  .imagem-premio{
+    grid-row:span 2;
+    height:100px;
+  }
+
+}
+
+@media(max-width:380px){
+
+  .intro h1{
+    font-size:25px;
+  }
+
+  .scratch-card{
+    border-radius:18px;
+  }
+
+}
