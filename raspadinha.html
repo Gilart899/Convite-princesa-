@@ -1,187 +1,242 @@
 <!doctype html>
 <html lang="pt-BR">
-
 <head>
   <meta charset="utf-8">
-  <meta
-    name="viewport"
-    content="width=device-width,initial-scale=1,viewport-fit=cover"
-  >
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 
-  <meta name="theme-color" content="#063d28">
+  <meta name="theme-color" content="#0878e8">
+  <meta name="description" content="Raspadinha da Sorte — Rifa Solidária GILFEST.">
 
   <title>Raspadinha da Sorte — GILFEST</title>
 
-  <link
-    rel="stylesheet"
-    href="css/raspadinha.css"
-  >
+  <link rel="stylesheet" href="css/raspadinha.css">
 </head>
 
 <body>
 
+  <div class="bg-glow"></div>
+
+  <header class="topbar">
+    <a class="brand" href="index.html">
+      🍀 RIFA SOLIDÁRIA
+    </a>
+
+    <div class="logo-area">
+      <img src="img/gilfest.jpg" alt="GILFEST">
+    </div>
+  </header>
+
   <main>
 
-    <section class="card raspadinha-card">
+    <section class="intro card">
 
-      <div class="topo">
+      <div class="tag">
+        🎟️ RASPADINHA DA SORTE
+      </div>
 
-        <div class="trevo">🍀</div>
+      <h1>
+        Sua sorte pode estar aqui!
+      </h1>
 
-        <span class="apoio">
-          APOIO GILFEST
+      <p>
+        Informe um número da rifa com pagamento confirmado
+        para liberar sua jogada.
+      </p>
+
+    </section>
+
+
+    <section class="numero-card card">
+
+      <label for="numeroRifa">
+        Número da sua rifa
+      </label>
+
+      <div class="numero-form">
+
+        <input
+          id="numeroRifa"
+          type="text"
+          inputmode="numeric"
+          maxlength="3"
+          placeholder="Ex.: 075"
+          autocomplete="off"
+        >
+
+        <button id="liberar" class="primary">
+          LIBERAR JOGADA
+        </button>
+
+      </div>
+
+      <p id="mensagem" class="mensagem"></p>
+
+    </section>
+
+
+    <section id="areaRaspadinha" class="scratch-section card hidden">
+
+      <div class="scratch-header">
+
+        <span class="tag green">
+          🍀 JOGADA LIBERADA
         </span>
 
-        <h1>
-          RASPADINHA
-          <strong>DA SORTE</strong>
-        </h1>
+        <h2>
+          Raspe a área abaixo
+        </h2>
 
         <p>
-          Sua sorte pode estar escondida aqui!
+          Passe o dedo sobre a raspadinha para descobrir seu resultado.
         </p>
 
       </div>
 
 
-      <div class="cartela">
+      <div class="scratch-wrapper">
 
-        <div class="cartela-brilho"></div>
+        <div class="scratch-card">
 
-        <div class="cartela-conteudo">
+          <div class="prize-content">
 
-          <span class="mini-titulo">
-            🍀 BOA SORTE! 🍀
-          </span>
+            <div class="prize-logo">
+              <img src="img/gilart.png" alt="GILART">
+            </div>
 
-          <div
-            id="resultado"
-            class="resultado"
-          >
-            <span class="resultado-icone">
-              🎁
+            <span class="prize-label">
+              RESULTADO
             </span>
 
-            <strong>
-              RASPE AQUI
-            </strong>
+            <div id="resultado" class="resultado">
+              BOA SORTE!
+            </div>
 
-            <small>
-              Descubra sua sorte
-            </small>
+            <p class="prize-subtitle">
+              Rifa Solidária GILFEST
+            </p>
+
           </div>
 
-        </div>
+          <canvas id="scratchCanvas"></canvas>
 
-        <canvas
-          id="scratchCanvas"
-          class="scratch-canvas"
-        ></canvas>
-
-      </div>
-
-
-      <div class="instrucoes">
-
-        <span>👆</span>
-
-        <div>
-          <strong>
-            Raspe com o dedo
-          </strong>
-
-          <small>
-            ou use o mouse para descobrir o resultado.
-          </small>
         </div>
 
       </div>
 
-
-      <section class="premios">
-
-        <div class="premios-titulo">
-
-          <span>🎁</span>
-
-          <div>
-            <strong>
-              PRÊMIOS DA SORTE
-            </strong>
-
-            <small>
-              Confira o que você pode ganhar
-            </small>
-          </div>
-
-        </div>
-
-
-        <div class="premios-grid">
-
-          <article class="premio">
-
-            <div class="premio-imagem">
-              🧉
-            </div>
-
-            <strong>
-              Liquidificador
-            </strong>
-
-            <small>
-              Prêmio da sorte
-            </small>
-
-          </article>
-
-
-          <article class="premio">
-
-            <div class="premio-imagem">
-              🔥
-            </div>
-
-            <strong>
-              Ferro elétrico
-            </strong>
-
-            <small>
-              Prêmio da sorte
-            </small>
-
-          </article>
-
-        </div>
-
-      </section>
-
-
-      <p
-        id="status"
-        class="status"
-      >
-        Nenhuma jogada carregada.
+      <p class="scratch-help">
+        ✨ Continue raspando até revelar completamente.
       </p>
 
+    </section>
 
-      <a
-        class="voltar"
-        href="index.html"
-      >
-        ← Voltar para a rifa
-      </a>
+
+    <section class="premios card">
+
+      <div class="tag blue">
+        🎁 PRÊMIOS DA RASPADINHA
+      </div>
+
+      <div class="premios-grid">
+
+        <article class="premio">
+
+          <div class="imagem-premio">
+            <img src="img/geladeira.png" alt="Geladeira Midea Frost Free">
+          </div>
+
+          <h3>
+            Geladeira
+          </h3>
+
+          <p>
+            Midea Frost Free
+          </p>
+
+        </article>
+
+
+        <article class="premio">
+
+          <div class="imagem-premio">
+            <img src="img/liquidificador.png" alt="Liquidificador">
+          </div>
+
+          <h3>
+            Liquidificador
+          </h3>
+
+          <p>
+            Prêmio da Raspadinha
+          </p>
+
+        </article>
+
+
+        <article class="premio">
+
+          <div class="imagem-premio">
+
+            <img src="img/ferro.png" alt="Ferro elétrico">
+
+          </div>
+
+          <h3>
+            Ferro elétrico
+          </h3>
+
+          <p>
+            Prêmio da Raspadinha
+          </p>
+
+        </article>
+
+      </div>
+
+    </section>
+
+
+    <section class="apoio card">
+
+      <img src="img/trevo.png" alt="" class="trevo">
+
+      <div class="apoio-logo">
+
+        <img src="img/gilfest.jpg" alt="GILFEST">
+
+      </div>
+
+      <div>
+
+        <span>APOIO</span>
+
+        <strong>GILFEST</strong>
+
+      </div>
+
+    </section>
+
+
+    <section class="voltar card">
+
+      <button
+        class="secondary"
+        onclick="location.href='index.html'">
+
+        ← VOLTAR PARA A RIFA
+
+      </button>
 
     </section>
 
   </main>
 
 
- <script
-  type="module"
-  src="js/raspadinha.js"
-></script>
+  <footer>
+    Rifa Solidária • GILFEST • Em benefício de Dona Bené
+  </footer>
+
+
+  <script type="module" src="js/raspadinha.js"></script>
 
 </body>
-
 </html>
