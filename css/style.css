@@ -206,18 +206,3 @@
   font-weight: 700;
   color: #1766a5;
 }
-
-.topbar .pill img {
-  width: 45px;
-  height: auto;
-  max-height: 28px;
-  object-fit: contain;
-  display: block;
-}
-
-.topbar-gilfest {
-  width: 32px;
-  height: 22px;
-  object-fit: contain;
-  display: block;
-}
