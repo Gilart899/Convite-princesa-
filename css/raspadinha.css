@@ -1,1 +1,382 @@
-body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(135deg,#063d84,#20b64b);min-height:100vh}.card{width:min(100% - 24px,600px);margin:30px auto;background:#fff;border-radius:24px;padding:24px;text-align:center;box-sizing:border-box}.prizes{display:grid;grid-template-columns:1fr 1fr;gap:12px}.prizes div{padding:18px;background:#eef8ff;border-radius:16px;font-weight:900}.scratch{margin:25px 0;padding:70px 10px;border-radius:20px;background:linear-gradient(135deg,#8f969d,#cfd4d9);color:#fff;font-size:1.8rem;font-weight:900}
+*{
+  box-sizing:border-box;
+}
+
+html{
+  min-height:100%;
+}
+
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:Arial,sans-serif;
+  color:#17452d;
+  overflow-x:hidden;
+
+  background:
+    radial-gradient(circle at 15% 20%,rgba(255,215,80,.18) 0 2px,transparent 3px),
+    radial-gradient(circle at 85% 75%,rgba(255,255,255,.16) 0 2px,transparent 3px),
+    linear-gradient(135deg,#032d1d,#08783f 50%,#06452b);
+
+  position:relative;
+}
+
+body::before,
+body::after{
+  content:"🍀";
+  position:fixed;
+  pointer-events:none;
+  z-index:0;
+  opacity:.12;
+  font-size:100px;
+  animation:flutuar 16s ease-in-out infinite alternate;
+}
+
+body::before{
+  left:2%;
+  top:10%;
+}
+
+body::after{
+  content:"✨";
+  right:5%;
+  bottom:12%;
+  font-size:75px;
+  opacity:.16;
+  animation:brilhar 5s ease-in-out infinite alternate;
+}
+
+@keyframes flutuar{
+  0%{
+    transform:translate(0,0) rotate(-8deg);
+  }
+
+  50%{
+    transform:translate(22px,-25px) rotate(8deg);
+  }
+
+  100%{
+    transform:translate(-10px,20px) rotate(-5deg);
+  }
+}
+
+@keyframes brilhar{
+  0%{
+    transform:scale(.8);
+    opacity:.08;
+  }
+
+  100%{
+    transform:scale(1.2);
+    opacity:.25;
+  }
+}
+
+main{
+  width:min(100% - 20px,700px);
+  margin:auto;
+  padding:18px 0;
+  position:relative;
+  z-index:1;
+}
+
+.card{
+  background:rgba(255,255,255,.97);
+  border-radius:28px;
+  padding:20px;
+  box-shadow:0 20px 50px rgba(0,0,0,.35);
+}
+
+.topo{
+  text-align:center;
+}
+
+.trevo{
+  font-size:58px;
+  line-height:1;
+  filter:drop-shadow(0 5px 8px rgba(0,80,40,.25));
+  animation:trevo 4s ease-in-out infinite;
+}
+
+@keyframes trevo{
+  0%,100%{
+    transform:rotate(-5deg) scale(1);
+  }
+
+  50%{
+    transform:rotate(5deg) scale(1.08);
+  }
+}
+
+.apoio{
+  display:inline-block;
+  margin-top:8px;
+  padding:6px 14px;
+  border-radius:20px;
+  background:linear-gradient(90deg,#08783f,#12a65a);
+  color:#fff;
+  font-size:.75rem;
+  font-weight:900;
+  letter-spacing:1.5px;
+}
+
+h1{
+  margin:12px 0 4px;
+  color:#075b32;
+  font-size:1.8rem;
+  letter-spacing:1px;
+}
+
+h1 strong{
+  display:block;
+  color:#c99516;
+  font-size:1.35em;
+}
+
+.topo p{
+  margin:8px 0 20px;
+  color:#63766a;
+}
+
+.cartela{
+  position:relative;
+  width:100%;
+  max-width:480px;
+  height:230px;
+  margin:0 auto;
+  border-radius:22px;
+  overflow:hidden;
+
+  background:
+    linear-gradient(135deg,#d8b45b,#f4dc91,#b88920);
+
+  box-shadow:
+    inset 0 0 0 3px rgba(255,255,255,.45),
+    0 12px 30px rgba(0,60,30,.25);
+}
+
+.cartela::before{
+  content:"";
+  position:absolute;
+  inset:8px;
+  border:2px dashed rgba(255,255,255,.7);
+  border-radius:16px;
+  pointer-events:none;
+}
+
+.cartela-brilho{
+  position:absolute;
+  inset:-100%;
+
+  background:linear-gradient(
+    115deg,
+    transparent 40%,
+    rgba(255,255,255,.35) 50%,
+    transparent 60%
+  );
+
+  animation:brilhoCartela 5s linear infinite;
+}
+
+@keyframes brilhoCartela{
+  0%{
+    transform:translateX(-40%) translateY(-20%);
+  }
+
+  100%{
+    transform:translateX(40%) translateY(20%);
+  }
+}
+
+.cartela-conteudo{
+  position:absolute;
+  inset:0;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+
+  text-align:center;
+  color:#fff;
+
+  text-shadow:0 2px 5px rgba(0,0,0,.35);
+}
+
+.mini-titulo{
+  font-size:.85rem;
+  font-weight:900;
+  letter-spacing:2px;
+}
+
+.resultado{
+  margin-top:14px;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:5px;
+}
+
+.resultado-icone{
+  font-size:42px;
+}
+
+.resultado strong{
+  font-size:1.5rem;
+  letter-spacing:1px;
+}
+
+.resultado small{
+  font-size:.8rem;
+  opacity:.9;
+}
+
+.scratch-canvas{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  cursor:crosshair;
+  touch-action:none;
+}
+
+.instrucoes{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+
+  margin:18px 0;
+  padding:12px;
+
+  border-radius:15px;
+  background:#effaf3;
+  color:#17623b;
+}
+
+.instrucoes>span{
+  font-size:28px;
+}
+
+.instrucoes strong{
+  display:block;
+}
+
+.instrucoes small{
+  display:block;
+  margin-top:3px;
+  color:#708078;
+}
+
+.premios{
+  margin-top:20px;
+}
+
+.premios-titulo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:12px;
+}
+
+.premios-titulo>span{
+  font-size:30px;
+}
+
+.premios-titulo strong{
+  display:block;
+  color:#075b32;
+}
+
+.premios-titulo small{
+  color:#718078;
+}
+
+.premios-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.premio{
+  padding:14px;
+  text-align:center;
+
+  border-radius:18px;
+
+  background:linear-gradient(
+    145deg,
+    #f8fff9,
+    #e8f8ee
+  );
+
+  border:1px solid #c9e5d2;
+
+  box-shadow:0 5px 15px rgba(0,80,40,.08);
+}
+
+.premio-imagem{
+  font-size:45px;
+  margin-bottom:8px;
+}
+
+.premio strong{
+  display:block;
+  color:#17623b;
+}
+
+.premio small{
+  display:block;
+  margin-top:4px;
+  color:#7a8981;
+}
+
+.status{
+  margin:18px 0 8px;
+  text-align:center;
+  font-size:.9rem;
+  color:#6b776f;
+}
+
+.voltar{
+  display:block;
+  width:max-content;
+  margin:12px auto 0;
+  color:#08783f;
+  font-weight:900;
+  text-decoration:none;
+}
+
+@media(max-width:500px){
+
+  main{
+    padding:10px 0;
+  }
+
+  .card{
+    padding:15px;
+    border-radius:22px;
+  }
+
+  h1{
+    font-size:1.45rem;
+  }
+
+  .cartela{
+    height:210px;
+  }
+
+  .premios-grid{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .premio{
+    padding:10px;
+  }
+
+  .premio-imagem{
+    font-size:38px;
+  }
+
+}
