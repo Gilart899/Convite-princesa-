@@ -8,7 +8,7 @@ export const CONFIG = {
   numerosPorCartela: 100,
   sorteio: '30/12/2026 às 20:00',
 
-  pixChave: '045.761.515-09,
+ pixChave: '045.761.515-09',
   whatsapp: '',
 
   firebase: {
