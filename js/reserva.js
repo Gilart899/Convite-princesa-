@@ -1,128 +1,171 @@
-import {db,firebaseConfigured} from './firebase.js';
-import {ref,get} from 'https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js';
-import {CONFIG} from './config.js';
+import { firebaseConfigured } from './firebase.js';
+import { getFunctions, httpsCallable } from 'https://www.gstatic.com/firebasejs/12.1.0/firebase-functions.js';
+import { CONFIG } from './config.js';
 
 const selecionados =
   JSON.parse(localStorage.getItem('rifaSelecionados') || '[]');
 
-document.getElementById('numeros').textContent =
+const numerosEl = document.getElementById('numeros');
+const totalEl = document.getElementById('total');
+const reservarBtn = document.getElementById('reservar');
+const nomeEl = document.getElementById('nome');
+const telefoneEl = document.getElementById('telefone');
+const msgEl = document.getElementById('msg');
+
+numerosEl.textContent =
   selecionados.length
     ? selecionados.join(' • ')
     : 'Nenhum número selecionado';
 
-document.getElementById('total').textContent =
+totalEl.textContent =
   `Total: R$ ${(selecionados.length * CONFIG.valorNumero)
     .toFixed(2)
-    .replace('.',',')}`;
+    .replace('.', ',')}`;
 
 
 /* PIX */
 
-const pix=document.getElementById('pix');
-const copiarPix=document.getElementById('copiarPix');
-const pixMsg=document.getElementById('pixMsg');
+const pix = document.getElementById('pix');
+const copiarPix = document.getElementById('copiarPix');
+const pixMsg = document.getElementById('pixMsg');
 
-pix.value=CONFIG.pixChave || '';
+if (pix) {
+  pix.value = CONFIG.pixChave || '';
+}
 
-copiarPix.onclick=async()=>{
+if (copiarPix) {
 
-  const chave=CONFIG.pixChave || '';
+  copiarPix.onclick = async () => {
 
-  if(!chave){
-    pixMsg.textContent='Chave PIX não configurada.';
-    return;
-  }
+    const chave = CONFIG.pixChave || '';
 
-  try{
+    if (!chave) {
+      if (pixMsg) {
+        pixMsg.textContent = 'Chave PIX não configurada.';
+      }
+      return;
+    }
 
-    await navigator.clipboard.writeText(chave);
+    try {
 
-    pixMsg.textContent='✅ Chave PIX copiada!';
+      await navigator.clipboard.writeText(chave);
 
-    copiarPix.textContent='✅ COPIADO!';
+      if (pixMsg) {
+        pixMsg.textContent = '✅ Chave PIX copiada!';
+      }
 
-    setTimeout(()=>{
-      copiarPix.textContent='📋 COPIAR';
-      pixMsg.textContent='';
-    },2000);
+      copiarPix.textContent = '✅ COPIADO!';
 
-  }catch(e){
+      setTimeout(() => {
+        copiarPix.textContent = '📋 COPIAR';
 
-    pix.select();
-    pix.setSelectionRange(0,99999);
+        if (pixMsg) {
+          pixMsg.textContent = '';
+        }
+      }, 2000);
 
-    pixMsg.textContent=
-      'Selecione e copie a chave PIX manualmente.';
+    } catch {
 
-  }
+      if (pix) {
+        pix.focus();
+        pix.select();
+        pix.setSelectionRange(0, 99999);
+      }
 
-};
+      if (pixMsg) {
+        pixMsg.textContent =
+          'Selecione e copie a chave PIX manualmente.';
+      }
+
+    }
+
+  };
+
+}
 
 
 /* RESERVA */
 
-document.getElementById('reservar').onclick=async()=>{
+reservarBtn.onclick = async () => {
 
-  const nome=
-    document.getElementById('nome').value.trim();
+  const nome = nomeEl.value.trim();
+  const telefone = telefoneEl.value.trim();
 
-  const telefone=
-    document.getElementById('telefone').value.trim();
-
-  const msg=
-    document.getElementById('msg');
-
-  if(!selecionados.length){
-    msg.textContent='Selecione pelo menos um número.';
+  if (!selecionados.length) {
+    msgEl.textContent =
+      'Selecione pelo menos um número.';
     return;
   }
 
-  if(!nome || !telefone){
-    msg.textContent='Preencha nome e WhatsApp.';
+  if (!nome || !telefone) {
+    msgEl.textContent =
+      'Preencha nome e WhatsApp.';
     return;
   }
 
-  try{
+  if (!firebaseConfigured) {
+    msgEl.textContent =
+      'O Firebase ainda não foi configurado nesta versão.';
+    return;
+  }
 
-    if(!firebaseConfigured){
+  try {
 
-      msg.textContent=
-        'O Firebase ainda não foi configurado nesta versão.';
+    reservarBtn.disabled = true;
+    reservarBtn.textContent = 'ENVIANDO...';
 
-      return;
-    }
+    msgEl.textContent =
+      'Verificando seus números...';
 
-    const snap=
-      await get(ref(db,'rifa/numeros'));
+    const functions = getFunctions(
+      undefined,
+      'southamerica-east1'
+    );
 
-    const atual=
-      snap.val() || {};
+    const criarReserva =
+      httpsCallable(functions, 'criarReserva');
 
-    const indisponiveis=
-      selecionados.filter(
-        n=>atual[n] &&
-        atual[n].status!=='disponivel'
-      );
+    const resposta =
+      await criarReserva({
+        nome,
+        telefone,
+        numeros: selecionados
+      });
 
-    if(indisponiveis.length){
+    const dados = resposta.data;
 
-      msg.textContent=
-        `Estes números já foram ocupados: ${
-          indisponiveis.join(', ')
-        }`;
+    msgEl.textContent =
+      `✅ Reserva criada com sucesso! Números: ${
+        dados.numeros.join(', ')
+      }`;
 
-      return;
-    }
+    localStorage.removeItem('rifaSelecionados');
 
-    msg.textContent=
-      'A reserva está preparada, mas a gravação definitiva será feita pela Cloud Function na próxima etapa de segurança.';
+    reservarBtn.textContent = 'RESERVA ENVIADA!';
 
-  }catch(e){
+  } catch (e) {
 
     console.error(e);
 
-    msg.textContent=
-      'Não foi possível verificar os números.';
+    if (e?.code === 'functions/failed-precondition') {
+
+      msgEl.textContent =
+        e.message || 'Um dos números não está disponível.';
+
+    } else if (e?.code === 'functions/invalid-argument') {
+
+      msgEl.textContent =
+        e.message || 'Confira os dados informados.';
+
+    } else {
+
+      msgEl.textContent =
+        'Não foi possível criar a reserva. Tente novamente.';
+
+    }
+
+    reservarBtn.disabled = false;
+    reservarBtn.textContent = 'ENVIAR RESERVA';
 
   }
 
