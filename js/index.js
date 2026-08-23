@@ -405,7 +405,6 @@ if (canvas && area && premio) {
   ajustarCanvas();
 
 }
-
 /* =========================================================
    📲 COMPROVANTE → WHATSAPP
 ========================================================= */
@@ -429,6 +428,8 @@ if (
   enviarWhatsApp
 ) {
 
+  /* SELECIONAR COMPROVANTE */
+
   comprovante.addEventListener(
     'change',
     () => {
@@ -450,6 +451,8 @@ if (
         return;
       }
 
+
+      /* Limite de 10 MB */
 
       const tamanhoMaximo =
         10 * 1024 * 1024;
@@ -480,16 +483,18 @@ if (
 
       if (comprovanteMsg) {
         comprovanteMsg.textContent =
-          'Comprovante selecionado. Toque no botão para enviar pelo WhatsApp.';
+          'Comprovante selecionado. Agora toque em ENVIAR PELO WHATSAPP.';
       }
 
     }
   );
 
 
+  /* ENVIAR COMPROVANTE */
+
   enviarWhatsApp.addEventListener(
     'click',
-    () => {
+    async () => {
 
       const arquivo =
         comprovante.files[0];
@@ -498,35 +503,122 @@ if (
 
         if (comprovanteMsg) {
           comprovanteMsg.textContent =
-            'Selecione o comprovante primeiro.';
+            '⚠️ Selecione o comprovante primeiro.';
         }
 
         return;
       }
 
 
-      const numeroWhatsApp =
-        '5579999145044';
-
-
       const mensagem =
         'Olá! Estou enviando o comprovante de pagamento da Rifa Solidária — GILFEST.';
 
 
-      const url =
-        `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
+      try {
+
+        /*
+         * Verifica se o navegador permite
+         * compartilhar arquivos.
+         */
+
+        if (
+          !navigator.share ||
+          !navigator.canShare
+        ) {
+
+          throw new Error(
+            'Compartilhamento de arquivos não suportado.'
+          );
+
+        }
 
 
-      window.open(
-        url,
-        '_blank'
-      );
+        const compartilhamento = {
+          files: [arquivo],
+          text: mensagem
+        };
 
 
-      if (comprovanteMsg) {
+        if (
+          !navigator.canShare(compartilhamento)
+        ) {
 
-        comprovanteMsg.textContent =
-          '📲 O WhatsApp foi aberto. Agora anexe o comprovante selecionado na conversa e envie.';
+          throw new Error(
+            'Não é possível compartilhar este arquivo.'
+          );
+
+        }
+
+
+        /*
+         * Abre o compartilhamento nativo
+         * do Android.
+         */
+
+        await navigator.share(
+          compartilhamento
+        );
+
+
+        if (comprovanteMsg) {
+
+          comprovanteMsg.textContent =
+            '✅ Compartilhamento iniciado. Escolha o WhatsApp e envie o comprovante.';
+
+        }
+
+
+      } catch (erro) {
+
+        console.log(
+          'Compartilhamento cancelado ou indisponível:',
+          erro
+        );
+
+
+        /*
+         * Se o usuário cancelou o compartilhamento,
+         * não mostramos erro.
+         */
+
+        if (
+          erro.name === 'AbortError'
+        ) {
+
+          if (comprovanteMsg) {
+            comprovanteMsg.textContent =
+              'Compartilhamento cancelado.';
+          }
+
+          return;
+        }
+
+
+        /*
+         * Fallback:
+         * abre o WhatsApp com a mensagem.
+         */
+
+        const numeroWhatsApp =
+          '5579999145044';
+
+
+        const url =
+          `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
+
+
+        window.open(
+          url,
+          '_blank'
+        );
+
+
+        if (comprovanteMsg) {
+
+          comprovanteMsg.textContent =
+            '📲 O WhatsApp foi aberto. Anexe o comprovante manualmente na conversa.';
+
+        }
 
       }
 
