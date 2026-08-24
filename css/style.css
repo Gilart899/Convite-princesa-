@@ -402,3 +402,39 @@ body::after {
     grid-template-columns: 1fr !important;
   }
 }
+
+/* 🍭 CABEÇALHO GILFEST + APOIO */
+
+.topbar {
+  justify-content: center;
+  text-align: center;
+  gap: 14px;
+}
+
+.brand {
+  font-size: 1.45rem;
+  text-align: center;
+}
+
+.gilfest-top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.gilfest-top img {
+  width: 48px;
+  height: auto;
+  max-height: 38px;
+  object-fit: contain;
+}
+
+.gilfest-top small {
+  margin-top: 4px;
+  font-size: .85rem;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: .5px;
+}
