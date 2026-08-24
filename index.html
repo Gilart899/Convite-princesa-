@@ -8,136 +8,329 @@
   <title>Rifa Solidária — Dona Bené</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
+
   <div class="bg-glow"></div>
-  <header class="topbar"><div class="brand">🍀 RIFA SOLIDÁRIA</div><span class="pill">GILFEST</span></header>
-      <div class="hero-copy"><span class="tag">♥ RIFA SOLIDÁRIA</span><h1>Em prol da saúde de <strong>Dona Bené</strong></h1><p>Sua contribuição faz a diferença!</p></div>
-      <img class="hero-photo" src="img/mae.png" alt="Dona Bené">
+
+  <!-- CABEÇALHO -->
+  <header class="topbar">
+
+    <div class="brand">
+      🍀 RIFA SOLIDÁRIA
+    </div>
+
+    <div class="gilfest-top">
+      <img src="img/gilfest.jpg" alt="GILFEST">
+      <small>APOIO</small>
+    </div>
+
+  </header>
+
+  <main>
+
+    <!-- CARTÃO PRINCIPAL -->
+    <section class="hero card">
+
+      <div class="hero-copy">
+
+        <span class="tag">
+          ♥ RIFA SOLIDÁRIA
+        </span>
+
+        <h1>
+          Em prol da saúde de
+          <strong>Dona Bené</strong>
+        </h1>
+
+        <p>
+          Sua contribuição faz a diferença!
+        </p>
+
+      </div>
+
+      <img
+        class="hero-photo"
+        src="img/mae.png"
+        alt="Dona Bené"
+      >
+
     </section>
 
+
+    <!-- PRÊMIO PRINCIPAL -->
     <section class="prize card">
-      <div><span class="tag blue">🎁 PRÊMIO</span><h2>Geladeira<br><strong>Midea Frost Free</strong></h2><p class="price">R$ 10,00 <small>por número</small></p><p>ℹ️ Sorteio: <strong>30/12/2026 às 20:00</strong></p></div>
-     <img src="img/geladeira.png" alt="Geladeira Midea Frost Free">
+
+      <div>
+
+        <span class="tag blue">
+          🎁 PRÊMIO
+        </span>
+
+        <h2>
+          Geladeira<br>
+          <strong>Midea Frost Free</strong>
+        </h2>
+
+        <p class="price">
+          R$ 10,00
+          <small>por número</small>
+        </p>
+
+        <p>
+          ℹ️ Sorteio:
+          <strong>30/12/2026 às 20:00</strong>
+        </p>
+
+      </div>
+
+      <img
+        src="img/geladeira.png"
+        alt="Geladeira Midea Frost Free"
+      >
+
     </section>
 
+
+    <!-- BUSCA DE NÚMEROS -->
     <section class="search card">
-      <div><h2>Digite seu número de 000 a 999</h2><input id="numeroDireto" inputmode="numeric" maxlength="3" placeholder="Ex.: 750"><small>Digite um número para verificar a disponibilidade e marcar na cartela.</small></div>
-      <button class="pix" id="copiarPix">💠 Copiar chave PIX</button>
+
+      <div>
+
+        <h2>
+          Digite seu número de 000 a 999
+        </h2>
+
+        <input
+          id="numeroDireto"
+          inputmode="numeric"
+          maxlength="3"
+          placeholder="Ex.: 750"
+        >
+
+        <small>
+          Digite um número para verificar a disponibilidade
+          e marcar na cartela.
+        </small>
+
+      </div>
+
+      <button
+        class="pix"
+        id="copiarPix"
+      >
+        💠 Copiar chave PIX
+      </button>
+
     </section>
 
+
+    <!-- ETAPAS -->
     <section class="steps-grid">
-      <article class="card steps"><span class="tag blue">COMO PARTICIPAR</span><ol><li>Escolha seus números de 000 a 999</li><li>Faça o pagamento via PIX</li><li>Envie o comprovante e aguarde a confirmação</li></ol></article>
-    <article class="card scratch">
 
-  <div class="trevo-mini">🍀</div>
+      <article class="card steps">
 
-  <h2>
-    RASPADINHA<br>
-    <strong>DA SORTE</strong>
-  </h2>
+        <span class="tag blue">
+          COMO PARTICIPAR
+        </span>
 
-  <p class="scratch-subtitle">
-    Sua sorte pode estar escondida aqui!
-  </p>
+        <ol>
 
-  <div class="scratch-area">
+          <li>
+            Escolha seus números de 000 a 999
+          </li>
 
-    <div class="scratch-result">
+          <li>
+            Faça o pagamento via PIX
+          </li>
 
-      <span class="icone">🎁</span>
+          <li>
+            Envie o comprovante e aguarde a confirmação
+          </li>
 
-      <strong id="scratchPremio">
-        RASPE AQUI
-      </strong>
+        </ol>
 
-      <small>
-        Descubra sua sorte
-      </small>
+      </article>
 
-    </div>
 
-    <canvas
-      id="scratchCanvas"
-      class="scratch-canvas"
-    ></canvas>
+      <!-- RASPADINHA -->
+      <article class="card scratch">
 
-  </div>
+        <div class="trevo-mini">
+          🍀
+        </div>
 
-  <p class="scratch-instruction">
-    👆 Raspe com o dedo para descobrir!
-  </p>
+        <h2>
+          RASPADINHA<br>
+          <strong>DA SORTE</strong>
+        </h2>
 
-  <div class="scratch-prizes">
+        <p class="scratch-subtitle">
+          Sua sorte pode estar escondida aqui!
+        </p>
 
-    <div class="scratch-prize">
-      <span>🧉</span>
-      Liquidificador
-    </div>
+        <div class="scratch-area">
 
-    <div class="scratch-prize">
-      <span>🔥</span>
-      Ferro elétrico
-    </div>
+          <div class="scratch-result">
 
-  </div>
+            <span class="icone">
+              🎁
+            </span>
 
-</article>
-     <article class="card upload">
+            <strong id="scratchPremio">
+              RASPE AQUI
+            </strong>
 
-  <span class="tag blue">
-    ENVIE SEU COMPROVANTE
-  </span>
+            <small>
+              Descubra sua sorte
+            </small>
 
-  <div class="upload-box">
+          </div>
 
-    <div class="upload-icon">
-      📄
-    </div>
+          <canvas
+            id="scratchCanvas"
+            class="scratch-canvas"
+          ></canvas>
 
-    <strong>
-      Selecione o comprovante
-    </strong>
+        </div>
 
-    <small>
-      Foto ou PDF do comprovante de pagamento
-    </small>
+        <p class="scratch-instruction">
+          👆 Raspe com o dedo para descobrir!
+        </p>
 
-    <input
-      id="comprovante"
-      type="file"
-      accept="image/*,application/pdf"
-    >
+        <div class="scratch-prizes">
 
-    <p
-      id="comprovanteNome"
-      class="comprovante-nome"
-    >
-      Nenhum arquivo selecionado.
-    </p>
+          <div class="scratch-prize">
+            <span>🧉</span>
+            Liquidificador
+          </div>
 
-    <button
-      id="enviarWhatsApp"
-      class="whatsapp-btn"
-      type="button"
-      disabled
-    >
-      📲 ENVIAR PELO WHATSAPP
-    </button>
+          <div class="scratch-prize">
+            <span>🔥</span>
+            Ferro elétrico
+          </div>
 
-    <p
-      id="comprovanteMsg"
-      class="comprovante-msg"
-    ></p>
+        </div>
 
-  </div>
+      </article>
 
-</article>
+
+      <!-- COMPROVANTE -->
+      <article class="card upload">
+
+        <span class="tag blue">
+          ENVIE SEU COMPROVANTE
+        </span>
+
+        <div class="upload-box">
+
+          <div class="upload-icon">
+            📄
+          </div>
+
+          <strong>
+            Selecione o comprovante
+          </strong>
+
+          <small>
+            Foto ou PDF do comprovante de pagamento
+          </small>
+
+          <input
+            id="comprovante"
+            type="file"
+            accept="image/*,application/pdf"
+          >
+
+          <p
+            id="comprovanteNome"
+            class="comprovante-nome"
+          >
+            Nenhum arquivo selecionado.
+          </p>
+
+          <button
+            id="enviarWhatsApp"
+            class="whatsapp-btn"
+            type="button"
+            disabled
+          >
+            📲 ENVIAR PELO WHATSAPP
+          </button>
+
+          <p
+            id="comprovanteMsg"
+            class="comprovante-msg"
+          ></p>
+
+        </div>
+
+      </article>
+
     </section>
 
-    <section class="luck card"><span>🍀</span><div><h2>NÚMERO DA SORTE</h2><p>Não é sorte, é fé, é esperança, é solidariedade!</p></div></section>
-    <section class="card choose"><h2>Escolha seus números</h2><p>Você pode selecionar de 1 a 10 números.</p><button class="primary" id="abrirCartelas">ESCOLHER NÚMEROS →</button><button class="secondary" id="sugerir">🍀 SUGERIR UM NÚMERO</button></section>
+
+    <!-- NÚMERO DA SORTE -->
+    <section class="luck card">
+
+      <span>
+        🍀
+      </span>
+
+      <div>
+
+        <h2>
+          NÚMERO DA SORTE
+        </h2>
+
+        <p>
+          Não é sorte, é fé, é esperança, é solidariedade!
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <!-- ESCOLHA DOS NÚMEROS -->
+    <section class="card choose">
+
+      <h2>
+        Escolha seus números
+      </h2>
+
+      <p>
+        Você pode selecionar de 1 a 10 números.
+      </p>
+
+      <button
+        class="primary"
+        id="abrirCartelas"
+      >
+        ESCOLHER NÚMEROS →
+      </button>
+
+      <button
+        class="secondary"
+        id="sugerir"
+      >
+        🍀 SUGERIR UM NÚMERO
+      </button>
+
+    </section>
+
   </main>
-  <footer>Rifa Solidária • GilFest • Em benefício de Dona Bené</footer>
-  <script type="module" src="js/index.js"></script>
+
+
+  <footer>
+    Rifa Solidária • GilFest • Em benefício de Dona Bené
+  </footer>
+
+
+  <script
+    type="module"
+    src="js/index.js"
+  ></script>
+
 </body>
 </html>
