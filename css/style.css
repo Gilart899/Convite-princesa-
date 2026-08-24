@@ -425,10 +425,8 @@ body::after {
 }
 
 .gilfest-top img {
-  width: 48px;
-  height: auto;
-  max-height: 38px;
-  object-fit: contain;
+  width: 52px;
+  max-height: 40px;
 }
 
 .gilfest-top small {
