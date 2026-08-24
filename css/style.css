@@ -376,3 +376,29 @@ body::after {
     opacity: 0;
   }
 }
+
+@media screen and (max-width: 700px) {
+  .hero,
+  .prize,
+  .search,
+  .steps-grid,
+  .scratch,
+  .upload,
+  .luck,
+  .choose {
+    width: 100% !important;
+  }
+
+  .hero,
+  .prize {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+  }
+
+  .steps-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+  }
+}
