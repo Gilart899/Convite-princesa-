@@ -1,19 +1,42 @@
 <!doctype html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#0878e8">
-  <meta name="description" content="Rifa Solidária — em prol da saúde de Dona Bené.">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  >
+
+  <meta
+    name="theme-color"
+    content="#0878e8"
+  >
+
+  <meta
+    name="description"
+    content="Rifa Solidária — em prol da saúde de Dona Bené."
+  >
+
   <title>Rifa Solidária — Dona Bené</title>
-  <link rel="stylesheet" href="css/style.css">
+
+  <link
+    rel="stylesheet"
+    href="css/style.css"
+  >
 </head>
+
 
 <body>
 
   <div class="bg-glow"></div>
 
-  <!-- CABEÇALHO -->
+
+  <!-- =====================================================
+       CABEÇALHO
+  ====================================================== -->
+
   <header class="topbar">
 
     <div class="brand">
@@ -21,15 +44,28 @@
     </div>
 
     <div class="gilfest-top">
-     <img src="img/gilfest.png" alt="GILFEST">
-      <small>APOIO</small>
+
+      <img
+        src="img/gilfest.png"
+        alt="GILFEST"
+      >
+
+      <small>
+        APOIO
+      </small>
+
     </div>
 
   </header>
 
+
   <main>
 
-    <!-- CARTÃO PRINCIPAL -->
+
+    <!-- =====================================================
+         CARTÃO PRINCIPAL
+    ====================================================== -->
+
     <section class="hero card">
 
       <div class="hero-copy">
@@ -49,6 +85,7 @@
 
       </div>
 
+
       <img
         class="hero-photo"
         src="img/mae.png"
@@ -58,7 +95,11 @@
     </section>
 
 
-    <!-- PRÊMIO PRINCIPAL -->
+
+    <!-- =====================================================
+         PRÊMIO PRINCIPAL
+    ====================================================== -->
+
     <section class="prize card">
 
       <div>
@@ -79,10 +120,13 @@
 
         <p>
           ℹ️ Sorteio:
-          <strong>30/12/2026 às 20:00</strong>
+          <strong>
+            30/12/2026 às 20:00
+          </strong>
         </p>
 
       </div>
+
 
       <img
         src="img/geladeira.png"
@@ -92,7 +136,11 @@
     </section>
 
 
-    <!-- BUSCA DE NÚMEROS -->
+
+    <!-- =====================================================
+         BUSCA DE NÚMEROS
+    ====================================================== -->
+
     <section class="search card">
 
       <div>
@@ -115,9 +163,11 @@
 
       </div>
 
+
       <button
         class="pix"
         id="copiarPix"
+        type="button"
       >
         💠 Copiar chave PIX
       </button>
@@ -125,15 +175,26 @@
     </section>
 
 
-    <!-- ETAPAS -->
+
+    <!-- =====================================================
+         CARTÕES PRINCIPAIS
+         IMPORTANTE:
+         SOMENTE OS 3 CARTÕES FICAM DENTRO DE .steps-grid
+    ====================================================== -->
+
     <section class="steps-grid">
 
-      <!-- 1 — COMPROVANTE -->
+
+      <!-- ===================================================
+           1 — ENVIE SEU COMPROVANTE
+      ==================================================== -->
+
       <article class="card upload">
 
         <span class="tag blue">
           ENVIE SEU COMPROVANTE
         </span>
+
 
         <div class="upload-box">
 
@@ -141,13 +202,16 @@
             📄
           </div>
 
+
           <strong>
             Selecione o comprovante
           </strong>
 
+
           <small>
             Foto ou PDF do comprovante de pagamento
           </small>
+
 
           <input
             id="comprovante"
@@ -155,12 +219,14 @@
             accept="image/*,application/pdf"
           >
 
+
           <p
             id="comprovanteNome"
             class="comprovante-nome"
           >
             Nenhum arquivo selecionado.
           </p>
+
 
           <button
             id="enviarWhatsApp"
@@ -170,6 +236,7 @@
           >
             📲 ENVIAR PELO WHATSAPP
           </button>
+
 
           <p
             id="comprovanteMsg"
@@ -181,21 +248,28 @@
       </article>
 
 
-      <!-- 2 — RASPADINHA -->
+
+      <!-- ===================================================
+           2 — RASPADINHA DA SORTE
+      ==================================================== -->
+
       <article class="card scratch">
 
         <div class="trevo-mini">
           🍀
         </div>
 
+
         <h2>
           RASPADINHA<br>
           <strong>DA SORTE</strong>
         </h2>
 
+
         <p class="scratch-subtitle">
           Sua sorte pode estar escondida aqui!
         </p>
+
 
         <div class="scratch-area">
 
@@ -215,6 +289,7 @@
 
           </div>
 
+
           <canvas
             id="scratchCanvas"
             class="scratch-canvas"
@@ -222,20 +297,33 @@
 
         </div>
 
+
         <p class="scratch-instruction">
           👆 Raspe com o dedo para descobrir!
         </p>
 
+
         <div class="scratch-prizes">
 
           <div class="scratch-prize">
-            <span>🧉</span>
+
+            <span>
+              🧉
+            </span>
+
             Liquidificador
+
           </div>
 
+
           <div class="scratch-prize">
-            <span>🔥</span>
+
+            <span>
+              🔥
+            </span>
+
             Ferro elétrico
+
           </div>
 
         </div>
@@ -243,12 +331,17 @@
       </article>
 
 
-      <!-- 3 — COMO PARTICIPAR -->
+
+      <!-- ===================================================
+           3 — COMO PARTICIPAR
+      ==================================================== -->
+
       <article class="card steps">
 
         <span class="tag blue">
           COMO PARTICIPAR
         </span>
+
 
         <ol>
 
@@ -269,42 +362,59 @@
       </article>
 
 
-      <!-- 4 — ESCOLHA DOS NÚMEROS -->
-      <section class="card choose">
+    </section>
 
-        <h2>
-          🎟️ Escolha seus números
-        </h2>
 
-        <p>
-          Você pode selecionar de 1 a 10 números.
-        </p>
 
-        <button
-          class="primary"
-          id="abrirCartelas"
-        >
-          ESCOLHER NÚMEROS →
-        </button>
+    <!-- =====================================================
+         ESCOLHA DOS NÚMEROS
+         FICA FORA DA .steps-grid
+         PARA SER UM CARTÃO GRANDE E INDEPENDENTE
+    ====================================================== -->
 
-        <button
-          class="secondary"
-          id="sugerir"
-        >
-          🍀 SUGERIR UM NÚMERO
-        </button>
+    <section class="card choose">
 
-      </section>
+      <h2>
+        🎟️ Escolha seus números
+      </h2>
+
+
+      <p>
+        Você pode selecionar de 1 a 10 números.
+      </p>
+
+
+      <button
+        class="primary"
+        id="abrirCartelas"
+        type="button"
+      >
+        ESCOLHER NÚMEROS →
+      </button>
+
+
+      <button
+        class="secondary"
+        id="sugerir"
+        type="button"
+      >
+        🍀 SUGERIR UM NÚMERO
+      </button>
 
     </section>
 
 
-    <!-- NÚMERO DA SORTE -->
+
+    <!-- =====================================================
+         NÚMERO DA SORTE
+    ====================================================== -->
+
     <section class="luck card">
 
       <span>
         🍀
       </span>
+
 
       <div>
 
@@ -320,13 +430,24 @@
 
     </section>
 
+
   </main>
 
+
+
+  <!-- =====================================================
+       RODAPÉ
+  ====================================================== -->
 
   <footer>
     Rifa Solidária • GilFest • Em benefício de Dona Bené
   </footer>
 
+
+
+  <!-- =====================================================
+       JAVASCRIPT
+  ====================================================== -->
 
   <script
     type="module"
@@ -334,4 +455,5 @@
   ></script>
 
 </body>
+
 </html>
