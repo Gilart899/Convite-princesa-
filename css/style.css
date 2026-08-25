@@ -1172,3 +1172,143 @@ footer {
     height: 125px;
   }
 }
+
+/* =========================================================
+   🚨 CORREÇÃO DEFINITIVA — CARTÕES NO CELULAR
+========================================================= */
+
+@media screen and (max-width: 700px) {
+
+  main .steps-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    flex-wrap: nowrap !important;
+
+    width: 100% !important;
+    max-width: 100% !important;
+
+    gap: 14px !important;
+  }
+
+  main .steps-grid > article.card {
+    display: block !important;
+
+    flex: 0 0 auto !important;
+
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 100% !important;
+
+    margin: 0 !important;
+  }
+
+  /* COMPROVANTE — PRIMEIRO */
+  main .steps-grid > article.upload {
+    order: 1 !important;
+  }
+
+  /* RASPADINHA — SEGUNDO */
+  main .steps-grid > article.scratch {
+    order: 2 !important;
+  }
+
+  /* COMO PARTICIPAR — TERCEIRO */
+  main .steps-grid > article.steps {
+    order: 3 !important;
+  }
+
+}
+
+/* =========================================================
+   🍀🍭 AJUSTES VISUAIS — TREVOS E GILFEST
+========================================================= */
+
+/* 🍀 TREVOS GRANDES FLUTUANDO NO FUNDO */
+
+body::after {
+  font-size: 64px;
+  letter-spacing: 55px;
+}
+
+/* 🍭 GILFEST / ELEMENTO DO CABEÇALHO */
+
+.gilfest-top img {
+  width: 64px;
+  max-height: 52px;
+}
+
+/* Texto do GilFest um pouco maior */
+
+.gilfest-top small {
+  font-size: .95rem;
+}
+
+/* 🍀 TREVO DO CABEÇALHO */
+
+.gilfest-top {
+  transform: scale(1.05);
+}
+
+/* =========================================================
+   📱 AJUSTE ESPECIAL PARA CELULAR
+========================================================= */
+
+@media screen and (max-width: 700px) {
+
+  /* Trevos ainda mais visíveis no celular */
+  body::after {
+    font-size: 58px;
+    letter-spacing: 42px;
+  }
+
+  /* GilFest / algodão-doce */
+  .gilfest-top img {
+    width: 62px;
+    max-height: 52px;
+  }
+
+  .gilfest-top small {
+    font-size: .9rem;
+  }
+
+  /* Mantém os três cartões em coluna */
+  main .steps-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    flex-wrap: nowrap !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    gap: 14px !important;
+  }
+
+  main .steps-grid > article.card {
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+  }
+
+  /* 1 — COMPROVANTE */
+  main .steps-grid > article.upload {
+    order: 1 !important;
+  }
+
+  /* 2 — RASPADINHA */
+  main .steps-grid > article.scratch {
+    order: 2 !important;
+  }
+
+  /* 3 — COMO PARTICIPAR */
+  main .steps-grid > article.steps {
+    order: 3 !important;
+  }
+
+  /* ESCOLHA SEUS NÚMEROS */
+  main > .choose {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}
