@@ -128,32 +128,60 @@
     <!-- ETAPAS -->
     <section class="steps-grid">
 
-      <article class="card steps">
+      <!-- 1 — COMPROVANTE -->
+      <article class="card upload">
 
         <span class="tag blue">
-          COMO PARTICIPAR
+          ENVIE SEU COMPROVANTE
         </span>
 
-        <ol>
+        <div class="upload-box">
 
-          <li>
-            Escolha seus números de 000 a 999
-          </li>
+          <div class="upload-icon">
+            📄
+          </div>
 
-          <li>
-            Faça o pagamento via PIX
-          </li>
+          <strong>
+            Selecione o comprovante
+          </strong>
 
-          <li>
-            Envie o comprovante e aguarde a confirmação
-          </li>
+          <small>
+            Foto ou PDF do comprovante de pagamento
+          </small>
 
-        </ol>
+          <input
+            id="comprovante"
+            type="file"
+            accept="image/*,application/pdf"
+          >
+
+          <p
+            id="comprovanteNome"
+            class="comprovante-nome"
+          >
+            Nenhum arquivo selecionado.
+          </p>
+
+          <button
+            id="enviarWhatsApp"
+            class="whatsapp-btn"
+            type="button"
+            disabled
+          >
+            📲 ENVIAR PELO WHATSAPP
+          </button>
+
+          <p
+            id="comprovanteMsg"
+            class="comprovante-msg"
+          ></p>
+
+        </div>
 
       </article>
 
 
-      <!-- RASPADINHA -->
+      <!-- 2 — RASPADINHA -->
       <article class="card scratch">
 
         <div class="trevo-mini">
@@ -215,57 +243,58 @@
       </article>
 
 
-      <!-- COMPROVANTE -->
-      <article class="card upload">
+      <!-- 3 — COMO PARTICIPAR -->
+      <article class="card steps">
 
         <span class="tag blue">
-          ENVIE SEU COMPROVANTE
+          COMO PARTICIPAR
         </span>
 
-        <div class="upload-box">
+        <ol>
 
-          <div class="upload-icon">
-            📄
-          </div>
+          <li>
+            Escolha seus números de 000 a 999
+          </li>
 
-          <strong>
-            Selecione o comprovante
-          </strong>
+          <li>
+            Faça o pagamento via PIX
+          </li>
 
-          <small>
-            Foto ou PDF do comprovante de pagamento
-          </small>
+          <li>
+            Envie o comprovante e aguarde a confirmação
+          </li>
 
-          <input
-            id="comprovante"
-            type="file"
-            accept="image/*,application/pdf"
-          >
-
-          <p
-            id="comprovanteNome"
-            class="comprovante-nome"
-          >
-            Nenhum arquivo selecionado.
-          </p>
-
-          <button
-            id="enviarWhatsApp"
-            class="whatsapp-btn"
-            type="button"
-            disabled
-          >
-            📲 ENVIAR PELO WHATSAPP
-          </button>
-
-          <p
-            id="comprovanteMsg"
-            class="comprovante-msg"
-          ></p>
-
-        </div>
+        </ol>
 
       </article>
+
+
+      <!-- 4 — ESCOLHA DOS NÚMEROS -->
+      <section class="card choose">
+
+        <h2>
+          🎟️ Escolha seus números
+        </h2>
+
+        <p>
+          Você pode selecionar de 1 a 10 números.
+        </p>
+
+        <button
+          class="primary"
+          id="abrirCartelas"
+        >
+          ESCOLHER NÚMEROS →
+        </button>
+
+        <button
+          class="secondary"
+          id="sugerir"
+        >
+          🍀 SUGERIR UM NÚMERO
+        </button>
+
+      </section>
 
     </section>
 
@@ -288,34 +317,6 @@
         </p>
 
       </div>
-
-    </section>
-
-
-    <!-- ESCOLHA DOS NÚMEROS -->
-    <section class="card choose">
-
-      <h2>
-        Escolha seus números
-      </h2>
-
-      <p>
-        Você pode selecionar de 1 a 10 números.
-      </p>
-
-      <button
-        class="primary"
-        id="abrirCartelas"
-      >
-        ESCOLHER NÚMEROS →
-      </button>
-
-      <button
-        class="secondary"
-        id="sugerir"
-      >
-        🍀 SUGERIR UM NÚMERO
-      </button>
 
     </section>
 
