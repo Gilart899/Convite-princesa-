@@ -437,3 +437,55 @@ body::after {
   letter-spacing: .5px;
 }
 
+
+/* =========================================================
+   📱 ORDEM DOS CARTÕES NO CELULAR
+========================================================= */
+
+@media (max-width:700px){
+
+  /* A área dos três cartões */
+  .steps-grid{
+    display:flex !important;
+    flex-direction:column !important;
+    gap:12px;
+  }
+
+  /* 1º — Envie seu comprovante */
+  .steps-grid .upload{
+    order:1;
+  }
+
+  /* 2º — Raspadinha */
+  .steps-grid .scratch{
+    order:2;
+  }
+
+  /* 3º — Como participar */
+  .steps-grid .steps{
+    order:3;
+  }
+
+  /* Escolha seus números com mais destaque */
+  .choose{
+    padding:24px 18px;
+    border-radius:24px;
+  }
+
+  .choose h2{
+    font-size:1.8rem;
+    margin-bottom:10px;
+  }
+
+  .choose p{
+    font-size:1rem;
+    font-weight:700;
+  }
+
+  .choose button{
+    width:100%;
+    min-height:52px;
+    font-size:1rem;
+  }
+
+}
