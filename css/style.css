@@ -1,6 +1,6 @@
 /* =========================================================
    🎨 RIFA SOLIDÁRIA — GILFEST
-   CSS PRINCIPAL
+   CSS PRINCIPAL — VERSÃO ORGANIZADA
 ========================================================= */
 
 :root {
@@ -24,16 +24,21 @@
 html {
   width: 100%;
   min-height: 100%;
+  overflow-x: hidden;
 }
 
 body {
   position: relative;
+
   width: 100%;
   min-height: 100vh;
+
   margin: 0;
+
   overflow-x: hidden;
 
   font-family: Arial, Helvetica, sans-serif;
+
   color: var(--text);
 
   background:
@@ -46,12 +51,13 @@ body {
 }
 
 /* =========================================================
-   BRILHO DO FUNDO
+   ✨ BRILHO DO FUNDO
 ========================================================= */
 
 .bg-glow {
   position: fixed;
   inset: 0;
+
   pointer-events: none;
 
   background:
@@ -68,16 +74,18 @@ body {
 }
 
 /* =========================================================
-   BRILHOS ANIMADOS
+   ✨ ESTRELAS / BRILHOS ANIMADOS
 ========================================================= */
 
 body::before {
   content: "";
+
   position: fixed;
   inset: 0;
 
   pointer-events: none;
-  z-index: -1;
+
+  z-index: 0;
 
   background:
     radial-gradient(
@@ -95,33 +103,56 @@ body::before {
     120px 120px,
     180px 180px;
 
-  animation: estrelasSubindo 18s linear infinite;
+  animation:
+    estrelasSubindo 18s linear infinite;
+}
+
+@keyframes estrelasSubindo {
+
+  0% {
+    background-position:
+      0 100vh,
+      40px 100vh;
+  }
+
+  100% {
+    background-position:
+      0 -100vh,
+      40px -100vh;
+  }
 }
 
 /* =========================================================
-   🍀 TREVOS FLUTUANDO
+   🍀 TREVOS GRANDES FLUTUANDO
 ========================================================= */
 
 body::after {
   content: "🍀        🍀             🍀";
 
   position: fixed;
+
   left: 0;
   bottom: -100px;
 
   width: 100%;
   height: 120px;
 
-  font-size: 48px;
-  letter-spacing: 45px;
+  font-size: 64px;
+
+  line-height: 1;
+
+  letter-spacing: 55px;
+
   white-space: nowrap;
 
   opacity: .38;
 
   pointer-events: none;
-  z-index: -1;
 
-  animation: trevosFlutuando 18s linear infinite;
+  z-index: 0;
+
+  animation:
+    trevosFlutuando 18s linear infinite;
 }
 
 @keyframes trevosFlutuando {
@@ -163,22 +194,36 @@ body::after {
 }
 
 /* =========================================================
-   TOPO
+   CONTEÚDO ACIMA DA ANIMAÇÃO
+========================================================= */
+
+.topbar,
+main,
+footer {
+  position: relative;
+  z-index: 1;
+}
+
+/* =========================================================
+   🍭 CABEÇALHO
 ========================================================= */
 
 .topbar {
-  width: min(100% - 24px, 1100px);
+  width: min(calc(100% - 24px), 1100px);
+
   margin: 0 auto;
 
   padding: 16px;
 
   display: flex;
+
   align-items: center;
   justify-content: center;
 
-  gap: 14px;
+  gap: 18px;
 
   color: #fff;
+
   font-weight: 900;
 
   text-align: center;
@@ -186,35 +231,45 @@ body::after {
 
 .brand {
   font-size: 1.45rem;
+
   text-align: center;
 }
 
 .gilfest-top {
   display: flex;
+
   flex-direction: column;
+
   align-items: center;
   justify-content: center;
 
   line-height: 1;
+
+  transform: scale(1.05);
 }
 
 .gilfest-top img {
-  width: 52px;
-  max-height: 40px;
+  width: 64px;
+
+  max-height: 52px;
+
+  object-fit: contain;
 }
 
 .gilfest-top small {
-  margin-top: 4px;
+  margin-top: 5px;
 
-  font-size: .85rem;
+  font-size: .95rem;
+
   font-weight: 900;
 
   color: #fff;
+
   letter-spacing: .5px;
 }
 
 /* =========================================================
-   PÍLULAS / TAGS
+   🏷️ TAGS
 ========================================================= */
 
 .pill,
@@ -242,24 +297,26 @@ body::after {
 }
 
 /* =========================================================
-   CONTEÚDO PRINCIPAL
+   📦 CONTEÚDO PRINCIPAL
 ========================================================= */
 
 main {
   width: min(calc(100% - 24px), 1050px);
+
   max-width: 1050px;
 
   margin: 0 auto;
 }
 
 /* =========================================================
-   CARTÃO PADRÃO
+   🃏 CARTÃO PADRÃO
 ========================================================= */
 
 .card {
   width: 100%;
 
   margin: 14px 0;
+
   padding: 20px;
 
   border-radius: 24px;
@@ -271,11 +328,12 @@ main {
 }
 
 /* =========================================================
-   HERO
+   🏠 CARTÃO PRINCIPAL
 ========================================================= */
 
 .hero {
   display: flex;
+
   align-items: center;
   justify-content: space-between;
 
@@ -311,6 +369,7 @@ main {
 
 .hero p {
   font-weight: 800;
+
   color: #1766a5;
 }
 
@@ -321,6 +380,7 @@ main {
   object-fit: cover;
 
   border-radius: 50%;
+
   border: 7px solid #fff;
 
   box-shadow:
@@ -328,11 +388,12 @@ main {
 }
 
 /* =========================================================
-   PRÊMIO
+   🎁 PRÊMIO
 ========================================================= */
 
 .prize {
   display: flex;
+
   align-items: center;
   justify-content: space-between;
 
@@ -358,7 +419,9 @@ main {
 
 .prize img {
   width: 280px;
+
   max-width: 40%;
+
   max-height: 240px;
 
   object-fit: contain;
@@ -366,6 +429,7 @@ main {
 
 .price {
   font-size: 1.8rem;
+
   font-weight: 900;
 
   color: var(--pink);
@@ -373,18 +437,19 @@ main {
 
 .price small {
   font-size: .8rem;
+
   color: var(--text);
 }
 
 /* =========================================================
-   BUSCA DOS NÚMEROS
+   🔎 BUSCA DE NÚMEROS
 ========================================================= */
 
 .search {
   display: grid;
 
   grid-template-columns:
-    1fr 240px;
+    minmax(0, 1fr) 240px;
 
   align-items: center;
 
@@ -407,9 +472,11 @@ main {
   width: 100%;
 
   margin: 8px 0;
+
   padding: 15px;
 
   border: 0;
+
   border-radius: 12px;
 
   font-size: 1.1rem;
@@ -419,6 +486,7 @@ main {
 .primary,
 .secondary {
   border: 0;
+
   border-radius: 14px;
 
   padding: 15px 18px;
@@ -430,6 +498,7 @@ main {
 
 .pix {
   background: #fff;
+
   color: #e82f93;
 }
 
@@ -446,12 +515,21 @@ main {
 
 .secondary {
   background: #eaffef;
+
   color: #117334;
 }
 
 /* =========================================================
-   📦 TRÊS CARTÕES PRINCIPAIS
+   ⭐⭐⭐ TRÊS CARTÕES PRINCIPAIS
 ========================================================= */
+
+/*
+   NO COMPUTADOR:
+   três cartões lado a lado.
+
+   NO CELULAR:
+   uma única coluna.
+*/
 
 .steps-grid {
   display: grid;
@@ -462,199 +540,16 @@ main {
   gap: 14px;
 
   width: 100%;
+
+  align-items: stretch;
 }
 
-.steps-grid > .card {
+.steps-grid > article.card {
   width: 100%;
+
   min-width: 0;
-}
 
-/* =========================================================
-   COMO PARTICIPAR
-========================================================= */
-
-.steps ol {
-  padding-left: 24px;
-}
-
-.steps li {
-  margin: 14px 0;
-
-  font-weight: 700;
-}
-
-/* =========================================================
-   🍀 RASPADINHA
-========================================================= */
-
-.scratch {
-  position: relative;
-
-  text-align: center;
-
-  overflow: hidden;
-
-  background:
-    linear-gradient(
-      145deg,
-      #fffdf2,
-      #fff7d6
-    );
-}
-
-.scratch h2 {
-  margin: 8px 0 12px;
-
-  font-size: 1.35rem;
-  line-height: 1.05;
-
-  color: #0878e8;
-}
-
-.scratch h2 strong {
-  color: #d39a18;
-}
-
-.scratch-subtitle {
-  margin: 6px 0 12px;
-
-  font-size: .82rem;
-  font-weight: 700;
-
-  color: #52705f;
-}
-
-.scratch-area {
-  position: relative;
-
-  width: 100%;
-  height: 125px;
-
-  overflow: hidden;
-
-  border-radius: 18px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #d6ae45,
-      #f7df91,
-      #c99522
-    );
-
-  box-shadow:
-    inset 0 0 0 2px rgba(255,255,255,.7),
-    0 8px 18px rgba(120,85,0,.18);
-}
-
-.scratch-area::before {
-  content: "";
-
-  position: absolute;
-  inset: 7px;
-
-  border: 2px dashed
-    rgba(255,255,255,.65);
-
-  border-radius: 13px;
-
-  pointer-events: none;
-}
-
-.scratch-result {
-  position: absolute;
-  inset: 0;
-
-  display: flex;
-
-  flex-direction: column;
-
-  align-items: center;
-  justify-content: center;
-
-  gap: 4px;
-
-  color: #fff;
-
-  text-shadow:
-    0 2px 4px rgba(0,0,0,.35);
-
-  z-index: 1;
-}
-
-.scratch-result .icone {
-  font-size: 35px;
-}
-
-.scratch-result strong {
-  font-size: 1rem;
-  letter-spacing: .5px;
-}
-
-.scratch-result small {
-  font-size: .7rem;
-}
-
-.scratch-canvas {
-  position: absolute;
-  inset: 0;
-
-  width: 100%;
-  height: 100%;
-
-  z-index: 2;
-
-  cursor: crosshair;
-
-  touch-action: none;
-}
-
-.scratch-instruction {
-  margin: 9px 0 0;
-
-  font-size: .72rem;
-  font-weight: 800;
-
-  color: #08783f;
-}
-
-.scratch-instruction span {
-  font-size: 1rem;
-}
-
-.scratch-prizes {
-  display: flex;
-
-  justify-content: center;
-
-  gap: 8px;
-
-  margin-top: 10px;
-}
-
-.scratch-prize {
-  flex: 1;
-
-  padding: 7px 5px;
-
-  border-radius: 12px;
-
-  background: #fff;
-
-  border: 1px solid #ead79a;
-
-  font-size: .68rem;
-  font-weight: 900;
-
-  color: #765713;
-}
-
-.scratch-prize span {
-  display: block;
-
-  margin-bottom: 2px;
-
-  font-size: 22px;
+  margin: 0;
 }
 
 /* =========================================================
@@ -670,7 +565,9 @@ main {
 
   padding: 22px;
 
-  border: 2px dashed #f4a6ca;
+  border:
+    2px dashed #f4a6ca;
+
   border-radius: 18px;
 
   background: #fff4fa;
@@ -704,9 +601,12 @@ main {
   width: 100%;
 
   margin-top: 16px;
+
   padding: 12px;
 
-  border: 1px solid #f0b4d2;
+  border:
+    1px solid #f0b4d2;
+
   border-radius: 12px;
 
   background: #fff;
@@ -716,6 +616,7 @@ main {
   margin: 12px 0;
 
   font-size: .9rem;
+
   font-weight: 700;
 
   color: #1766a5;
@@ -727,9 +628,11 @@ main {
   width: 100%;
 
   margin-top: 10px;
+
   padding: 14px 16px;
 
   border: 0;
+
   border-radius: 14px;
 
   background: #25d366;
@@ -737,6 +640,7 @@ main {
   color: #fff;
 
   font-size: .95rem;
+
   font-weight: 900;
 
   cursor: pointer;
@@ -764,9 +668,244 @@ main {
   margin: 10px 0 0;
 
   font-size: .85rem;
+
   font-weight: 700;
 
   color: #1766a5;
+}
+
+/* =========================================================
+   🍀 RASPADINHA
+========================================================= */
+
+.scratch {
+  position: relative;
+
+  text-align: center;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      145deg,
+      #fffdf2,
+      #fff7d6
+    );
+}
+
+.trevo-mini {
+  font-size: 1.6rem;
+
+  line-height: 1;
+
+  margin-bottom: 4px;
+}
+
+.scratch h2 {
+  margin: 8px 0 12px;
+
+  font-size: 1.35rem;
+
+  line-height: 1.05;
+
+  color: #0878e8;
+}
+
+.scratch h2 strong {
+  color: #d39a18;
+}
+
+.scratch-subtitle {
+  margin: 6px 0 12px;
+
+  font-size: .82rem;
+
+  font-weight: 700;
+
+  color: #52705f;
+}
+
+.scratch-area {
+  position: relative;
+
+  width: 100%;
+
+  height: 125px;
+
+  overflow: hidden;
+
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #d6ae45,
+      #f7df91,
+      #c99522
+    );
+
+  box-shadow:
+    inset 0 0 0 2px rgba(255,255,255,.7),
+    0 8px 18px rgba(120,85,0,.18);
+}
+
+.scratch-area::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 7px;
+
+  border:
+    2px dashed rgba(255,255,255,.65);
+
+  border-radius: 13px;
+
+  pointer-events: none;
+}
+
+.scratch-result {
+  position: absolute;
+
+  inset: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 4px;
+
+  color: #fff;
+
+  text-shadow:
+    0 2px 4px rgba(0,0,0,.35);
+
+  z-index: 1;
+}
+
+.scratch-result .icone {
+  font-size: 35px;
+}
+
+.scratch-result strong {
+  font-size: 1rem;
+
+  letter-spacing: .5px;
+}
+
+.scratch-result small {
+  font-size: .7rem;
+}
+
+.scratch-canvas {
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  z-index: 2;
+
+  cursor: crosshair;
+
+  touch-action: none;
+}
+
+.scratch-instruction {
+  margin: 9px 0 0;
+
+  font-size: .72rem;
+
+  font-weight: 800;
+
+  color: #08783f;
+}
+
+.scratch-prizes {
+  display: flex;
+
+  justify-content: center;
+
+  gap: 8px;
+
+  margin-top: 10px;
+}
+
+.scratch-prize {
+  flex: 1;
+
+  padding: 7px 5px;
+
+  border-radius: 12px;
+
+  background: #fff;
+
+  border:
+    1px solid #ead79a;
+
+  font-size: .68rem;
+
+  font-weight: 900;
+
+  color: #765713;
+}
+
+.scratch-prize span {
+  display: block;
+
+  margin-bottom: 2px;
+
+  font-size: 22px;
+}
+
+/* =========================================================
+   📋 COMO PARTICIPAR
+========================================================= */
+
+.steps ol {
+  padding-left: 24px;
+
+  margin-bottom: 0;
+}
+
+.steps li {
+  margin: 14px 0;
+
+  font-weight: 700;
+}
+
+/* =========================================================
+   🎟️ ESCOLHA SEUS NÚMEROS
+========================================================= */
+
+.choose {
+  width: 100%;
+
+  text-align: center;
+}
+
+.choose h2 {
+  margin-top: 5px;
+
+  font-size: 1.8rem;
+}
+
+.choose p {
+  font-size: 1rem;
+
+  font-weight: 700;
+}
+
+.choose button {
+  display: block;
+
+  width: min(100%, 480px);
+
+  margin: 10px auto;
 }
 
 /* =========================================================
@@ -802,39 +941,12 @@ main {
 }
 
 /* =========================================================
-   🎟️ ESCOLHA SEUS NÚMEROS
-========================================================= */
-
-.choose {
-  width: 100%;
-
-  text-align: center;
-}
-
-.choose h2 {
-  margin-top: 5px;
-
-  font-size: 1.8rem;
-}
-
-.choose p {
-  font-size: 1rem;
-  font-weight: 700;
-}
-
-.choose button {
-  display: block;
-
-  width: min(100%, 480px);
-
-  margin: 10px auto;
-}
-
-/* =========================================================
    RODAPÉ
 ========================================================= */
 
 footer {
+  width: 100%;
+
   padding: 24px;
 
   color: #fff;
@@ -845,55 +957,72 @@ footer {
 }
 
 /* =========================================================
-   📱 CELULAR
-   UMA ÚNICA CONFIGURAÇÃO RESPONSIVA
+   📱📱📱 CELULAR
+   AQUI ESTÁ A CORREÇÃO DEFINITIVA
 ========================================================= */
 
 @media screen and (max-width: 700px) {
 
   /* -------------------------------------------------------
-     PÁGINA
+     PÁGINA INTEIRA
   ------------------------------------------------------- */
 
   html,
   body {
     width: 100%;
+
     max-width: 100%;
 
     overflow-x: hidden;
   }
 
-  main {
-    width: calc(100% - 16px) !important;
-    max-width: none !important;
-
-    margin: 0 auto !important;
-  }
-
   /* -------------------------------------------------------
-     TOPO
+     CABEÇALHO
   ------------------------------------------------------- */
 
   .topbar {
     width: 100%;
 
-    padding: 10px 12px;
+    padding: 12px 8px;
 
-    justify-content: center;
-
-    text-align: center;
+    gap: 14px;
   }
 
   .brand {
-    font-size: 1rem;
+    font-size: 1.05rem;
+  }
+
+  .gilfest-top img {
+    width: 62px;
+
+    max-height: 52px;
+  }
+
+  .gilfest-top small {
+    font-size: .9rem;
   }
 
   /* -------------------------------------------------------
-     TODOS OS CARTÕES
+     CONTEÚDO
+  ------------------------------------------------------- */
+
+  main {
+    width: calc(100% - 16px) !important;
+
+    max-width: none !important;
+
+    margin-left: auto !important;
+
+    margin-right: auto !important;
+  }
+
+  /* -------------------------------------------------------
+     CARTÕES
   ------------------------------------------------------- */
 
   .card {
     width: 100% !important;
+
     max-width: 100% !important;
 
     margin: 10px 0;
@@ -908,12 +1037,13 @@ footer {
   ------------------------------------------------------- */
 
   .hero {
-    display: flex;
+    display: flex !important;
 
-    flex-direction: column;
+    flex-direction: column !important;
 
-    align-items: center;
-    justify-content: center;
+    align-items: center !important;
+
+    justify-content: center !important;
 
     gap: 12px;
 
@@ -922,6 +1052,8 @@ footer {
 
   .hero-copy {
     width: 100%;
+
+    flex: none;
   }
 
   .hero h1 {
@@ -932,6 +1064,7 @@ footer {
 
   .hero-photo {
     width: 145px;
+
     height: 145px;
 
     margin: auto;
@@ -942,373 +1075,8 @@ footer {
   ------------------------------------------------------- */
 
   .prize {
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-    justify-content: center;
-
-    gap: 10px;
-
-    text-align: center;
-  }
-
-  .prize > div {
-    width: 100%;
-  }
-
-  .prize h2 {
-    font-size: 1.8rem;
-  }
-
-  .prize img {
-    width: 220px;
-    max-width: 80%;
-    max-height: 220px;
-
-    margin: auto;
-  }
-
-  /* -------------------------------------------------------
-     BUSCA
-  ------------------------------------------------------- */
-
-  .search {
-    display: grid;
-
-    grid-template-columns: 1fr;
-
-    text-align: center;
-  }
-
-  /* -------------------------------------------------------
-     ⭐ OS 3 CARTÕES PRINCIPAIS
-     
-     AQUI ESTÁ A CORREÇÃO PRINCIPAL.
-     
-     O HTML possui:
-     
-     .steps-grid
-       ├── .steps
-       ├── .scratch
-       └── .upload
-     
-     No celular:
-     
-       upload
-       scratch
-       steps
-  ------------------------------------------------------- */
-
-  .steps-grid {
     display: flex !important;
 
     flex-direction: column !important;
 
-    align-items: stretch !important;
-
-    width: 100% !important;
-    max-width: 100% !important;
-
-    gap: 12px !important;
-  }
-
-  .steps-grid > .card {
-    display: block;
-
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-
-    margin: 0 !important;
-  }
-
-  /* 1º — COMPROVANTE */
-
-  .steps-grid > .upload {
-    order: 1 !important;
-  }
-
-  /* 2º — RASPADINHA */
-
-  .steps-grid > .scratch {
-    order: 2 !important;
-  }
-
-  /* 3º — COMO PARTICIPAR */
-
-  .steps-grid > .steps {
-    order: 3 !important;
-  }
-
-  /* -------------------------------------------------------
-     RASPADINHA NO CELULAR
-  ------------------------------------------------------- */
-
-  .scratch {
-    width: 100% !important;
-  }
-
-  .scratch-area {
-    width: 100%;
-
-    height: 135px;
-  }
-
-  /* -------------------------------------------------------
-     COMPROVANTE NO CELULAR
-  ------------------------------------------------------- */
-
-  .upload {
-    width: 100% !important;
-  }
-
-  /* -------------------------------------------------------
-     COMO PARTICIPAR
-  ------------------------------------------------------- */
-
-  .steps {
-    width: 100% !important;
-  }
-
-  /* -------------------------------------------------------
-     NÚMERO DA SORTE
-  ------------------------------------------------------- */
-
-  .luck {
-    width: 100% !important;
-
-    flex-direction: column;
-
-    text-align: center;
-  }
-
-  /* -------------------------------------------------------
-     ESCOLHA SEUS NÚMEROS
-     
-     IMPORTANTE:
-     Este cartão está FORA de .steps-grid no HTML.
-     Portanto ele recebe sua própria regra.
-  ------------------------------------------------------- */
-
-  .choose {
-    display: block !important;
-
-    width: 100% !important;
-    max-width: 100% !important;
-
-    margin: 10px 0 !important;
-
-    padding: 24px 16px !important;
-
-    border-radius: 22px !important;
-
-    text-align: center;
-  }
-
-  .choose h2 {
-    margin: 5px 0 12px;
-
-    font-size: 1.8rem;
-  }
-
-  .choose p {
-    margin: 8px 0 16px;
-
-    font-size: 1rem;
-    font-weight: 700;
-  }
-
-  .choose button {
-    display: block;
-
-    width: 100% !important;
-    max-width: none !important;
-
-    min-height: 52px;
-
-    margin: 10px 0 !important;
-  }
-
-  /* -------------------------------------------------------
-     RODAPÉ
-  ------------------------------------------------------- */
-
-  footer {
-    width: 100%;
-
-    padding: 20px 12px;
-  }
-}
-
-/* =========================================================
-   📱 CELULARES MUITO PEQUENOS
-========================================================= */
-
-@media screen and (max-width: 380px) {
-
-  main {
-    width: calc(100% - 12px) !important;
-  }
-
-  .card {
-    padding: 14px;
-  }
-
-  .hero h1 {
-    font-size: 1.5rem;
-  }
-
-  .prize h2 {
-    font-size: 1.6rem;
-  }
-
-  .choose h2 {
-    font-size: 1.6rem;
-  }
-
-  .scratch-area {
-    height: 125px;
-  }
-}
-
-/* =========================================================
-   🚨 CORREÇÃO DEFINITIVA — CARTÕES NO CELULAR
-========================================================= */
-
-@media screen and (max-width: 700px) {
-
-  main .steps-grid {
-    display: flex !important;
-    flex-direction: column !important;
-    flex-wrap: nowrap !important;
-
-    width: 100% !important;
-    max-width: 100% !important;
-
-    gap: 14px !important;
-  }
-
-  main .steps-grid > article.card {
-    display: block !important;
-
-    flex: 0 0 auto !important;
-
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 100% !important;
-
-    margin: 0 !important;
-  }
-
-  /* COMPROVANTE — PRIMEIRO */
-  main .steps-grid > article.upload {
-    order: 1 !important;
-  }
-
-  /* RASPADINHA — SEGUNDO */
-  main .steps-grid > article.scratch {
-    order: 2 !important;
-  }
-
-  /* COMO PARTICIPAR — TERCEIRO */
-  main .steps-grid > article.steps {
-    order: 3 !important;
-  }
-
-}
-
-/* =========================================================
-   🍀🍭 AJUSTES VISUAIS — TREVOS E GILFEST
-========================================================= */
-
-/* 🍀 TREVOS GRANDES FLUTUANDO NO FUNDO */
-
-body::after {
-  font-size: 64px;
-  letter-spacing: 55px;
-}
-
-/* 🍭 GILFEST / ELEMENTO DO CABEÇALHO */
-
-.gilfest-top img {
-  width: 64px;
-  max-height: 52px;
-}
-
-/* Texto do GilFest um pouco maior */
-
-.gilfest-top small {
-  font-size: .95rem;
-}
-
-/* 🍀 TREVO DO CABEÇALHO */
-
-.gilfest-top {
-  transform: scale(1.05);
-}
-
-/* =========================================================
-   📱 AJUSTE ESPECIAL PARA CELULAR
-========================================================= */
-
-@media screen and (max-width: 700px) {
-
-  /* Trevos ainda mais visíveis no celular */
-  body::after {
-    font-size: 58px;
-    letter-spacing: 42px;
-  }
-
-  /* GilFest / algodão-doce */
-  .gilfest-top img {
-    width: 62px;
-    max-height: 52px;
-  }
-
-  .gilfest-top small {
-    font-size: .9rem;
-  }
-
-  /* Mantém os três cartões em coluna */
-  main .steps-grid {
-    display: flex !important;
-    flex-direction: column !important;
-    flex-wrap: nowrap !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    gap: 14px !important;
-  }
-
-  main .steps-grid > article.card {
-    flex: 0 0 auto !important;
-    width: 100% !important;
-    min-width: 100% !important;
-    max-width: 100% !important;
-    margin: 0 !important;
-  }
-
-  /* 1 — COMPROVANTE */
-  main .steps-grid > article.upload {
-    order: 1 !important;
-  }
-
-  /* 2 — RASPADINHA */
-  main .steps-grid > article.scratch {
-    order: 2 !important;
-  }
-
-  /* 3 — COMO PARTICIPAR */
-  main .steps-grid > article.steps {
-    order: 3 !important;
-  }
-
-  /* ESCOLHA SEUS NÚMEROS */
-  main > .choose {
-    width: 100% !important;
-    max-width: 100% !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-  }
-}
+    align-items: center
