@@ -32,7 +32,9 @@ try {
 
     db = getDatabase(app);
 
-    console.log('✅ Firebase conectado.');
+    console.log(
+      '✅ Firebase conectado.'
+    );
 
   } else {
 
@@ -129,12 +131,6 @@ if (
   numeroArea
 ) {
 
-  /*
-   * O botão já existe no HTML.
-   * Apenas movemos o mesmo botão para
-   * dentro da área do PIX.
-   */
-
   pixArea.appendChild(
     reservarNumero
   );
@@ -187,7 +183,6 @@ function mostrarStatus(
 
   }
 
-
   else if (tipo === 'indisponivel') {
 
     numeroStatus.style.background =
@@ -201,7 +196,6 @@ function mostrarStatus(
 
   }
 
-
   else if (tipo === 'verificando') {
 
     numeroStatus.style.background =
@@ -214,7 +208,6 @@ function mostrarStatus(
       '1px solid #a8cff2';
 
   }
-
 
   else {
 
@@ -279,14 +272,12 @@ function numeroEstaOcupado(
     return false;
   }
 
-
   const status =
     String(
       dados.status ||
       dados.situacao ||
       ''
     ).toLowerCase();
-
 
   return (
 
@@ -450,10 +441,6 @@ async function verificarNumero() {
     );
 
 
-  /*
-   * Mantém o campo sempre no formato 000.
-   */
-
   numeroDireto.value =
     numero;
 
@@ -489,11 +476,6 @@ async function verificarNumero() {
         numeroRef
       );
 
-
-    /*
-     * Se não existe no Firebase,
-     * consideramos disponível.
-     */
 
     if (!snapshot.exists()) {
 
@@ -573,21 +555,11 @@ if (numeroDireto) {
           .replace(/\D/g, '')
           .slice(0, 3);
 
-
-      /*
-       * Quando o usuário altera o número,
-       * limpamos o resultado anterior.
-       */
-
       limparNumeroStatus();
 
     }
   );
 
-
-  /*
-   * ENTER também verifica.
-   */
 
   numeroDireto.addEventListener(
     'keydown',
@@ -624,9 +596,7 @@ if (reservarNumero) {
 
 
       if (!numero) {
-
         return;
-
       }
 
 
@@ -657,20 +627,10 @@ if (reservarNumero) {
           );
 
 
-        /*
-         * Transaction impede duas pessoas
-         * de reservarem o mesmo número
-         * simultaneamente.
-         */
-
         const resultado =
           await runTransaction(
             numeroRef,
             atual => {
-
-              /*
-               * Número ainda não existe.
-               */
 
               if (
                 atual === null
@@ -696,10 +656,6 @@ if (reservarNumero) {
               }
 
 
-              /*
-               * Já está ocupado.
-               */
-
               if (
                 numeroEstaOcupado(
                   atual
@@ -710,10 +666,6 @@ if (reservarNumero) {
 
               }
 
-
-              /*
-               * Existe, mas está livre.
-               */
 
               return {
 
@@ -738,10 +690,6 @@ if (reservarNumero) {
           );
 
 
-        /*
-         * Não conseguiu reservar.
-         */
-
         if (
           !resultado.committed
         ) {
@@ -759,10 +707,6 @@ if (reservarNumero) {
         }
 
 
-        /*
-         * Reserva concluída.
-         */
-
         mostrarStatus(
           `✅ NÚMERO ${numero} RESERVADO COM SUCESSO`,
           'disponivel'
@@ -779,10 +723,6 @@ if (reservarNumero) {
           `e depois envie o comprovante.`
         );
 
-
-        /*
-         * Abre a cartela com o número.
-         */
 
         setTimeout(
           () => {
@@ -979,7 +919,7 @@ if (copiarPix) {
 
 
 /* =========================================================
-   🍀 RASPADINHA DA SORTE
+   🍀 RASPADINHA DA AMIZADE
 ========================================================= */
 
 const canvas =
@@ -1014,11 +954,27 @@ if (
     false;
 
 
+  /* =======================================================
+     🎁 PRÊMIOS
+  ======================================================= */
+
   const premios = [
 
-    '🧉 LIQUIDIFICADOR',
+    {
+      nome:
+        'LIQUIDIFICADOR',
 
-    '🔥 FERRO ELÉTRICO'
+      imagem:
+        'img/liquidificador.png'
+    },
+
+    {
+      nome:
+        'FERRO ELÉTRICO',
+
+      imagem:
+        'img/ferro.png'
+    }
 
   ];
 
@@ -1032,6 +988,10 @@ if (
     ];
 
 
+  /* =======================================================
+     🎨 AJUSTAR CANVAS
+  ======================================================= */
+
   function ajustarCanvas() {
 
     const rect =
@@ -1041,14 +1001,18 @@ if (
     const largura =
       Math.max(
         1,
-        Math.round(rect.width)
+        Math.round(
+          rect.width
+        )
       );
 
 
     const altura =
       Math.max(
         1,
-        Math.round(rect.height)
+        Math.round(
+          rect.height
+        )
       );
 
 
@@ -1084,6 +1048,10 @@ if (
     ctx.globalCompositeOperation =
       'source-over';
 
+
+    /* =====================================================
+       FUNDO METÁLICO
+    ====================================================== */
 
     const gradiente =
       ctx.createLinearGradient(
@@ -1122,6 +1090,10 @@ if (
     );
 
 
+    /* =====================================================
+       RISCOS METÁLICOS
+    ====================================================== */
+
     ctx.strokeStyle =
       'rgba(255,255,255,.22)';
 
@@ -1152,6 +1124,10 @@ if (
     }
 
 
+    /* =====================================================
+       TEXTO RASPE AQUI
+    ====================================================== */
+
     ctx.fillStyle =
       '#62686d';
 
@@ -1173,6 +1149,10 @@ if (
 
   }
 
+
+  /* =======================================================
+     📍 POSIÇÃO DO TOQUE
+  ======================================================= */
 
   function obterPosicao(
     evento
@@ -1223,6 +1203,10 @@ if (
   }
 
 
+  /* =======================================================
+     🖐️ RASPAR
+  ======================================================= */
+
   function raspar(
     evento
   ) {
@@ -1270,12 +1254,20 @@ if (
   }
 
 
+  /* =======================================================
+     👆 INICIAR
+  ======================================================= */
+
   function iniciar(
     evento
   ) {
 
-    if (finalizada) {
+    if (
+      finalizada
+    ) {
+
       return;
+
     }
 
 
@@ -1293,10 +1285,18 @@ if (
   }
 
 
+  /* =======================================================
+     🛑 PARAR
+  ======================================================= */
+
   function parar() {
 
-    if (!raspando) {
+    if (
+      !raspando
+    ) {
+
       return;
+
     }
 
 
@@ -1309,10 +1309,18 @@ if (
   }
 
 
+  /* =======================================================
+     📊 VERIFICAR QUANTO RASPOU
+  ======================================================= */
+
   function verificarProgresso() {
 
-    if (finalizada) {
+    if (
+      finalizada
+    ) {
+
       return;
+
     }
 
 
@@ -1396,6 +1404,10 @@ if (
       total;
 
 
+    /* =====================================================
+       🎉 REVELAR COM 45% RASPADO
+    ====================================================== */
+
     if (
       porcentagem >= 0.45
     ) {
@@ -1404,8 +1416,23 @@ if (
         true;
 
 
-      premio.textContent =
-        premioEscolhido;
+      premio.innerHTML = `
+
+        <img
+          class="premio-imagem"
+          src="${premioEscolhido.imagem}"
+          alt="${premioEscolhido.nome}"
+        >
+
+        <strong>
+          🎉 ${premioEscolhido.nome}
+        </strong>
+
+        <small>
+          PARABÉNS! VOCÊ GANHOU!
+        </small>
+
+      `;
 
 
       ctx.clearRect(
@@ -1419,6 +1446,10 @@ if (
 
   }
 
+
+  /* =======================================================
+     🖱️ MOUSE
+  ======================================================= */
 
   canvas.addEventListener(
     'mousedown',
@@ -1437,6 +1468,10 @@ if (
     parar
   );
 
+
+  /* =======================================================
+     📱 TOUCH
+  ======================================================= */
 
   canvas.addEventListener(
     'touchstart',
@@ -1474,11 +1509,17 @@ if (
   );
 
 
+  /* =======================================================
+     🔄 REDIMENSIONAR
+  ======================================================= */
+
   window.addEventListener(
     'resize',
     () => {
 
-      if (!finalizada) {
+      if (
+        !finalizada
+      ) {
 
         ajustarCanvas();
 
