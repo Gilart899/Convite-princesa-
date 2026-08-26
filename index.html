@@ -2,7 +2,6 @@
 <html lang="pt-BR">
 
 <head>
-
   <meta charset="utf-8">
 
   <meta
@@ -26,13 +25,11 @@
     rel="stylesheet"
     href="css/style.css"
   >
-
 </head>
 
 
 <body>
 
-  <!-- BRILHO DO FUNDO -->
   <div class="bg-glow"></div>
 
 
@@ -66,7 +63,7 @@
 
 
     <!-- =====================================================
-         HERO
+         CARTÃO PRINCIPAL
     ====================================================== -->
 
     <section class="hero card">
@@ -98,8 +95,9 @@
     </section>
 
 
+
     <!-- =====================================================
-         PRÊMIO
+         PRÊMIO PRINCIPAL
     ====================================================== -->
 
     <section class="prize card">
@@ -138,44 +136,14 @@
     </section>
 
 
-    <!-- =====================================================
-         COMO PARTICIPAR
-         
-         Fica antes da busca dos números.
-    ====================================================== -->
-
-    <article class="card steps">
-
-      <span class="tag blue">
-        COMO PARTICIPAR
-      </span>
-
-      <ol>
-
-        <li>
-          Escolha seus números de 000 a 999
-        </li>
-
-        <li>
-          Faça o pagamento via PIX
-        </li>
-
-        <li>
-          Envie o comprovante e aguarde a confirmação
-        </li>
-
-      </ol>
-
-    </article>
-
 
     <!-- =====================================================
-         BUSCA / RESERVA DO NÚMERO
+         BUSCA / VERIFICAÇÃO / RESERVA / PIX
     ====================================================== -->
 
     <section class="search card">
 
-      <div class="search-number">
+      <div class="numero-area">
 
         <h2>
           Digite seu número de 000 a 999
@@ -188,7 +156,7 @@
           maxlength="3"
           autocomplete="off"
           placeholder="Ex.: 750"
-          aria-label="Digite um número de 000 a 999"
+          aria-label="Digite seu número de 000 a 999"
         >
 
         <small>
@@ -197,9 +165,9 @@
         </small>
 
         <!--
-          O JavaScript coloca aqui:
-          DISPONÍVEL / NÃO DISPONÍVEL
-          e o botão RESERVAR.
+          O JavaScript cria automaticamente aqui:
+          - indicador DISPONÍVEL / NÃO DISPONÍVEL
+          - botão RESERVAR NÚMERO
         -->
 
       </div>
@@ -220,22 +188,16 @@
     </section>
 
 
+
     <!-- =====================================================
-         TRÊS CARTÕES
-         
-         NO CELULAR:
-         1 — COMPROVANTE
-         2 — RASPADINHA
-         3 — COMO PARTICIPAR
-         
-         A ordem visual poderá ser controlada pelo CSS.
+         CARTÕES PRINCIPAIS
     ====================================================== -->
 
     <section class="steps-grid">
 
 
       <!-- ===================================================
-           COMPROVANTE
+           1 — ENVIE SEU COMPROVANTE
       ==================================================== -->
 
       <article class="card upload">
@@ -297,8 +259,9 @@
       </article>
 
 
+
       <!-- ===================================================
-           RASPADINHA
+           2 — RASPADINHA DA SORTE
       ==================================================== -->
 
       <article class="card scratch">
@@ -379,14 +342,9 @@
       </article>
 
 
+
       <!-- ===================================================
-           COMO PARTICIPAR
-           
-           Mantido aqui também porque o CSS atual
-           trabalha com .steps-grid.
-           
-           O CSS definitivo poderá controlar
-           exatamente onde ele aparece.
+           3 — COMO PARTICIPAR
       ==================================================== -->
 
       <article class="card steps">
@@ -414,11 +372,13 @@
 
       </article>
 
+
     </section>
 
 
+
     <!-- =====================================================
-         ESCOLHA SEUS NÚMEROS
+         ESCOLHA DOS NÚMEROS
     ====================================================== -->
 
     <section class="card choose">
@@ -453,6 +413,7 @@
     </section>
 
 
+
     <!-- =====================================================
          NÚMERO DA SORTE
     ====================================================== -->
@@ -478,7 +439,9 @@
 
     </section>
 
+
   </main>
+
 
 
   <!-- =====================================================
@@ -486,15 +449,13 @@
   ====================================================== -->
 
   <footer>
-
-    Rifa Solidária • GilFest •
-    Em benefício de Dona Bené
-
+    Rifa Solidária • GilFest • Em benefício de Dona Bené
   </footer>
 
 
+
   <!-- =====================================================
-       JAVASCRIPT PRINCIPAL
+       JAVASCRIPT
   ====================================================== -->
 
   <script
