@@ -11,7 +11,7 @@ export const CONFIG = {
  pixChave: '045.761.515-09',
   whatsapp: '',
 
-  firebase: {
+ firebaseConfig: {
     apiKey: 'AIzaSyAYsQ8dFynzKb_gDsraY63hQXV9uuO-ITA',
     authDomain: 'rifa-c7060.firebaseapp.com',
     databaseURL: 'https://rifa-c7060-default-rtdb.firebaseio.com',
