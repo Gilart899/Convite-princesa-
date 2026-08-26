@@ -8,10 +8,10 @@ export const CONFIG = {
   numerosPorCartela: 100,
   sorteio: '30/12/2026 às 20:00',
 
- pixChave: '045.761.515-09',
+  pixChave: '045.761.515-09',
   whatsapp: '',
 
- firebaseConfig: {
+  firebaseConfig: {
     apiKey: 'AIzaSyAYsQ8dFynzKb_gDsraY63hQXV9uuO-ITA',
     authDomain: 'rifa-c7060.firebaseapp.com',
     databaseURL: 'https://rifa-c7060-default-rtdb.firebaseio.com',
