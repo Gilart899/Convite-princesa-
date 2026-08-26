@@ -64,10 +64,8 @@ if (abrirCartelas) {
   abrirCartelas.addEventListener(
     'click',
     () => {
-
       window.location.href =
         'cartela.html';
-
     }
   );
 
@@ -119,10 +117,6 @@ const pixArea =
   document.querySelector('.pix-area');
 
 
-/* =========================================================
-   📌 COLOCAR RESERVAR ABAIXO DO PIX
-========================================================= */
-
 if (
   reservarNumero &&
   pixArea &&
@@ -136,10 +130,6 @@ if (
 }
 
 
-/* =========================================================
-   🎟️ ESTILO INICIAL
-========================================================= */
-
 if (reservarNumero) {
 
   reservarNumero.style.display =
@@ -149,7 +139,7 @@ if (reservarNumero) {
 
 
 /* =========================================================
-   🟢 MOSTRAR STATUS
+   🟢 STATUS
 ========================================================= */
 
 function mostrarStatus(
@@ -179,9 +169,7 @@ function mostrarStatus(
     numeroStatus.style.border =
       '1px solid #8de0aa';
 
-  }
-
-  else if (tipo === 'indisponivel') {
+  } else if (tipo === 'indisponivel') {
 
     numeroStatus.style.background =
       '#fff0f0';
@@ -192,9 +180,7 @@ function mostrarStatus(
     numeroStatus.style.border =
       '1px solid #f0a0a0';
 
-  }
-
-  else if (tipo === 'verificando') {
+  } else if (tipo === 'verificando') {
 
     numeroStatus.style.background =
       '#eef6ff';
@@ -205,9 +191,7 @@ function mostrarStatus(
     numeroStatus.style.border =
       '1px solid #a8cff2';
 
-  }
-
-  else {
+  } else {
 
     numeroStatus.style.background =
       '#fff7e6';
@@ -238,7 +222,6 @@ function limparNumeroStatus() {
       '';
 
   }
-
 
   if (reservarNumero) {
 
@@ -277,7 +260,6 @@ function numeroEstaOcupado(
       ''
     ).toLowerCase();
 
-
   return (
 
     status === 'reservado' ||
@@ -308,7 +290,6 @@ function mostrarDisponivel(
     `🟢 NÚMERO ${numero} DISPONÍVEL`,
     'disponivel'
   );
-
 
   if (reservarNumero) {
 
@@ -342,7 +323,6 @@ function mostrarIndisponivel(
     'indisponivel'
   );
 
-
   if (reservarNumero) {
 
     reservarNumero.style.display =
@@ -368,7 +348,6 @@ function mostrarErro(
     'erro'
   );
 
-
   if (reservarNumero) {
 
     reservarNumero.style.display =
@@ -389,10 +368,8 @@ async function verificarNumero() {
     return;
   }
 
-
   const valor =
     numeroDireto.value.trim();
-
 
   if (valor === '') {
 
@@ -404,10 +381,8 @@ async function verificarNumero() {
 
   }
 
-
   const numeroInteiro =
     Number(valor);
-
 
   if (
     !Number.isInteger(numeroInteiro) ||
@@ -423,21 +398,17 @@ async function verificarNumero() {
 
   }
 
-
   const numero =
     String(numeroInteiro)
       .padStart(3, '0');
 
-
   numeroDireto.value =
     numero;
-
 
   mostrarStatus(
     '🔎 Verificando disponibilidade...',
     'verificando'
   );
-
 
   if (!db) {
 
@@ -449,7 +420,6 @@ async function verificarNumero() {
 
   }
 
-
   try {
 
     const numeroRef =
@@ -458,12 +428,10 @@ async function verificarNumero() {
         `rifa/numeros/${numero}`
       );
 
-
     const snapshot =
       await get(
         numeroRef
       );
-
 
     if (!snapshot.exists()) {
 
@@ -475,10 +443,8 @@ async function verificarNumero() {
 
     }
 
-
     const dados =
       snapshot.val();
-
 
     if (
       numeroEstaOcupado(
@@ -514,10 +480,6 @@ async function verificarNumero() {
 }
 
 
-/* =========================================================
-   🔎 BOTÃO VERIFICAR
-========================================================= */
-
 if (verificarNumeroBotao) {
 
   verificarNumeroBotao.addEventListener(
@@ -527,10 +489,6 @@ if (verificarNumeroBotao) {
 
 }
 
-
-/* =========================================================
-   🔢 DIGITAÇÃO
-========================================================= */
 
 if (numeroDireto) {
 
@@ -547,7 +505,6 @@ if (numeroDireto) {
 
     }
   );
-
 
   numeroDireto.addEventListener(
     'keydown',
@@ -582,11 +539,9 @@ if (reservarNumero) {
       const numero =
         reservarNumero.dataset.numero;
 
-
       if (!numero) {
         return;
       }
-
 
       if (!db) {
 
@@ -598,13 +553,11 @@ if (reservarNumero) {
 
       }
 
-
       reservarNumero.disabled =
         true;
 
       reservarNumero.textContent =
         '⏳ RESERVANDO...';
-
 
       try {
 
@@ -613,7 +566,6 @@ if (reservarNumero) {
             db,
             `rifa/numeros/${numero}`
           );
-
 
         const resultado =
           await runTransaction(
@@ -643,7 +595,6 @@ if (reservarNumero) {
 
               }
 
-
               if (
                 numeroEstaOcupado(
                   atual
@@ -653,7 +604,6 @@ if (reservarNumero) {
                 return;
 
               }
-
 
               return {
 
@@ -677,7 +627,6 @@ if (reservarNumero) {
             }
           );
 
-
         if (
           !resultado.committed
         ) {
@@ -694,23 +643,19 @@ if (reservarNumero) {
 
         }
 
-
         mostrarStatus(
           `✅ NÚMERO ${numero} RESERVADO COM SUCESSO`,
           'disponivel'
         );
 
-
         reservarNumero.style.display =
           'none';
-
 
         alert(
           `✅ Número ${numero} reservado!\n\n` +
           `Agora faça o pagamento pelo PIX ` +
           `e depois envie o comprovante.`
         );
-
 
         setTimeout(
           () => {
@@ -729,7 +674,6 @@ if (reservarNumero) {
           erro
         );
 
-
         reservarNumero.disabled =
           false;
 
@@ -739,11 +683,9 @@ if (reservarNumero) {
         reservarNumero.textContent =
           `🎟️ RESERVAR ${numero}`;
 
-
         mostrarErro(
           'Não foi possível reservar o número.'
         );
-
 
         alert(
           '❌ Não foi possível reservar o número. Verifique sua conexão e tente novamente.'
@@ -764,7 +706,6 @@ if (reservarNumero) {
 const copiarPix =
   document.getElementById('copiarPix');
 
-
 if (copiarPix) {
 
   copiarPix.addEventListener(
@@ -779,7 +720,6 @@ if (copiarPix) {
             ).trim()
           : '';
 
-
       if (!chave) {
 
         alert(
@@ -790,17 +730,14 @@ if (copiarPix) {
 
       }
 
-
       try {
 
         await navigator.clipboard.writeText(
           chave
         );
 
-
         copiarPix.textContent =
           '✅ PIX COPIADO!';
-
 
         setTimeout(
           () => {
@@ -812,7 +749,6 @@ if (copiarPix) {
           1800
         );
 
-
       } catch {
 
         try {
@@ -821,7 +757,6 @@ if (copiarPix) {
             document.createElement(
               'textarea'
             );
-
 
           campo.value =
             chave;
@@ -832,39 +767,24 @@ if (copiarPix) {
           campo.style.left =
             '-9999px';
 
-          campo.style.top =
-            '0';
-
-
           document.body.appendChild(
             campo
           );
 
-
           campo.focus();
-
           campo.select();
-
-          campo.setSelectionRange(
-            0,
-            campo.value.length
-          );
-
 
           const copiou =
             document.execCommand(
               'copy'
             );
 
-
           campo.remove();
-
 
           if (copiou) {
 
             copiarPix.textContent =
               '✅ PIX COPIADO!';
-
 
             setTimeout(
               () => {
@@ -878,9 +798,7 @@ if (copiarPix) {
 
           } else {
 
-            throw new Error(
-              'Não foi possível copiar.'
-            );
+            throw new Error();
 
           }
 
@@ -905,13 +823,19 @@ if (copiarPix) {
 ========================================================= */
 
 const canvas =
-  document.getElementById('scratchCanvas');
+  document.getElementById(
+    'scratchCanvas'
+  );
 
 const area =
-  document.querySelector('.scratch-area');
+  document.querySelector(
+    '.scratch-area'
+  );
 
 const premio =
-  document.getElementById('scratchPremio');
+  document.getElementById(
+    'scratchPremio'
+  );
 
 
 if (
@@ -929,27 +853,38 @@ if (
     );
 
 
-  let raspando =
-    false;
-
-  let finalizada =
-    false;
+  let raspando = false;
+  let finalizada = false;
 
 
   /* =======================================================
-     🎁 PRÊMIOS
+     🏆 PRÊMIOS
   ======================================================= */
 
   const premios = [
 
     {
-      nome: 'LIQUIDIFICADOR',
-      imagem: './img/liquidificador.png'
+      nome:
+        'LIQUIDIFICADOR',
+
+      imagem:
+        'img/liquidificador.png',
+
+      icone:
+        '🧉'
+
     },
 
     {
-      nome: 'FERRO ELÉTRICO',
-      imagem: './img/ferro.png'
+      nome:
+        'FERRO ELÉTRICO',
+
+      imagem:
+        'img/ferro.png',
+
+      icone:
+        '🔥'
+
     }
 
   ];
@@ -965,24 +900,66 @@ if (
 
 
   /* =======================================================
-     🎨 PREPARAR ÁREA DO PRÊMIO
+     🏆 MOSTRAR PRÊMIO COM FOTO
   ======================================================= */
 
-  premio.style.display =
-    'flex';
+  function mostrarPremio() {
 
-  premio.style.flexDirection =
-    'column';
+    premio.innerHTML = '';
 
-  premio.style.alignItems =
-    'center';
+    const imagem =
+      document.createElement(
+        'img'
+      );
 
-  premio.style.justifyContent =
-    'center';
+    imagem.className =
+      'scratch-premio-imagem';
+
+    imagem.src =
+      premioEscolhido.imagem;
+
+    imagem.alt =
+      premioEscolhido.nome;
+
+    imagem.onerror =
+      () => {
+
+        console.error(
+          '❌ Não foi possível carregar:',
+          premioEscolhido.imagem
+        );
+
+        imagem.style.display =
+          'none';
+
+      };
+
+
+    const nome =
+      document.createElement(
+        'strong'
+      );
+
+    nome.className =
+      'scratch-premio-nome';
+
+    nome.textContent =
+      `🎉 ${premioEscolhido.nome}`;
+
+
+    premio.appendChild(
+      imagem
+    );
+
+    premio.appendChild(
+      nome
+    );
+
+  }
 
 
   /* =======================================================
-     🎨 AJUSTAR CANVAS
+     🎨 PREPARAR CANVAS
   ======================================================= */
 
   function ajustarCanvas() {
@@ -990,20 +967,17 @@ if (
     const rect =
       area.getBoundingClientRect();
 
-
     const largura =
       Math.max(
         1,
         Math.round(rect.width)
       );
 
-
     const altura =
       Math.max(
         1,
         Math.round(rect.height)
       );
-
 
     const escala =
       window.devicePixelRatio ||
@@ -1015,7 +989,6 @@ if (
 
     canvas.height =
       altura * escala;
-
 
     canvas.style.width =
       `${largura}px`;
@@ -1038,10 +1011,6 @@ if (
       'source-over';
 
 
-    /* -----------------------------------------------------
-       FUNDO METÁLICO
-    ----------------------------------------------------- */
-
     const gradiente =
       ctx.createLinearGradient(
         0,
@@ -1057,7 +1026,7 @@ if (
     );
 
     gradiente.addColorStop(
-      0.5,
+      .5,
       '#9da4aa'
     );
 
@@ -1070,7 +1039,6 @@ if (
     ctx.fillStyle =
       gradiente;
 
-
     ctx.fillRect(
       0,
       0,
@@ -1079,12 +1047,8 @@ if (
     );
 
 
-    /* -----------------------------------------------------
-       BRILHO METÁLICO
-    ----------------------------------------------------- */
-
     ctx.strokeStyle =
-      'rgba(255,255,255,.25)';
+      'rgba(255,255,255,.22)';
 
     ctx.lineWidth =
       10;
@@ -1113,10 +1077,6 @@ if (
     }
 
 
-    /* -----------------------------------------------------
-       TEXTO
-    ----------------------------------------------------- */
-
     ctx.fillStyle =
       '#62686d';
 
@@ -1140,7 +1100,7 @@ if (
 
 
   /* =======================================================
-     📍 POSIÇÃO
+     📍 POSIÇÃO DO TOQUE
   ======================================================= */
 
   function obterPosicao(
@@ -1150,14 +1110,13 @@ if (
     const rect =
       canvas.getBoundingClientRect();
 
-
     let clientX;
     let clientY;
 
 
     if (
       evento.touches &&
-      evento.touches.length > 0
+      evento.touches.length
     ) {
 
       clientX =
@@ -1193,7 +1152,7 @@ if (
 
 
   /* =======================================================
-     ✏️ RASPAR
+     🖌️ RASPAR
   ======================================================= */
 
   function raspar(
@@ -1213,7 +1172,10 @@ if (
     evento.preventDefault();
 
 
-    const posicao =
+    const {
+      x,
+      y
+    } =
       obterPosicao(
         evento
       );
@@ -1227,9 +1189,9 @@ if (
 
 
     ctx.arc(
-      posicao.x,
-      posicao.y,
-      28,
+      x,
+      y,
+      30,
       0,
       Math.PI * 2
     );
@@ -1240,10 +1202,6 @@ if (
   }
 
 
-  /* =======================================================
-     🖐️ INICIAR
-  ======================================================= */
-
   function iniciar(
     evento
   ) {
@@ -1252,13 +1210,10 @@ if (
       return;
     }
 
-
     raspando =
       true;
 
-
     evento.preventDefault();
-
 
     raspar(
       evento
@@ -1267,20 +1222,14 @@ if (
   }
 
 
-  /* =======================================================
-     ✋ PARAR
-  ======================================================= */
-
   function parar() {
 
     if (!raspando) {
       return;
     }
 
-
     raspando =
       false;
-
 
     verificarProgresso();
 
@@ -1288,114 +1237,7 @@ if (
 
 
   /* =======================================================
-     🎉 MOSTRAR PRÊMIO
-  ======================================================= */
-
-  function mostrarPremio() {
-
-    if (finalizada) {
-      return;
-    }
-
-
-    finalizada =
-      true;
-
-
-    /*
-     * Monta novamente o conteúdo
-     * para garantir que a imagem
-     * seja carregada corretamente.
-     */
-
-    premio.innerHTML = '';
-
-
-    const imagem =
-      document.createElement('img');
-
-
-    imagem.className =
-      'scratch-premio-imagem';
-
-
-    imagem.src =
-      premioEscolhido.imagem;
-
-
-    imagem.alt =
-      premioEscolhido.nome;
-
-
-    imagem.loading =
-      'eager';
-
-
-    imagem.onerror =
-      () => {
-
-        console.error(
-          '❌ Não foi possível carregar a imagem:',
-          premioEscolhido.imagem
-        );
-
-      };
-
-
-    const nome =
-      document.createElement('strong');
-
-
-    nome.className =
-      'scratch-premio-nome';
-
-
-    nome.textContent =
-      `🎉 ${premioEscolhido.nome}`;
-
-
-    const mensagem =
-      document.createElement('small');
-
-
-    mensagem.textContent =
-      'PARABÉNS! VOCÊ GANHOU!';
-
-
-    premio.appendChild(
-      imagem
-    );
-
-    premio.appendChild(
-      nome
-    );
-
-    premio.appendChild(
-      mensagem
-    );
-
-
-    /*
-     * Remove completamente a camada
-     * metálica da raspadinha.
-     */
-
-    ctx.clearRect(
-      0,
-      0,
-      canvas.width,
-      canvas.height
-    );
-
-
-    canvas.style.pointerEvents =
-      'none';
-
-  }
-
-
-  /* =======================================================
-     📊 VERIFICAR PROGRESSO
+     📊 VERIFICAR QUANTO FOI RASPADO
   ======================================================= */
 
   function verificarProgresso() {
@@ -1405,11 +1247,32 @@ if (
     }
 
 
+    const rect =
+      canvas.getBoundingClientRect();
+
+    const escala =
+      window.devicePixelRatio ||
+      1;
+
+
     const largura =
-      canvas.width;
+      Math.max(
+        1,
+        Math.floor(
+          rect.width *
+          escala
+        )
+      );
+
 
     const altura =
-      canvas.height;
+      Math.max(
+        1,
+        Math.floor(
+          rect.height *
+          escala
+        )
+      );
 
 
     let imagem;
@@ -1425,12 +1288,7 @@ if (
           altura
         );
 
-    } catch (erro) {
-
-      console.warn(
-        'Não foi possível verificar a raspagem:',
-        erro
-      );
+    } catch {
 
       return;
 
@@ -1458,25 +1316,33 @@ if (
     }
 
 
-    const totalPixels =
-      imagem.data.length / 4;
+    const total =
+      imagem.data.length /
+      4;
 
 
     const porcentagem =
       transparentes /
-      totalPixels;
+      total;
 
-
-    /*
-     * Revela depois de aproximadamente
-     * 45% raspado.
-     */
 
     if (
       porcentagem >= 0.45
     ) {
 
+      finalizada =
+        true;
+
+
       mostrarPremio();
+
+
+      ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+      );
 
     }
 
@@ -1492,12 +1358,10 @@ if (
     iniciar
   );
 
-
   canvas.addEventListener(
     'mousemove',
     raspar
   );
-
 
   window.addEventListener(
     'mouseup',
@@ -1517,7 +1381,6 @@ if (
     }
   );
 
-
   canvas.addEventListener(
     'touchmove',
     raspar,
@@ -1526,7 +1389,6 @@ if (
     }
   );
 
-
   canvas.addEventListener(
     'touchend',
     parar,
@@ -1534,7 +1396,6 @@ if (
       passive: true
     }
   );
-
 
   canvas.addEventListener(
     'touchcancel',
@@ -1554,18 +1415,12 @@ if (
     () => {
 
       if (!finalizada) {
-
         ajustarCanvas();
-
       }
 
     }
   );
 
-
-  /* =======================================================
-     🚀 INICIAR RASPADINHA
-  ======================================================= */
 
   ajustarCanvas();
 
@@ -1577,16 +1432,24 @@ if (
 ========================================================= */
 
 const comprovante =
-  document.getElementById('comprovante');
+  document.getElementById(
+    'comprovante'
+  );
 
 const comprovanteNome =
-  document.getElementById('comprovanteNome');
+  document.getElementById(
+    'comprovanteNome'
+  );
 
 const enviarWhatsApp =
-  document.getElementById('enviarWhatsApp');
+  document.getElementById(
+    'enviarWhatsApp'
+  );
 
 const comprovanteMsg =
-  document.getElementById('comprovanteMsg');
+  document.getElementById(
+    'comprovanteMsg'
+  );
 
 
 if (
@@ -1612,14 +1475,10 @@ if (
         enviarWhatsApp.disabled =
           true;
 
-
         if (comprovanteMsg) {
-
           comprovanteMsg.textContent =
             '';
-
         }
-
 
         return;
 
@@ -1644,14 +1503,12 @@ if (
         enviarWhatsApp.disabled =
           true;
 
-
         if (comprovanteMsg) {
 
           comprovanteMsg.textContent =
             '⚠️ O arquivo deve ter no máximo 10 MB.';
 
         }
-
 
         return;
 
@@ -1660,7 +1517,6 @@ if (
 
       comprovanteNome.textContent =
         `✅ ${arquivo.name}`;
-
 
       enviarWhatsApp.disabled =
         false;
@@ -1694,7 +1550,6 @@ if (
             '⚠️ Selecione o comprovante primeiro.';
 
         }
-
 
         return;
 
@@ -1740,7 +1595,6 @@ if (
 
           }
 
-
           return;
 
         }
@@ -1770,7 +1624,6 @@ if (
               'Compartilhamento cancelado.';
 
           }
-
 
           return;
 
