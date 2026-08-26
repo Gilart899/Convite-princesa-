@@ -31,6 +31,10 @@
 
   <div class="bg-glow"></div>
 
+  <!-- =====================================================
+       CABEÇALHO
+  ====================================================== -->
+
   <header class="topbar">
 
     <div class="brand">
@@ -54,6 +58,10 @@
 
 
   <main>
+
+    <!-- =====================================================
+         CARTÃO PRINCIPAL
+    ====================================================== -->
 
     <section class="hero card">
 
@@ -82,6 +90,10 @@
 
     </section>
 
+
+    <!-- =====================================================
+         PRÊMIO PRINCIPAL
+    ====================================================== -->
 
     <section class="prize card">
 
@@ -119,10 +131,11 @@
 
 
     <!-- =====================================================
-         COMO PARTICIPAR — ANTES DO NÚMERO
+         COMO PARTICIPAR
+         FICA ACIMA DO CARTÃO DE NÚMERO
     ====================================================== -->
 
-    <article class="card steps">
+    <section class="card steps">
 
       <span class="tag blue">
         COMO PARTICIPAR
@@ -139,19 +152,31 @@
         </li>
 
         <li>
-          Envie o comprovante e aguarde a confirmação
+          Envie o comprovante de pagamento
+        </li>
+
+        <li>
+          Aguarde a confirmação do pagamento
+        </li>
+
+        <li>
+          Após enviar o comprovante, você terá direito
+          a participar da
+          <strong>Raspadinha da Amizade</strong> 🍀
         </li>
 
       </ol>
 
-    </article>
+    </section>
 
 
     <!-- =====================================================
-         NÚMERO / PIX / RESERVA
+         CARTÃO AZUL — NÚMERO / PIX / RESERVA
     ====================================================== -->
 
     <section class="search card">
+
+      <!-- ÁREA DO NÚMERO -->
 
       <div class="numero-area">
 
@@ -169,6 +194,8 @@
           aria-label="Digite seu número de 000 a 999"
         >
 
+        <!-- VERIFICAR -->
+
         <button
           id="verificarNumero"
           class="verificar-numero"
@@ -176,6 +203,8 @@
         >
           🔎 VERIFICAR DISPONIBILIDADE
         </button>
+
+        <!-- STATUS -->
 
         <div
           id="numeroStatus"
@@ -186,7 +215,13 @@
       </div>
 
 
+      <!-- ===================================================
+           ÁREA DOS BOTÕES
+      ==================================================== -->
+
       <div class="pix-area">
+
+        <!-- COPIAR PIX -->
 
         <button
           class="pix"
@@ -195,6 +230,9 @@
         >
           💠 COPIAR CHAVE PIX
         </button>
+
+
+        <!-- RESERVAR NÚMERO -->
 
         <button
           id="reservarNumero"
@@ -211,11 +249,15 @@
 
 
     <!-- =====================================================
-         COMPROVANTE + RASPADINHA
+         CARTÕES PRINCIPAIS
     ====================================================== -->
 
     <section class="steps-grid">
 
+
+      <!-- ===================================================
+           1 — ENVIE SEU COMPROVANTE
+      ==================================================== -->
 
       <article class="card upload">
 
@@ -269,6 +311,10 @@
       </article>
 
 
+      <!-- ===================================================
+           2 — RASPADINHA DA AMIZADE
+      ==================================================== -->
+
       <article class="card scratch">
 
         <div class="trevo-mini">
@@ -277,11 +323,11 @@
 
         <h2>
           RASPADINHA<br>
-          <strong>DA SORTE</strong>
+          <strong>DA AMIZADE</strong>
         </h2>
 
         <p class="scratch-subtitle">
-          Sua sorte pode estar escondida aqui!
+          Sua amizade e solidariedade podem trazer uma surpresa!
         </p>
 
         <div class="scratch-area">
@@ -342,6 +388,10 @@
     </section>
 
 
+    <!-- =====================================================
+         ESCOLHA DOS NÚMEROS
+    ====================================================== -->
+
     <section class="card choose">
 
       <h2>
@@ -371,6 +421,10 @@
     </section>
 
 
+    <!-- =====================================================
+         NÚMERO DA SORTE
+    ====================================================== -->
+
     <section class="luck card">
 
       <span>
@@ -394,10 +448,18 @@
   </main>
 
 
+  <!-- =====================================================
+       RODAPÉ
+  ====================================================== -->
+
   <footer>
     Rifa Solidária • GilFest • Em benefício de Dona Bené
   </footer>
 
+
+  <!-- =====================================================
+       JAVASCRIPT
+  ====================================================== -->
 
   <script
     type="module"
