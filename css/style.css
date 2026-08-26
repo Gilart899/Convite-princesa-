@@ -1,7 +1,8 @@
 /* =========================================================
 🎨 RIFA SOLIDÁRIA — GILFEST
 STYLE.CSS COMPLETO
-Raspadinha ampliada + imagens dos prêmios
+Layout vertical + cartão de número corrigido
+Raspadinha ampliada em 50%
 ========================================================= */
 
 :root {
@@ -110,6 +111,7 @@ body::before {
       0 -180px,
       60px -280px;
   }
+
 }
 
 body::after {
@@ -171,6 +173,7 @@ body::after {
 
     opacity: 0;
   }
+
 }
 
 /* =========================================================
@@ -658,10 +661,11 @@ TEXTO DE AJUDA
 
   display: flex;
 
-  align-items: flex-start;
-  justify-content: stretch;
-
   flex-direction: column;
+
+  align-items: stretch;
+  justify-content: flex-start;
+
   gap: 10px;
 }
 
@@ -800,7 +804,6 @@ BOTÕES GERAIS
 
 .steps ol {
   margin: 16px 0 0;
-
   padding-left: 24px;
 }
 
@@ -852,7 +855,7 @@ BOTÕES GERAIS
 }
 
 .scratch-subtitle {
-  margin: 6px 0 16px;
+  margin: 6px 0 12px;
 
   font-size: .82rem;
   font-weight: 700;
@@ -861,7 +864,10 @@ BOTÕES GERAIS
 }
 
 /* =========================================================
-🎁 ÁREA DA RASPADINHA — MAIS COMPRIDA
+ÁREA DA RASPADINHA
+50% MAIOR
+ANTES: 210px
+AGORA: 315px
 ========================================================= */
 
 .scratch-area {
@@ -869,10 +875,7 @@ BOTÕES GERAIS
 
   width: 100%;
 
-  /*
-   * Aumentada de 210px para 300px.
-   */
-  height: 300px;
+  height: 315px;
 
   overflow: hidden;
 
@@ -924,24 +927,28 @@ BOTÕES GERAIS
     0 2px 4px rgba(0,0,0,.35);
 
   z-index: 1;
+
+  padding: 20px;
 }
 
 .scratch-result .icone {
-  font-size: 42px;
+  font-size: 35px;
 }
 
 .scratch-result strong {
-  font-size: 1.15rem;
+  display: block;
+
+  font-size: 1rem;
+  font-weight: 900;
+
   letter-spacing: .5px;
 }
 
 .scratch-result small {
-  font-size: .78rem;
-}
+  display: block;
 
-/* =========================================================
-🪙 CANVAS DA RASPADINHA
-========================================================= */
+  font-size: .7rem;
+}
 
 .scratch-canvas {
   position: absolute;
@@ -958,20 +965,59 @@ BOTÕES GERAIS
 }
 
 /* =========================================================
+🎁 IMAGEM DO PRÊMIO
+========================================================= */
+
+.premio-imagem {
+  display: block;
+
+  width: 170px;
+  height: 170px;
+
+  margin: 0 auto 8px;
+
+  object-fit: contain;
+
+  filter:
+    drop-shadow(
+      0 7px 9px rgba(0,0,0,.25)
+    );
+}
+
+.scratch-result strong {
+  color: #fff;
+
+  font-size: 1.05rem;
+
+  font-weight: 900;
+
+  text-shadow:
+    0 2px 5px rgba(0,0,0,.5);
+}
+
+.scratch-result small {
+  color: #fff;
+
+  font-size: .75rem;
+
+  font-weight: 800;
+}
+
+/* =========================================================
 INSTRUÇÃO
 ========================================================= */
 
 .scratch-instruction {
-  margin: 11px 0 0;
+  margin: 12px 0 0;
 
-  font-size: .78rem;
+  font-size: .72rem;
   font-weight: 800;
 
   color: #08783f;
 }
 
 /* =========================================================
-🏆 PRÊMIOS DA RASPADINHA
+PRÊMIOS
 ========================================================= */
 
 .scratch-prizes {
@@ -979,17 +1025,15 @@ INSTRUÇÃO
 
   justify-content: center;
 
-  gap: 12px;
+  gap: 8px;
 
-  margin-top: 14px;
+  margin-top: 10px;
 }
 
 .scratch-prize {
   flex: 1;
 
-  min-height: 110px;
-
-  padding: 8px;
+  min-height: 100px;
 
   display: flex;
 
@@ -998,33 +1042,39 @@ INSTRUÇÃO
   align-items: center;
   justify-content: center;
 
-  border-radius: 14px;
+  padding: 8px 5px;
+
+  border-radius: 12px;
 
   background: #fff;
 
   border: 1px solid #ead79a;
 
-  font-size: .72rem;
+  font-size: .68rem;
   font-weight: 900;
 
   color: #765713;
 
-  overflow: hidden;
+  text-align: center;
+}
+
+.scratch-prize span {
+  display: block;
+
+  margin-bottom: 2px;
+
+  font-size: 22px;
 }
 
 .scratch-prize img {
   display: block;
 
-  width: 76px;
-  height: 76px;
+  width: 65px;
+  height: 65px;
 
-  margin: 0 auto 6px;
+  margin: 0 auto 5px;
 
   object-fit: contain;
-}
-
-.scratch-prize span {
-  display: none;
 }
 
 /* =========================================================
@@ -1478,7 +1528,8 @@ footer {
   }
 
   /* =====================================================
-  🍀 RASPADINHA — MAIS COMPRIDA NO CELULAR
+  🍀 RASPADINHA — CELULAR
+  50% MAIOR
   ====================================================== */
 
   .scratch {
@@ -1488,50 +1539,29 @@ footer {
   .scratch-area {
     width: 100%;
 
-    /*
-     * Antes: 210px
-     * Agora: 300px
-     */
-    height: 300px;
-
-    border-radius: 18px;
+    height: 315px;
   }
 
-  .scratch-result .icone {
-    font-size: 44px;
+  .premio-imagem {
+    width: 150px;
+    height: 150px;
   }
 
   .scratch-result strong {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 
   .scratch-result small {
-    font-size: .78rem;
-  }
-
-  /* =====================================================
-  🏆 FOTOS DOS PRÊMIOS NO CELULAR
-  ====================================================== */
-
-  .scratch-prizes {
-    gap: 10px;
-
-    margin-top: 14px;
+    font-size: .72rem;
   }
 
   .scratch-prize {
-    min-height: 120px;
-
-    padding: 8px 5px;
-
-    font-size: .7rem;
+    min-height: 95px;
   }
 
   .scratch-prize img {
-    width: 82px;
-    height: 82px;
-
-    margin-bottom: 6px;
+    width: 60px;
+    height: 60px;
   }
 
   /* =====================================================
@@ -1611,9 +1641,9 @@ footer {
 
   body::after {
     font-size: 58px;
-
     letter-spacing: 42px;
   }
+
 }
 
 /* =========================================================
@@ -1642,24 +1672,13 @@ footer {
     font-size: 1.6rem;
   }
 
-  /* Raspadinha continua alta */
   .scratch-area {
-    height: 280px;
+    height: 285px;
   }
 
-  .scratch-prizes {
-    gap: 8px;
-  }
-
-  .scratch-prize {
-    min-height: 105px;
-
-    font-size: .65rem;
-  }
-
-  .scratch-prize img {
-    width: 68px;
-    height: 68px;
+  .premio-imagem {
+    width: 135px;
+    height: 135px;
   }
 
   .steps-grid {
@@ -1679,6 +1698,7 @@ footer {
   .pix {
     width: 100% !important;
   }
+
 }
 
 /* =========================================================
