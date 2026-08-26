@@ -1,1492 +1,1620 @@
 /* =========================================================
-   🎨 RIFA SOLIDÁRIA — GILFEST
-   STYLE.CSS COMPLETO
-   Layout dos cartões: SEMPRE VERTICAL
+🎨 RIFA SOLIDÁRIA — GILFEST
+STYLE.CSS COMPLETO
+Layout vertical + cartão de número corrigido
 ========================================================= */
 
 :root {
-  --blue: #0878e8;
-  --pink: #f43b9a;
-  --green: #22b64a;
-  --dark: #063b74;
-  --bg: #eaf6ff;
-  --text: #12365b;
-  --white: #ffffff;
+--blue: #0878e8;
+--pink: #f43b9a;
+--green: #22b64a;
+--dark: #063b74;
+--bg: #eaf6ff;
+--text: #12365b;
+--white: #ffffff;
 }
 
 /* =========================================================
-   RESET
+RESET
 ========================================================= */
 
 * {
   box-sizing: border-box;
-}
+  }
 
-html {
-  width: 100%;
-  min-height: 100%;
-  overflow-x: hidden;
+html,
+body {
+width: 100%;
+min-height: 100%;
+margin: 0;
+overflow-x: hidden;
 }
 
 body {
-  position: relative;
-  width: 100%;
-  min-height: 100vh;
-  margin: 0;
-  overflow-x: hidden;
+position: relative;
 
-  font-family: Arial, Helvetica, sans-serif;
-  color: var(--text);
+font-family: Arial, Helvetica, sans-serif;
+color: var(--text);
 
-  background:
-    linear-gradient(
-      135deg,
-      #04b8c9 0%,
-      #246fe8 48%,
-      #f34ba7 100%
-    );
+background:
+linear-gradient(
+135deg,
+#04b8c9 0%,
+#246fe8 48%,
+#f34ba7 100%
+);
 }
 
 /* =========================================================
-   ✨ BRILHO DO FUNDO
+✨ FUNDO
 ========================================================= */
 
 .bg-glow {
-  position: fixed;
-  inset: 0;
+position: fixed;
+inset: 0;
 
-  pointer-events: none;
-  z-index: -2;
+pointer-events: none;
+z-index: -2;
 
-  background:
-    radial-gradient(
-      circle at 20% 20%,
-      rgba(255,255,255,.35),
-      transparent 28%
-    ),
-    radial-gradient(
-      circle at 85% 70%,
-      rgba(255,255,255,.22),
-      transparent 30%
-    );
+background:
+radial-gradient(
+circle at 20% 20%,
+rgba(255,255,255,.35),
+transparent 28%
+),
+radial-gradient(
+circle at 85% 70%,
+rgba(255,255,255,.22),
+transparent 30%
+);
 }
 
-/* =========================================================
-   ✨ BRILHOS ANIMADOS
-========================================================= */
-
 body::before {
-  content: "";
+content: "";
 
-  position: fixed;
-  inset: 0;
+position: fixed;
+inset: 0;
 
-  pointer-events: none;
-  z-index: -1;
+pointer-events: none;
+z-index: -1;
 
-  background:
-    radial-gradient(
-      circle,
-      rgba(255,255,255,.28) 0 3px,
-      transparent 4px
-    ),
-    radial-gradient(
-      circle,
-      rgba(255,255,255,.18) 0 2px,
-      transparent 3px
-    );
+background:
+radial-gradient(
+circle,
+rgba(255,255,255,.28) 0 3px,
+transparent 4px
+),
+radial-gradient(
+circle,
+rgba(255,255,255,.18) 0 2px,
+transparent 3px
+);
 
-  background-size:
-    120px 120px,
-    180px 180px;
+background-size:
+120px 120px,
+180px 180px;
 
-  animation: estrelasSubindo 18s linear infinite;
+animation: estrelasSubindo 18s linear infinite;
 }
 
 @keyframes estrelasSubindo {
 
-  0% {
-    background-position:
-      0 0,
-      60px 100px;
-  }
-
-  100% {
-    background-position:
-      0 -180px,
-      60px -280px;
-  }
+0% {
+background-position:
+0 0,
+60px 100px;
 }
 
-/* =========================================================
-   🍀 TREVOS GRANDES FLUTUANDO
-========================================================= */
+100% {
+background-position:
+0 -180px,
+60px -280px;
+}
+}
 
 body::after {
-  content: "🍀        🍀             🍀";
+content: "🍀        🍀             🍀";
 
-  position: fixed;
-  left: 0;
-  bottom: -100px;
+position: fixed;
+left: 0;
+bottom: -100px;
 
-  width: 100%;
-  height: 120px;
+width: 100%;
+height: 120px;
 
-  font-size: 64px;
-  line-height: 1;
-  letter-spacing: 55px;
-  white-space: nowrap;
+font-size: 64px;
+line-height: 1;
+letter-spacing: 55px;
+white-space: nowrap;
 
-  opacity: .38;
+opacity: .38;
 
-  pointer-events: none;
-  z-index: -1;
+pointer-events: none;
+z-index: -1;
 
-  animation: trevosFlutuando 18s linear infinite;
+animation: trevosFlutuando 18s linear infinite;
 }
 
 @keyframes trevosFlutuando {
 
-  0% {
-    transform:
-      translateY(120px)
-      translateX(-40px)
-      rotate(-5deg);
+0% {
+transform:
+translateY(120px)
+translateX(-40px)
+rotate(-5deg);
 
-    opacity: 0;
-  }
+opacity: 0;
 
-  15% {
-    opacity: .38;
-  }
+}
 
-  50% {
-    transform:
-      translateY(-45vh)
-      translateX(50px)
-      rotate(8deg);
+15% {
+opacity: .38;
+}
 
-    opacity: .32;
-  }
+50% {
+transform:
+translateY(-45vh)
+translateX(50px)
+rotate(8deg);
 
-  80% {
-    opacity: .25;
-  }
+opacity: .32;
 
-  100% {
-    transform:
-      translateY(-115vh)
-      translateX(-30px)
-      rotate(-8deg);
+}
 
-    opacity: 0;
-  }
+80% {
+opacity: .25;
+}
+
+100% {
+transform:
+translateY(-115vh)
+translateX(-30px)
+rotate(-8deg);
+
+opacity: 0;
+
+}
 }
 
 /* =========================================================
-   CABEÇALHO
+CABEÇALHO
 ========================================================= */
 
 .topbar {
-  width: min(calc(100% - 24px), 1100px);
+width: min(calc(100% - 24px), 1100px);
 
-  margin: 0 auto;
-  padding: 16px;
+margin: 0 auto;
+padding: 16px;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+display: flex;
+align-items: center;
+justify-content: center;
 
-  gap: 16px;
+gap: 16px;
 
-  color: #fff;
-  font-weight: 900;
+color: #fff;
+font-weight: 900;
 
-  text-align: center;
+text-align: center;
 }
 
 .brand {
-  font-size: 1.45rem;
-  text-align: center;
+font-size: 1.45rem;
+text-align: center;
 }
 
 .gilfest-top {
-  display: flex;
-  flex-direction: column;
+display: flex;
+flex-direction: column;
 
-  align-items: center;
-  justify-content: center;
+align-items: center;
+justify-content: center;
 
-  line-height: 1;
+line-height: 1;
 
-  transform: scale(1.05);
+transform: scale(1.05);
 }
 
 .gilfest-top img {
-  width: 64px;
-  max-width: 100%;
-  max-height: 52px;
+width: 64px;
+max-width: 100%;
+max-height: 52px;
 
-  object-fit: contain;
+object-fit: contain;
 }
 
 .gilfest-top small {
-  margin-top: 5px;
+margin-top: 5px;
 
-  font-size: .95rem;
-  font-weight: 900;
+font-size: .95rem;
+font-weight: 900;
 
-  color: #fff;
-  letter-spacing: .5px;
+color: #fff;
+letter-spacing: .5px;
 }
 
 /* =========================================================
-   TAGS
+TAGS
 ========================================================= */
 
 .pill,
 .tag {
-  display: inline-block;
+display: inline-block;
 
-  padding: 7px 14px;
+padding: 7px 14px;
 
-  border-radius: 999px;
+border-radius: 999px;
 
-  font-weight: 900;
+font-weight: 900;
 
-  background:
-    linear-gradient(
-      90deg,
-      var(--pink),
-      #ff6fb8
-    );
+background:
+linear-gradient(
+90deg,
+var(--pink),
+#ff6fb8
+);
 
-  color: #fff;
+color: #fff;
 }
 
 .tag.blue {
-  background: var(--blue);
+background: var(--blue);
 }
 
 /* =========================================================
-   CONTEÚDO PRINCIPAL
+CONTEÚDO
 ========================================================= */
 
 main {
-  width: min(calc(100% - 24px), 1050px);
-  max-width: 1050px;
+width: min(calc(100% - 24px), 1050px);
+max-width: 1050px;
 
-  margin: 0 auto;
+margin: 0 auto;
 }
 
 /* =========================================================
-   CARTÃO PADRÃO
+CARTÃO PADRÃO
 ========================================================= */
 
 .card {
-  width: 100%;
+width: 100%;
 
-  margin: 14px 0;
-  padding: 20px;
+margin: 14px 0;
+padding: 20px;
 
-  border-radius: 24px;
+border-radius: 24px;
 
-  background: rgba(255,255,255,.96);
+background: rgba(255,255,255,.96);
 
-  box-shadow:
-    0 14px 32px rgba(0,35,90,.18);
+box-shadow:
+0 14px 32px rgba(0,35,90,.18);
 }
 
 /* =========================================================
-   🍀 CARTÃO PRINCIPAL
+🍀 HERO
 ========================================================= */
 
 .hero {
-  display: flex;
+display: flex;
 
-  align-items: center;
-  justify-content: space-between;
+align-items: center;
+justify-content: space-between;
 
-  gap: 20px;
+gap: 20px;
 
-  overflow: hidden;
+overflow: hidden;
 
-  background:
-    linear-gradient(
-      110deg,
-      #dff9ff,
-      #fff 50%,
-      #ffe7f3
-    );
+background:
+linear-gradient(
+110deg,
+#dff9ff,
+#fff 50%,
+#ffe7f3
+);
 }
 
 .hero-copy {
-  flex: 1;
-  min-width: 0;
+flex: 1;
+min-width: 0;
 }
 
 .hero h1 {
-  margin: 14px 0;
+margin: 14px 0;
 
-  font-size:
-    clamp(1.8rem, 5vw, 3.4rem);
+font-size:
+clamp(1.8rem, 5vw, 3.4rem);
 
-  color: #08457f;
+color: #08457f;
 }
 
 .hero h1 strong {
-  color: var(--pink);
+color: var(--pink);
 }
 
 .hero p {
-  font-weight: 800;
-  color: #1766a5;
+font-weight: 800;
+color: #1766a5;
 }
 
 .hero-photo {
-  width: 180px;
-  height: 180px;
+width: 180px;
+height: 180px;
 
-  flex-shrink: 0;
+flex-shrink: 0;
 
-  object-fit: cover;
+object-fit: cover;
 
-  border-radius: 50%;
-  border: 7px solid #fff;
+border-radius: 50%;
+border: 7px solid #fff;
 
-  box-shadow:
-    0 8px 20px #0002;
+box-shadow:
+0 8px 20px #0002;
 }
 
 /* =========================================================
-   🎁 PRÊMIO
+🎁 PRÊMIO
 ========================================================= */
 
 .prize {
-  display: flex;
+display: flex;
 
-  align-items: center;
-  justify-content: space-between;
+align-items: center;
+justify-content: space-between;
 
-  gap: 20px;
+gap: 20px;
 }
 
 .prize > div {
-  flex: 1;
-  min-width: 0;
+flex: 1;
+min-width: 0;
 }
 
 .prize h2 {
-  margin: 12px 0;
+margin: 12px 0;
 
-  font-size:
-    clamp(1.8rem, 5vw, 3rem);
+font-size:
+clamp(1.8rem, 5vw, 3rem);
 
-  color: #0b3e75;
+color: #0b3e75;
 }
 
 .prize h2 strong {
-  color: var(--pink);
+color: var(--pink);
 }
 
 .prize img {
-  width: 280px;
-  max-width: 40%;
-  max-height: 240px;
+width: 280px;
+max-width: 40%;
+max-height: 240px;
 
-  object-fit: contain;
+object-fit: contain;
 }
 
 .price {
-  font-size: 1.8rem;
-  font-weight: 900;
+font-size: 1.8rem;
+font-weight: 900;
 
-  color: var(--pink);
+color: var(--pink);
 }
 
 .price small {
-  font-size: .8rem;
-  color: var(--text);
+font-size: .8rem;
+color: var(--text);
 }
 
 /* =========================================================
-   🔎 BUSCA DOS NÚMEROS
+🔵 CARTÃO DO NÚMERO
 ========================================================= */
 
 .search {
-  display: grid;
+display: grid;
 
-  grid-template-columns:
-    minmax(0, 1fr) 240px;
+grid-template-columns:
+minmax(0, 1fr) 250px;
 
-  align-items: center;
+align-items: start;
 
-  gap: 16px;
+gap: 20px;
 
-  background:
-    linear-gradient(
-      135deg,
-      #073f91,
-      #102b74
-    );
-}
-
-.search h2,
-.search small {
-  color: #fff;
-}
-
-.search input {
-  display: block;
-
-  width: 100%;
-
-  margin: 8px 0;
-  padding: 15px;
-
-  border: 0;
-  border-radius: 12px;
-
-  font-size: 1.1rem;
-
-  outline: none;
-}
-
-.search input:focus {
-  box-shadow:
-    0 0 0 3px rgba(255,255,255,.25);
+background:
+linear-gradient(
+135deg,
+#073f91,
+#102b74
+);
 }
 
 /* =========================================================
-   🔘 BOTÕES
+ÁREA DO NÚMERO
 ========================================================= */
 
-.pix,
-.primary,
-.secondary {
-  border: 0;
-  border-radius: 14px;
-
-  padding: 15px 18px;
-
-  font-weight: 900;
-
-  cursor: pointer;
-
-  transition:
-    transform .15s ease,
-    opacity .15s ease,
-    box-shadow .15s ease;
+.numero-area {
+width: 100%;
+min-width: 0;
 }
 
-.pix:hover,
-.primary:hover,
-.secondary:hover {
-  transform: translateY(-1px);
+.numero-area h2 {
+margin-top: 0;
+margin-bottom: 14px;
+
+color: #fff;
+
+font-size: 1.35rem;
+}
+
+/* =========================================================
+CAMPO DO NÚMERO
+========================================================= */
+
+#numeroDireto {
+display: block;
+
+width: 100% !important;
+height: 54px;
+
+margin: 0 0 10px !important;
+padding: 14px 16px !important;
+
+border: 0 !important;
+border-radius: 14px !important;
+
+background: #fff !important;
+color: #12365b !important;
+
+font-family: Arial, Helvetica, sans-serif;
+font-size: 1.15rem !important;
+font-weight: 700;
+
+outline: none;
+
+box-shadow:
+0 4px 12px rgba(0,0,0,.12);
+}
+
+#numeroDireto::placeholder {
+color: #8996a3;
+}
+
+#numeroDireto:focus {
+box-shadow:
+0 0 0 3px rgba(255,255,255,.45),
+0 4px 12px rgba(0,0,0,.12);
+}
+
+/* =========================================================
+🔎 BOTÃO VERIFICAR
+========================================================= */
+
+#verificarNumero,
+.verificar-numero {
+display: flex !important;
+
+width: 100% !important;
+min-width: 0 !important;
+height: 54px;
+
+margin: 0 0 10px !important;
+padding: 14px 18px !important;
+
+align-items: center;
+justify-content: center;
+
+border: 0 !important;
+border-radius: 14px !important;
+
+background:
+linear-gradient(
+90deg,
+#0aa7ff,
+#0878e8
+) !important;
+
+color: #fff !important;
+
+font-family: Arial, Helvetica, sans-serif;
+font-size: 1rem !important;
+font-weight: 900 !important;
+
+cursor: pointer;
+
+box-shadow:
+0 6px 14px rgba(0,0,0,.18);
+
+transition:
+transform .15s ease,
+box-shadow .15s ease;
+}
+
+#verificarNumero:hover,
+.verificar-numero:hover {
+transform: translateY(-1px);
+
+box-shadow:
+0 8px 18px rgba(0,0,0,.24);
+}
+
+#verificarNumero:active,
+.verificar-numero:active {
+transform: scale(.98);
+}
+
+/* =========================================================
+🟢🔴 STATUS
+========================================================= */
+
+#numeroStatus,
+.numero-status {
+display: none;
+
+width: 100% !important;
+min-height: 54px;
+
+margin: 0 0 10px !important;
+padding: 14px 16px !important;
+
+border-radius: 14px !important;
+
+font-family: Arial, Helvetica, sans-serif;
+font-size: .95rem;
+font-weight: 900;
+
+text-align: center;
+
+align-items: center;
+justify-content: center;
+
+line-height: 1.2;
+
+overflow-wrap: anywhere;
+}
+
+/* =========================================================
+🎟️ RESERVAR
+========================================================= */
+
+#reservarNumero,
+.reservar-numero {
+display: none;
+
+width: 100% !important;
+min-width: 0 !important;
+min-height: 54px;
+
+margin: 0 0 10px !important;
+padding: 14px 18px !important;
+
+border: 0 !important;
+border-radius: 14px !important;
+
+background:
+linear-gradient(
+90deg,
+#f43b9a,
+#d91d79
+) !important;
+
+color: #fff !important;
+
+font-family: Arial, Helvetica, sans-serif;
+font-size: 1rem !important;
+font-weight: 900 !important;
+
+text-align: center;
+
+cursor: pointer;
+
+box-shadow:
+0 6px 14px rgba(0,0,0,.18);
+
+transition:
+transform .15s ease,
+box-shadow .15s ease,
+opacity .15s ease;
+}
+
+#reservarNumero:hover,
+.reservar-numero:hover {
+transform: translateY(-1px);
+
+box-shadow:
+0 8px 18px rgba(0,0,0,.24);
+}
+
+#reservarNumero:active,
+.reservar-numero:active {
+transform: scale(.98);
+}
+
+#reservarNumero:disabled,
+.reservar-numero:disabled {
+opacity: .55;
+cursor: not-allowed;
+transform: none;
+}
+
+/* =========================================================
+TEXTO DE AJUDA
+========================================================= */
+
+.numero-area > small {
+display: block;
+
+width: 100%;
+
+margin-top: 8px;
+
+color: rgba(255,255,255,.78);
+
+font-size: .78rem;
+line-height: 1.4;
+
+text-align: left;
+}
+
+/* =========================================================
+💠 PIX
+========================================================= */
+
+.pix-area {
+width: 100%;
+min-width: 0;
+
+display: flex;
+
+align-items: flex-start;
+justify-content: stretch;
 }
 
 .pix {
-  background: #fff;
-  color: #e82f93;
+display: flex;
+
+width: 100% !important;
+min-height: 54px;
+
+align-items: center;
+justify-content: center;
+
+padding: 15px 18px;
+
+border: 0;
+border-radius: 14px;
+
+background: #fff;
+
+color: #e82f93;
+
+font-family: Arial, Helvetica, sans-serif;
+font-size: .95rem;
+font-weight: 900;
+
+cursor: pointer;
+
+box-shadow:
+0 6px 14px rgba(0,0,0,.14);
+
+transition:
+transform .15s ease,
+box-shadow .15s ease;
+}
+
+.pix:hover {
+transform: translateY(-1px);
+
+box-shadow:
+0 8px 18px rgba(0,0,0,.2);
+}
+
+.pix:active {
+transform: scale(.98);
+}
+
+/* =========================================================
+BOTÕES GERAIS
+========================================================= */
+
+.primary,
+.secondary {
+border: 0;
+border-radius: 14px;
+
+padding: 15px 18px;
+
+font-weight: 900;
+
+cursor: pointer;
+
+transition:
+transform .15s ease,
+opacity .15s ease,
+box-shadow .15s ease;
+}
+
+.primary:hover,
+.secondary:hover {
+transform: translateY(-1px);
 }
 
 .primary {
-  background:
-    linear-gradient(
-      90deg,
-      #0878e8,
-      #f43b9a
-    );
+background:
+linear-gradient(
+90deg,
+#0878e8,
+#f43b9a
+);
 
-  color: #fff;
+color: #fff;
 }
 
 .secondary {
-  background: #eaffef;
-  color: #117334;
+background: #eaffef;
+color: #117334;
 }
 
 /* =========================================================
-   ⭐⭐⭐ TRÊS CARTÕES PRINCIPAIS
-   =========================================================
-
-   IMPORTANTE:
-
-   ESTES CARTÕES FICAM SEMPRE NA VERTICAL.
-
-   NÃO USAMOS:
-   repeat(3,...)
-   1fr 1fr 1fr
-   FLEX-ROW
-
-   Assim:
-
-   ┌─────────────────────────┐
-   │ COMPROVANTE             │
-   └─────────────────────────┘
-
-   ┌─────────────────────────┐
-   │ RASPADINHA              │
-   └─────────────────────────┘
-
-   ┌─────────────────────────┐
-   │ COMO PARTICIPAR         │
-   └─────────────────────────┘
+⭐ CARTÕES PRINCIPAIS
 ========================================================= */
 
 .steps-grid {
-  display: grid;
+display: grid;
 
-  grid-template-columns: minmax(0, 1fr);
+grid-template-columns: minmax(0, 1fr);
 
-  grid-auto-flow: row;
+grid-auto-flow: row;
 
-  width: 100%;
-  max-width: 100%;
+width: 100%;
+max-width: 100%;
 
-  gap: 14px;
+gap: 14px;
 
-  align-items: stretch;
+align-items: stretch;
 }
 
 .steps-grid > article.card {
-  display: block;
+display: block;
 
-  width: 100%;
-  max-width: 100%;
-  min-width: 0;
+width: 100%;
+max-width: 100%;
+min-width: 0;
 
-  margin: 0;
+margin: 0;
 
-  grid-column: 1;
+grid-column: 1;
 }
 
-/* =========================================================
-   ORDEM DOS TRÊS CARTÕES
-========================================================= */
-
 .steps-grid > .upload {
-  grid-row: 1;
+grid-row: 1;
 }
 
 .steps-grid > .scratch {
-  grid-row: 2;
+grid-row: 2;
 }
 
 .steps-grid > .steps {
-  grid-row: 3;
+grid-row: 3;
 }
 
 /* =========================================================
-   📄 COMO PARTICIPAR
+📄 COMO PARTICIPAR
 ========================================================= */
 
 .steps ol {
-  margin: 16px 0 0;
+margin: 16px 0 0;
 
-  padding-left: 24px;
+padding-left: 24px;
 }
 
 .steps li {
-  margin: 14px 0;
+margin: 14px 0;
 
-  font-weight: 700;
+font-weight: 700;
 }
 
 /* =========================================================
-   🍀 RASPADINHA
+🍀 RASPADINHA
 ========================================================= */
 
 .scratch {
-  position: relative;
+position: relative;
 
-  width: 100%;
+width: 100%;
 
-  text-align: center;
+text-align: center;
 
-  overflow: hidden;
+overflow: hidden;
 
-  background:
-    linear-gradient(
-      145deg,
-      #fffdf2,
-      #fff7d6
-    );
+background:
+linear-gradient(
+145deg,
+#fffdf2,
+#fff7d6
+);
 }
 
 .trevo-mini {
-  font-size: 30px;
-  line-height: 1;
-  margin-bottom: 4px;
+font-size: 30px;
+line-height: 1;
+
+margin-bottom: 4px;
 }
 
 .scratch h2 {
-  margin: 8px 0 12px;
+margin: 8px 0 12px;
 
-  font-size: 1.35rem;
-  line-height: 1.05;
+font-size: 1.35rem;
+line-height: 1.05;
 
-  color: #0878e8;
+color: #0878e8;
 }
 
 .scratch h2 strong {
-  color: #d39a18;
+color: #d39a18;
 }
 
 .scratch-subtitle {
-  margin: 6px 0 12px;
+margin: 6px 0 12px;
 
-  font-size: .82rem;
-  font-weight: 700;
+font-size: .82rem;
+font-weight: 700;
 
-  color: #52705f;
+color: #52705f;
 }
 
+/* =========================================================
+ÁREA DA RASPADINHA
+========================================================= */
+
 .scratch-area {
-  position: relative;
+position: relative;
 
-  width: 100%;
-  height: 125px;
+width: 100%;
+height: 210px;
 
-  overflow: hidden;
+overflow: hidden;
 
-  border-radius: 18px;
+border-radius: 18px;
 
-  background:
-    linear-gradient(
-      135deg,
-      #d6ae45,
-      #f7df91,
-      #c99522
-    );
+background:
+linear-gradient(
+135deg,
+#d6ae45,
+#f7df91,
+#c99522
+);
 
-  box-shadow:
-    inset 0 0 0 2px rgba(255,255,255,.7),
-    0 8px 18px rgba(120,85,0,.18);
+box-shadow:
+inset 0 0 0 2px rgba(255,255,255,.7),
+0 8px 18px rgba(120,85,0,.18);
 }
 
 .scratch-area::before {
-  content: "";
+content: "";
 
-  position: absolute;
-  inset: 7px;
+position: absolute;
+inset: 7px;
 
-  border: 2px dashed
-    rgba(255,255,255,.65);
+border: 2px dashed
+rgba(255,255,255,.65);
 
-  border-radius: 13px;
+border-radius: 13px;
 
-  pointer-events: none;
+pointer-events: none;
 }
 
 .scratch-result {
-  position: absolute;
-  inset: 0;
+position: absolute;
+inset: 0;
 
-  display: flex;
+display: flex;
 
-  flex-direction: column;
+flex-direction: column;
 
-  align-items: center;
-  justify-content: center;
+align-items: center;
+justify-content: center;
 
-  gap: 4px;
+gap: 4px;
 
-  color: #fff;
+color: #fff;
 
-  text-shadow:
-    0 2px 4px rgba(0,0,0,.35);
+text-shadow:
+0 2px 4px rgba(0,0,0,.35);
 
-  z-index: 1;
+z-index: 1;
 }
 
 .scratch-result .icone {
-  font-size: 35px;
+font-size: 35px;
 }
 
 .scratch-result strong {
-  font-size: 1rem;
-  letter-spacing: .5px;
+font-size: 1rem;
+letter-spacing: .5px;
 }
 
 .scratch-result small {
-  font-size: .7rem;
+font-size: .7rem;
 }
 
 .scratch-canvas {
-  position: absolute;
-  inset: 0;
+position: absolute;
+inset: 0;
 
-  width: 100%;
-  height: 100%;
+width: 100%;
+height: 100%;
 
-  z-index: 2;
+z-index: 2;
 
-  cursor: crosshair;
+cursor: crosshair;
 
-  touch-action: none;
+touch-action: none;
 }
 
 .scratch-instruction {
-  margin: 9px 0 0;
+margin: 9px 0 0;
 
-  font-size: .72rem;
-  font-weight: 800;
+font-size: .72rem;
+font-weight: 800;
 
-  color: #08783f;
-}
-
-.scratch-instruction span {
-  font-size: 1rem;
+color: #08783f;
 }
 
 .scratch-prizes {
-  display: flex;
+display: flex;
 
-  justify-content: center;
+justify-content: center;
 
-  gap: 8px;
+gap: 8px;
 
-  margin-top: 10px;
+margin-top: 10px;
 }
 
 .scratch-prize {
-  flex: 1;
+flex: 1;
 
-  padding: 7px 5px;
+padding: 7px 5px;
 
-  border-radius: 12px;
+border-radius: 12px;
 
-  background: #fff;
+background: #fff;
 
-  border: 1px solid #ead79a;
+border: 1px solid #ead79a;
 
-  font-size: .68rem;
-  font-weight: 900;
+font-size: .68rem;
+font-weight: 900;
 
-  color: #765713;
+color: #765713;
 }
 
 .scratch-prize span {
-  display: block;
+display: block;
 
-  margin-bottom: 2px;
+margin-bottom: 2px;
 
-  font-size: 22px;
+font-size: 22px;
 }
 
 /* =========================================================
-   📄 COMPROVANTE
+📄 COMPROVANTE
 ========================================================= */
 
 .upload {
-  width: 100%;
-  text-align: center;
+width: 100%;
+text-align: center;
 }
 
 .upload-box {
-  width: 100%;
+width: 100%;
 
-  margin-top: 16px;
-  padding: 22px;
+margin-top: 16px;
+padding: 22px;
 
-  border: 2px dashed #f4a6ca;
-  border-radius: 18px;
+border: 2px dashed #f4a6ca;
+border-radius: 18px;
 
-  background: #fff4fa;
+background: #fff4fa;
 
-  text-align: center;
+text-align: center;
 }
 
 .upload-icon {
-  margin-bottom: 8px;
+margin-bottom: 8px;
 
-  font-size: 2.5rem;
+font-size: 2.5rem;
 }
 
 .upload-box strong {
-  display: block;
+display: block;
 
-  font-size: 1.05rem;
+font-size: 1.05rem;
 
-  color: #12365b;
+color: #12365b;
 }
 
 .upload-box small {
-  display: block;
+display: block;
 
-  margin-top: 6px;
+margin-top: 6px;
 
-  color: #6b7c8f;
+color: #6b7c8f;
 }
 
 .upload-box input[type="file"] {
-  display: block;
+display: block;
 
-  width: 100%;
+width: 100%;
 
-  margin-top: 16px;
-  padding: 12px;
+margin-top: 16px;
+padding: 12px;
 
-  border: 1px solid #f0b4d2;
-  border-radius: 12px;
+border: 1px solid #f0b4d2;
+border-radius: 12px;
 
-  background: #fff;
+background: #fff;
 
-  font-size: .9rem;
+font-size: .9rem;
 }
 
 .comprovante-nome {
-  margin: 12px 0;
+margin: 12px 0;
 
-  font-size: .9rem;
-  font-weight: 700;
+font-size: .9rem;
+font-weight: 700;
 
-  color: #1766a5;
+color: #1766a5;
 
-  word-break: break-word;
+word-break: break-word;
 }
 
 .whatsapp-btn {
-  display: block;
+display: block;
 
-  width: 100%;
+width: 100%;
 
-  margin-top: 10px;
-  padding: 14px 16px;
+margin-top: 10px;
+padding: 14px 16px;
 
-  border: 0;
-  border-radius: 14px;
+border: 0;
+border-radius: 14px;
 
-  background: #25d366;
+background: #25d366;
 
-  color: #fff;
+color: #fff;
 
-  font-size: .95rem;
-  font-weight: 900;
+font-size: .95rem;
+font-weight: 900;
 
-  cursor: pointer;
+cursor: pointer;
 
-  transition:
-    transform .15s ease,
-    opacity .15s ease;
+transition:
+transform .15s ease,
+opacity .15s ease;
 }
 
 .whatsapp-btn:hover {
-  transform: translateY(-1px);
+transform: translateY(-1px);
 }
 
 .whatsapp-btn:disabled {
-  opacity: .45;
+opacity: .45;
 
-  cursor: not-allowed;
+cursor: not-allowed;
 
-  transform: none;
+transform: none;
 }
 
 .comprovante-msg {
-  min-height: 20px;
+min-height: 20px;
 
-  margin: 10px 0 0;
+margin: 10px 0 0;
 
-  font-size: .85rem;
-  font-weight: 700;
+font-size: .85rem;
+font-weight: 700;
 
-  color: #1766a5;
+color: #1766a5;
 }
 
 /* =========================================================
-   🎟️ ESCOLHA SEUS NÚMEROS
+🎟️ ESCOLHA DOS NÚMEROS
 ========================================================= */
 
 .choose {
-  display: block;
+display: block;
 
-  width: 100%;
+width: 100%;
 
-  text-align: center;
+text-align: center;
 }
 
 .choose h2 {
-  margin-top: 5px;
+margin-top: 5px;
 
-  font-size: 1.8rem;
+font-size: 1.8rem;
 }
 
 .choose p {
-  font-size: 1rem;
-  font-weight: 700;
+font-size: 1rem;
+font-weight: 700;
 }
 
 .choose button {
-  display: block;
+display: block;
 
-  width: min(100%, 480px);
+width: min(100%, 480px);
 
-  margin: 10px auto;
+min-height: 52px;
+
+margin: 10px auto;
 }
 
 /* =========================================================
-   🍀 NÚMERO DA SORTE
+🍀 NÚMERO DA SORTE
 ========================================================= */
 
 .luck {
-  display: flex;
+display: flex;
 
-  align-items: center;
-  justify-content: center;
+align-items: center;
+justify-content: center;
 
-  gap: 15px;
+gap: 15px;
 
-  width: 100%;
+width: 100%;
 
-  text-align: center;
+text-align: center;
 
-  background:
-    linear-gradient(
-      90deg,
-      #0878e8,
-      #f43b9a
-    );
+background:
+linear-gradient(
+90deg,
+#0878e8,
+#f43b9a
+);
 
-  color: #fff;
+color: #fff;
 }
 
 .luck h2 {
-  margin: 0;
+margin: 0;
 }
 
 .luck p {
-  margin-bottom: 0;
+margin-bottom: 0;
 }
 
 .luck span {
-  font-size: 3rem;
+font-size: 3rem;
 }
 
 /* =========================================================
-   RODAPÉ
+RODAPÉ
 ========================================================= */
 
 footer {
-  width: 100%;
+width: 100%;
 
-  padding: 24px 16px;
+padding: 24px 16px;
 
-  color: #fff;
+color: #fff;
 
-  text-align: center;
+text-align: center;
 
-  font-weight: 700;
+font-weight: 700;
 }
 
 /* =========================================================
-   📱 CELULAR
+📱 CELULAR
 ========================================================= */
 
 @media screen and (max-width: 700px) {
 
-  /* -------------------------------------------------------
-     PÁGINA
-  ------------------------------------------------------- */
+html,
+body {
+width: 100%;
+max-width: 100%;
 
-  html,
-  body {
-    width: 100%;
-    max-width: 100%;
+overflow-x: hidden;
 
-    overflow-x: hidden;
-  }
+}
 
-  main {
-    width: calc(100% - 16px);
-    max-width: none;
+main {
+width: calc(100% - 16px);
+max-width: none;
 
-    margin: 0 auto;
-  }
+margin: 0 auto;
 
-  /* -------------------------------------------------------
-     TOPO
-  ------------------------------------------------------- */
+}
 
-  .topbar {
-    width: 100%;
+.topbar {
+width: 100%;
 
-    padding: 10px 8px;
+padding: 10px 8px;
 
-    gap: 10px;
-  }
+gap: 10px;
 
-  .brand {
-    font-size: 1rem;
-  }
+}
 
-  .gilfest-top {
-    transform: scale(1);
-  }
+.brand {
+font-size: 1rem;
+}
 
-  .gilfest-top img {
-    width: 62px;
-    max-height: 52px;
-  }
+.gilfest-top {
+transform: scale(1);
+}
 
-  .gilfest-top small {
-    font-size: .9rem;
-  }
+.gilfest-top img {
+width: 62px;
+max-height: 52px;
+}
 
-  /* -------------------------------------------------------
-     CARTÃO PADRÃO
-  ------------------------------------------------------- */
+.gilfest-top small {
+font-size: .9rem;
+}
 
-  .card {
-    width: 100%;
+.card {
+width: 100%;
 
-    margin: 10px 0;
+margin: 10px 0;
 
-    padding: 16px;
+padding: 16px;
 
-    border-radius: 20px;
-  }
+border-radius: 20px;
 
-  /* -------------------------------------------------------
-     HERO
-  ------------------------------------------------------- */
+}
 
-  .hero {
-    flex-direction: column;
+/* =====================================================
+HERO
+====================================================== */
 
-    align-items: center;
-    justify-content: center;
+.hero {
+flex-direction: column;
 
-    gap: 12px;
+align-items: center;
+justify-content: center;
 
-    text-align: center;
-  }
+gap: 12px;
 
-  .hero-copy {
-    width: 100%;
-  }
+text-align: center;
 
-  .hero h1 {
-    margin: 12px 0;
+}
 
-    font-size: 1.7rem;
-  }
+.hero-copy {
+width: 100%;
+}
 
-  .hero-photo {
-    width: 145px;
-    height: 145px;
-  }
+.hero h1 {
+margin: 12px 0;
 
-  /* -------------------------------------------------------
-     PRÊMIO
-  ------------------------------------------------------- */
+font-size: 1.7rem;
 
-  .prize {
-    flex-direction: column;
+}
 
-    align-items: center;
-    justify-content: center;
+.hero-photo {
+width: 145px;
+height: 145px;
+}
 
-    gap: 10px;
+/* =====================================================
+PRÊMIO
+====================================================== */
 
-    text-align: center;
-  }
+.prize {
+flex-direction: column;
 
-  .prize > div {
-    width: 100%;
-  }
+align-items: center;
+justify-content: center;
 
-  .prize h2 {
-    font-size: 1.8rem;
-  }
+gap: 10px;
 
-  .prize img {
-    width: 220px;
+text-align: center;
 
-    max-width: 80%;
-    max-height: 220px;
+}
 
-    margin: auto;
-  }
+.prize > div {
+width: 100%;
+}
 
-  /* -------------------------------------------------------
-     BUSCA
-  ------------------------------------------------------- */
+.prize h2 {
+font-size: 1.8rem;
+}
 
-  .search {
-    grid-template-columns: 1fr;
+.prize img {
+width: 220px;
 
-    text-align: center;
-  }
+max-width: 80%;
+max-height: 220px;
 
-  .search h2 {
-    font-size: 1.25rem;
-  }
+margin: auto;
 
-  .pix {
-    width: 100%;
-  }
+}
 
-  /* -------------------------------------------------------
-     ⭐⭐⭐ TRÊS CARTÕES
-     
-     UMA ÚNICA COLUNA.
-     
-     NÃO HÁ POSSIBILIDADE DE 3 COLUNAS AQUI.
-  ------------------------------------------------------- */
+/* =====================================================
+🔵 CARTÃO DO NÚMERO
+====================================================== */
 
-  .steps-grid {
-    display: grid;
+.search {
+display: flex;
 
-    grid-template-columns: minmax(0, 1fr);
+flex-direction: column;
 
-    grid-template-rows: auto auto auto;
+width: 100%;
 
-    grid-auto-flow: row;
+gap: 14px;
 
-    width: 100%;
-    max-width: 100%;
+text-align: center;
 
-    gap: 14px;
+}
 
-    align-items: stretch;
-  }
+.numero-area {
+width: 100%;
+}
 
-  .steps-grid > article.card {
-    display: block;
+.numero-area h2 {
+font-size: 1.25rem;
 
-    grid-column: 1;
+line-height: 1.25;
 
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
+}
 
-    margin: 0;
+#numeroDireto,
+#verificarNumero,
+.verificar-numero,
+#numeroStatus,
+.numero-status,
+#reservarNumero,
+.reservar-numero {
+width: 100% !important;
+max-width: 100% !important;
+}
 
-    padding: 16px;
-  }
+#numeroDireto {
+height: 54px;
+}
 
-  /* -------------------------------------------------------
-     ORDEM
-  ------------------------------------------------------- */
+#verificarNumero,
+.verificar-numero {
+height: 54px;
 
-  .steps-grid > .upload {
-    grid-row: 1;
-  }
+font-size: .95rem !important;
 
-  .steps-grid > .scratch {
-    grid-row: 2;
-  }
+}
 
-  .steps-grid > .steps {
-    grid-row: 3;
-  }
+#reservarNumero,
+.reservar-numero {
+min-height: 54px;
 
-  /* -------------------------------------------------------
-     COMPROVANTE
-  ------------------------------------------------------- */
+font-size: .95rem !important;
 
-  .upload {
-    width: 100%;
-  }
+}
 
-  .upload-box {
-    width: 100%;
-    padding: 18px 14px;
-  }
+#numeroStatus,
+.numero-status {
+min-height: 54px;
 
-  /* -------------------------------------------------------
-     RASPADINHA
-  ------------------------------------------------------- */
+font-size: .9rem;
 
-  .scratch {
-    width: 100%;
-  }
+}
 
-  .scratch-area {
-    width: 100%;
-    height: 135px;
-  }
+.numero-area > small {
+text-align: center;
+}
 
-  /* -------------------------------------------------------
-     COMO PARTICIPAR
-  ------------------------------------------------------- */
+.pix-area {
+width: 100%;
+}
 
-  .steps {
-    width: 100%;
-  }
+.pix {
+width: 100% !important;
+min-height: 54px;
+}
 
-  .steps ol {
-    text-align: left;
-  }
+/* =====================================================
+⭐ TRÊS CARTÕES
+====================================================== */
 
-  /* -------------------------------------------------------
-     ESCOLHA DOS NÚMEROS
-  ------------------------------------------------------- */
+.steps-grid {
+display: grid;
 
-  .choose {
-    display: block;
+grid-template-columns: minmax(0, 1fr);
 
-    width: 100%;
-    max-width: 100%;
+grid-template-rows:
+  auto
+  auto
+  auto;
 
-    margin: 10px 0;
+grid-auto-flow: row;
 
-    padding: 24px 16px;
+width: 100%;
+max-width: 100%;
 
-    text-align: center;
-  }
+gap: 14px;
 
-  .choose h2 {
-    margin: 5px 0 12px;
+}
 
-    font-size: 1.8rem;
-  }
+.steps-grid > article.card {
+display: block;
 
-  .choose p {
-    margin: 8px 0 16px;
+grid-column: 1;
 
-    font-size: 1rem;
-    font-weight: 700;
-  }
+width: 100%;
+max-width: 100%;
+min-width: 0;
 
-  .choose button {
-    display: block;
+margin: 0;
 
-    width: 100%;
-    max-width: none;
+padding: 16px;
 
-    min-height: 52px;
+}
 
-    margin: 10px 0;
-  }
+.steps-grid > .upload {
+grid-row: 1;
+}
 
-  /* -------------------------------------------------------
-     NÚMERO DA SORTE
-  ------------------------------------------------------- */
+.steps-grid > .scratch {
+grid-row: 2;
+}
 
-  .luck {
-    width: 100%;
+.steps-grid > .steps {
+grid-row: 3;
+}
 
-    flex-direction: column;
+/* =====================================================
+RASPADINHA
+====================================================== */
 
-    padding: 20px 16px;
+.scratch {
+width: 100%;
+}
 
-    text-align: center;
-  }
+.scratch-area {
+width: 100%;
+height: 210px;
+}
 
-  .luck span {
-    font-size: 3.2rem;
-  }
+/* =====================================================
+COMPROVANTE
+====================================================== */
 
-  /* -------------------------------------------------------
-     RODAPÉ
-  ------------------------------------------------------- */
+.upload-box {
+width: 100%;
 
-  footer {
-    width: 100%;
+padding: 18px 14px;
 
-    padding: 20px 12px;
-  }
+}
 
-  /* -------------------------------------------------------
-     TREVOS
-  ------------------------------------------------------- */
+/* =====================================================
+ESCOLHA
+====================================================== */
 
-  body::after {
-    font-size: 58px;
-    letter-spacing: 42px;
-  }
+.choose {
+display: block;
+
+width: 100%;
+max-width: 100%;
+
+margin: 10px 0;
+
+padding: 24px 16px;
+
+text-align: center;
+
+}
+
+.choose h2 {
+margin: 5px 0 12px;
+
+font-size: 1.8rem;
+
+}
+
+.choose p {
+margin: 8px 0 16px;
+
+font-size: 1rem;
+font-weight: 700;
+
+}
+
+.choose button {
+display: block;
+
+width: 100%;
+max-width: none;
+
+min-height: 52px;
+
+margin: 10px 0;
+
+}
+
+/* =====================================================
+NÚMERO DA SORTE
+====================================================== */
+
+.luck {
+width: 100%;
+
+flex-direction: column;
+
+padding: 20px 16px;
+
+text-align: center;
+
+}
+
+.luck span {
+font-size: 3.2rem;
+}
+
+footer {
+width: 100%;
+
+padding: 20px 12px;
+
+}
+
+body::after {
+font-size: 58px;
+letter-spacing: 42px;
+}
 }
 
 /* =========================================================
-   📱 CELULARES PEQUENOS
+📱 CELULARES PEQUENOS
 ========================================================= */
 
 @media screen and (max-width: 380px) {
 
-  main {
-    width: calc(100% - 12px);
-  }
-
-  .card {
-    padding: 14px;
-  }
-
-  .hero h1 {
-    font-size: 1.5rem;
-  }
-
-  .prize h2 {
-    font-size: 1.6rem;
-  }
-
-  .choose h2 {
-    font-size: 1.6rem;
-  }
-
-  .scratch-area {
-    height: 125px;
-  }
-
-  .steps-grid {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .steps-grid > article.card {
-    width: 100%;
-    min-width: 0;
-  }
+main {
+width: calc(100% - 12px);
 }
 
-/* =========================================================
-   🚫 PROTEÇÃO FINAL DO LAYOUT
-=========================================================
+.card {
+padding: 14px;
+}
 
-   Esta regra garante que .steps-grid NUNCA volte
-   a ser uma grade de três colunas.
+.hero h1 {
+font-size: 1.5rem;
+}
 
-========================================================= */
+.prize h2 {
+font-size: 1.6rem;
+}
+
+.choose h2 {
+font-size: 1.6rem;
+}
+
+.scratch-area {
+height: 190px;
+}
 
 .steps-grid {
-  grid-template-columns: minmax(0, 1fr) !important;
+grid-template-columns: minmax(0, 1fr);
 }
 
 .steps-grid > article.card {
-  grid-column: 1 !important;
-  width: 100% !important;
-  max-width: 100% !important;
-  min-width: 0 !important;
+width: 100%;
+min-width: 0;
+}
+
+#verificarNumero,
+.verificar-numero,
+#reservarNumero,
+.reservar-numero,
+.pix {
+width: 100% !important;
+}
 }
 
 /* =========================================================
-   🎟️ STATUS E RESERVA DO NÚMERO
+🚫 PROTEÇÃO FINAL
 ========================================================= */
 
-#numeroStatus {
-  display: none;
-  width: 100% !important;
-  min-height: 52px;
-
-  margin: 10px 0 !important;
-  padding: 15px 16px !important;
-
-  border-radius: 14px !important;
-
-  font-size: 1rem;
-  font-weight: 900;
-
-  text-align: center;
-
-  box-sizing: border-box;
-
-  align-items: center;
-  justify-content: center;
+.steps-grid {
+grid-template-columns: minmax(0, 1fr) !important;
 }
 
-
-/* =========================================================
-   🎟️ BOTÃO RESERVAR
-========================================================= */
-
-#reservarNumero {
-  display: none;
-
-  width: 100% !important;
-  min-height: 54px;
-
-  margin: 10px 0 0 !important;
-  padding: 15px 18px !important;
-
-  border: 0 !important;
-  border-radius: 14px !important;
-
-  background:
-    linear-gradient(
-      90deg,
-      #0878e8,
-      #f43b9a
-    ) !important;
-
-  color: #fff !important;
-
-  font-family: Arial, Helvetica, sans-serif;
-
-  font-size: 1rem !important;
-  font-weight: 900 !important;
-
-  text-align: center;
-
-  cursor: pointer;
-
-  box-shadow:
-    0 6px 14px rgba(8,120,232,.22);
-
-  box-sizing: border-box;
-
-  transition:
-    transform .15s ease,
-    box-shadow .15s ease,
-    opacity .15s ease;
-}
-
-#reservarNumero:hover {
-  transform: translateY(-1px);
-
-  box-shadow:
-    0 8px 18px rgba(8,120,232,.28);
-}
-
-#reservarNumero:active {
-  transform: scale(.98);
-}
-
-#reservarNumero:disabled {
-  opacity: .55;
-  cursor: not-allowed;
-  transform: none;
-}
-
-
-/* =========================================================
-   🔎 CAMPO + STATUS + RESERVA
-   TUDO OCUPANDO A LARGURA DO CARTÃO
-========================================================= */
-
-.search > div {
-  width: 100%;
-  min-width: 0;
-}
-
-.search input {
-  width: 100% !important;
-  min-height: 52px;
-}
-
-
-/* =========================================================
-   📱 CELULAR
-========================================================= */
-
-@media screen and (max-width: 700px) {
-
-  #numeroStatus {
-    width: 100% !important;
-    min-height: 52px;
-
-    padding: 15px 12px !important;
-
-    font-size: .95rem;
-  }
-
-  #reservarNumero {
-    width: 100% !important;
-    min-height: 54px;
-
-    padding: 15px 12px !important;
-
-    font-size: .95rem !important;
-  }
-
+.steps-grid > article.card {
+grid-column: 1 !important;
+width: 100% !important;
+max-width: 100% !important;
+min-width: 0 !important;
 }
