@@ -1,1485 +1,1827 @@
-js/index.js
-
 import { CONFIG } from './config.js';
 
 import {
-initializeApp
+  initializeApp
 } from 'https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js';
 
 import {
-getDatabase,
-ref,
-get,
-runTransaction
+  getDatabase,
+  ref,
+  get,
+  runTransaction
 } from 'https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js';
 
+
 /* =========================================================
-🔥 FIREBASE
+   🔥 FIREBASE
 ========================================================= */
 
 let db = null;
 
 try {
 
-/*
+  if (
+    CONFIG &&
+    CONFIG.firebaseConfig &&
+    CONFIG.firebaseConfig.apiKey
+  ) {
 
-O projeto precisa ter a configuração do Firebase
+    const app =
+      initializeApp(
+        CONFIG.firebaseConfig
+      );
 
-disponível em CONFIG.firebaseConfig.
-*/
+    db =
+      getDatabase(app);
 
+    console.log(
+      '✅ Firebase conectado.'
+    );
 
-if (CONFIG.firebaseConfig) {
+  } else {
 
-const app = initializeApp(  
-  CONFIG.firebaseConfig  
-);  
+    console.warn(
+      '⚠️ Firebase não configurado em config.js.'
+    );
 
-db = getDatabase(app);
-
-}
+  }
 
 } catch (erro) {
 
-console.error(
-'Erro ao iniciar Firebase:',
-erro
-);
+  console.error(
+    '❌ Erro ao iniciar Firebase:',
+    erro
+  );
 
 }
 
+
 /* =========================================================
-ESCOLHER NÚMEROS
+   🎟️ ESCOLHER NÚMEROS
 ========================================================= */
 
 const abrirCartelas =
-document.getElementById('abrirCartelas');
+  document.getElementById(
+    'abrirCartelas'
+  );
 
 if (abrirCartelas) {
 
-abrirCartelas.onclick = () => {
+  abrirCartelas.addEventListener(
+    'click',
+    () => {
 
-location.href =  
-  'cartela.html';
+      window.location.href =
+        'cartela.html';
 
-};
+    }
+  );
 
 }
 
+
 /* =========================================================
-SUGERIR NÚMERO
+   🍀 SUGERIR NÚMERO
 ========================================================= */
 
 const sugerir =
-document.getElementById('sugerir');
+  document.getElementById(
+    'sugerir'
+  );
 
 if (sugerir) {
 
-sugerir.onclick = () => {
+  sugerir.addEventListener(
+    'click',
+    () => {
 
-location.href =  
-  'cartela.html?sugerir=1';
+      window.location.href =
+        'cartela.html?sugerir=1';
 
-};
+    }
+  );
 
 }
 
+
 /* =========================================================
-🎟️ DIGITAR / VERIFICAR NÚMERO
+   🔢 DIGITAR / VERIFICAR / RESERVAR NÚMERO
 ========================================================= */
 
 const numeroDireto =
-document.getElementById('numeroDireto');
+  document.getElementById(
+    'numeroDireto'
+  );
 
-/*
-
-Criamos automaticamente a área de status
-
-logo abaixo do campo.
-*/
-
-
-let numeroStatus = null;
-let reservarNumero = null;
 
 if (numeroDireto) {
 
-const areaNumero =
-numeroDireto.parentElement;
+  const areaNumero =
+    numeroDireto.parentElement;
 
-/* -------------------------------------------------------
-STATUS
-------------------------------------------------------- */
 
-numeroStatus =
-document.createElement('div');
+  /* =======================================================
+     STATUS
+  ======================================================= */
 
-numeroStatus.id =
-'numeroStatus';
+  const numeroStatus =
+    document.createElement(
+      'div'
+    );
 
-numeroStatus.style.display =
-'none';
+  numeroStatus.id =
+    'numeroStatus';
 
-numeroStatus.style.margin =
-'8px 0';
+  numeroStatus.style.display =
+    'none';
 
-numeroStatus.style.padding =
-'10px 12px';
+  numeroStatus.style.margin =
+    '10px 0';
 
-numeroStatus.style.borderRadius =
-'10px';
+  numeroStatus.style.padding =
+    '12px';
 
-numeroStatus.style.fontWeight =
-'900';
+  numeroStatus.style.borderRadius =
+    '12px';
 
-numeroStatus.style.textAlign =
-'center';
+  numeroStatus.style.fontWeight =
+    '900';
 
-areaNumero.appendChild(
-numeroStatus
-);
+  numeroStatus.style.textAlign =
+    'center';
 
-/* -------------------------------------------------------
-BOTÃO RESERVAR
-------------------------------------------------------- */
+  numeroStatus.style.fontSize =
+    '1rem';
 
-reservarNumero =
-document.createElement('button');
+  areaNumero.appendChild(
+    numeroStatus
+  );
 
-reservarNumero.id =
-'reservarNumero';
 
-reservarNumero.type =
-'button';
+  /* =======================================================
+     BOTÃO RESERVAR
+  ======================================================= */
 
-reservarNumero.textContent =
-'🎟️ RESERVAR NÚMERO';
+  const reservarNumero =
+    document.createElement(
+      'button'
+    );
 
-reservarNumero.style.display =
-'none';
+  reservarNumero.id =
+    'reservarNumero';
 
-reservarNumero.style.width =
-'100%';
+  reservarNumero.type =
+    'button';
 
-reservarNumero.style.marginTop =
-'8px';
+  reservarNumero.textContent =
+    '🎟️ RESERVAR NÚMERO';
 
-reservarNumero.style.padding =
-'14px';
+  reservarNumero.style.display =
+    'none';
 
-reservarNumero.style.border =
-'0';
+  reservarNumero.style.width =
+    '100%';
 
-reservarNumero.style.borderRadius =
-'12px';
+  reservarNumero.style.marginTop =
+    '8px';
 
-reservarNumero.style.background =
-'linear-gradient(90deg,#0878e8,#f43b9a)';
+  reservarNumero.style.padding =
+    '14px';
 
-reservarNumero.style.color =
-'#fff';
+  reservarNumero.style.border =
+    '0';
 
-reservarNumero.style.fontWeight =
-'900';
+  reservarNumero.style.borderRadius =
+    '12px';
 
-reservarNumero.style.cursor =
-'pointer';
+  reservarNumero.style.background =
+    'linear-gradient(90deg,#0878e8,#f43b9a)';
 
-areaNumero.appendChild(
-reservarNumero
-);
+  reservarNumero.style.color =
+    '#fff';
 
-/* -------------------------------------------------------
-FUNÇÕES VISUAIS
-------------------------------------------------------- */
+  reservarNumero.style.fontWeight =
+    '900';
 
-function limparStatus() {
+  reservarNumero.style.fontSize =
+    '1rem';
 
-if (numeroStatus) {  
+  reservarNumero.style.cursor =
+    'pointer';
 
-  numeroStatus.style.display =  
-    'none';  
+  reservarNumero.style.boxShadow =
+    '0 6px 14px rgba(0,0,0,.15)';
 
-  numeroStatus.textContent =  
-    '';  
+  areaNumero.appendChild(
+    reservarNumero
+  );
 
-}  
 
-if (reservarNumero) {  
+  /* =======================================================
+     FUNÇÃO — LIMPAR
+  ======================================================= */
 
-  reservarNumero.style.display =  
-    'none';  
+  function limparNumeroStatus() {
 
-  reservarNumero.disabled =  
-    false;  
+    numeroStatus.style.display =
+      'none';
+
+    numeroStatus.textContent =
+      '';
+
+    reservarNumero.style.display =
+      'none';
+
+    reservarNumero.disabled =
+      false;
+
+    reservarNumero.textContent =
+      '🎟️ RESERVAR NÚMERO';
+
+    delete reservarNumero.dataset.numero;
+
+  }
+
+
+  /* =======================================================
+     FUNÇÃO — CARREGANDO
+  ======================================================= */
+
+  function mostrarVerificando() {
+
+    numeroStatus.style.display =
+      'block';
+
+    numeroStatus.style.background =
+      '#eef6ff';
+
+    numeroStatus.style.color =
+      '#1766a5';
+
+    numeroStatus.style.border =
+      '1px solid #a8cff2';
+
+    numeroStatus.textContent =
+      '🔎 Verificando disponibilidade...';
+
+    reservarNumero.style.display =
+      'none';
+
+  }
+
+
+  /* =======================================================
+     FUNÇÃO — DISPONÍVEL
+  ======================================================= */
+
+  function mostrarDisponivel(
+    numero
+  ) {
+
+    numeroStatus.style.display =
+      'block';
+
+    numeroStatus.style.background =
+      '#e8fff0';
+
+    numeroStatus.style.color =
+      '#12843b';
+
+    numeroStatus.style.border =
+      '1px solid #8de0aa';
+
+    numeroStatus.textContent =
+      `🟢 NÚMERO ${numero} DISPONÍVEL`;
+
+    reservarNumero.style.display =
+      'block';
+
+    reservarNumero.disabled =
+      false;
+
+    reservarNumero.textContent =
+      `🎟️ RESERVAR ${numero}`;
+
+    reservarNumero.dataset.numero =
+      numero;
+
+  }
+
+
+  /* =======================================================
+     FUNÇÃO — INDISPONÍVEL
+  ======================================================= */
+
+  function mostrarIndisponivel(
+    numero
+  ) {
+
+    numeroStatus.style.display =
+      'block';
+
+    numeroStatus.style.background =
+      '#fff0f0';
+
+    numeroStatus.style.color =
+      '#c62828';
+
+    numeroStatus.style.border =
+      '1px solid #f0a0a0';
+
+    numeroStatus.textContent =
+      `🔴 NÚMERO ${numero} NÃO DISPONÍVEL`;
+
+    reservarNumero.style.display =
+      'none';
+
+    delete reservarNumero.dataset.numero;
+
+  }
+
+
+  /* =======================================================
+     FUNÇÃO — ERRO
+  ======================================================= */
+
+  function mostrarErro(
+    mensagem
+  ) {
+
+    numeroStatus.style.display =
+      'block';
+
+    numeroStatus.style.background =
+      '#fff7e6';
+
+    numeroStatus.style.color =
+      '#9a6500';
+
+    numeroStatus.style.border =
+      '1px solid #efd28a';
+
+    numeroStatus.textContent =
+      `⚠️ ${mensagem}`;
+
+    reservarNumero.style.display =
+      'none';
+
+  }
+
+
+  /* =======================================================
+     VERIFICAR SE NÚMERO ESTÁ OCUPADO
+  ======================================================= */
+
+  function numeroEstaOcupado(
+    dados
+  ) {
+
+    if (!dados) {
+      return false;
+    }
+
+
+    const status =
+      String(
+        dados.status ||
+        dados.situacao ||
+        ''
+      ).toLowerCase();
+
+
+    return (
+
+      status === 'reservado' ||
+
+      status === 'vendido' ||
+
+      status === 'pago' ||
+
+      status === 'ocupado' ||
+
+      status === 'indisponivel' ||
+
+      dados.reservado === true ||
+
+      dados.vendido === true ||
+
+      dados.pago === true ||
+
+      dados.ocupado === true
+
+    );
+
+  }
+
+
+  /* =======================================================
+     VERIFICAR NÚMERO
+  ======================================================= */
+
+  async function verificarNumero() {
+
+    const valor =
+      numeroDireto.value
+        .trim();
+
+
+    if (valor === '') {
+
+      limparNumeroStatus();
+
+      return;
+
+    }
+
+
+    const numeroInteiro =
+      Number(valor);
+
+
+    if (
+      !Number.isInteger(
+        numeroInteiro
+      ) ||
+      numeroInteiro < 0 ||
+      numeroInteiro > 999
+    ) {
+
+      mostrarErro(
+        'Digite um número entre 000 e 999.'
+      );
+
+      return;
+
+    }
+
+
+    const numero =
+      String(
+        numeroInteiro
+      ).padStart(
+        3,
+        '0'
+      );
+
+
+    mostrarVerificando();
+
+
+    if (!db) {
+
+      mostrarErro(
+        'Firebase não está conectado. Verifique o config.js.'
+      );
+
+      return;
+
+    }
+
+
+    try {
+
+      const numeroRef =
+        ref(
+          db,
+          `rifa/numeros/${numero}`
+        );
+
+
+      const snapshot =
+        await get(
+          numeroRef
+        );
+
+
+      /*
+       * Se o número não existe,
+       * consideramos disponível.
+       */
+
+      if (!snapshot.exists()) {
+
+        mostrarDisponivel(
+          numero
+        );
+
+        return;
+
+      }
+
+
+      const dados =
+        snapshot.val();
+
+
+      if (
+        numeroEstaOcupado(
+          dados
+        )
+      ) {
+
+        mostrarIndisponivel(
+          numero
+        );
+
+      } else {
+
+        mostrarDisponivel(
+          numero
+        );
+
+      }
+
+    } catch (erro) {
+
+      console.error(
+        '❌ Erro ao verificar número:',
+        erro
+      );
+
+      mostrarErro(
+        'Não foi possível verificar o número.'
+      );
+
+    }
+
+  }
+
+
+  /* =======================================================
+     DIGITAÇÃO
+  ======================================================= */
+
+  numeroDireto.addEventListener(
+    'input',
+    () => {
+
+      numeroDireto.value =
+        numeroDireto.value
+          .replace(
+            /\D/g,
+            ''
+          )
+          .slice(
+            0,
+            3
+          );
+
+
+      /*
+       * Só consulta quando
+       * completar os 3 dígitos.
+       */
+
+      if (
+        numeroDireto.value.length === 3
+      ) {
+
+        verificarNumero();
+
+      } else {
+
+        limparNumeroStatus();
+
+      }
+
+    }
+  );
+
+
+  /* =======================================================
+     ENTER
+  ======================================================= */
+
+  numeroDireto.addEventListener(
+    'keydown',
+    evento => {
+
+      if (
+        evento.key === 'Enter'
+      ) {
+
+        evento.preventDefault();
+
+        verificarNumero();
+
+      }
+
+    }
+  );
+
+
+  /* =======================================================
+     RESERVAR NÚMERO
+  ======================================================= */
+
+  reservarNumero.addEventListener(
+    'click',
+    async () => {
+
+      const numero =
+        reservarNumero.dataset.numero;
+
+
+      if (!numero) {
+
+        return;
+
+      }
+
+
+      if (!db) {
+
+        alert(
+          '⚠️ Firebase não está conectado.'
+        );
+
+        return;
+
+      }
+
+
+      reservarNumero.disabled =
+        true;
+
+      reservarNumero.textContent =
+        '⏳ RESERVANDO...';
+
+
+      try {
+
+        const numeroRef =
+          ref(
+            db,
+            `rifa/numeros/${numero}`
+          );
+
+
+        /*
+         * Transaction é importante:
+         * duas pessoas não conseguem
+         * reservar o mesmo número
+         * simultaneamente.
+         */
+
+        const resultado =
+          await runTransaction(
+            numeroRef,
+            atual => {
+
+              /*
+               * Número ainda não existe:
+               * pode ser criado como reservado.
+               */
+
+              if (
+                atual === null
+              ) {
+
+                return {
+
+                  numero:
+                    numero,
+
+                  status:
+                    'reservado',
+
+                  reservado:
+                    true,
+
+                  dataReserva:
+                    new Date()
+                      .toISOString()
+
+                };
+
+              }
+
+
+              /*
+               * Se já existe e está ocupado,
+               * cancela a transação.
+               */
+
+              if (
+                numeroEstaOcupado(
+                  atual
+                )
+              ) {
+
+                return;
+
+              }
+
+
+              /*
+               * Existe, mas está livre.
+               * Mantemos os dados existentes
+               * e marcamos como reservado.
+               */
+
+              return {
+
+                ...atual,
+
+                numero:
+                  numero,
+
+                status:
+                  'reservado',
+
+                reservado:
+                  true,
+
+                dataReserva:
+                  new Date()
+                    .toISOString()
+
+              };
+
+            }
+          );
+
+
+        /*
+         * Outra pessoa ganhou a corrida.
+         */
+
+        if (
+          !resultado.committed
+        ) {
+
+          mostrarIndisponivel(
+            numero
+          );
+
+          alert(
+            `❌ O número ${numero} acabou de ser reservado por outra pessoa.`
+          );
+
+          return;
+
+        }
+
+
+        /*
+         * Reserva concluída.
+         */
+
+        numeroStatus.style.display =
+          'block';
+
+        numeroStatus.style.background =
+          '#e8fff0';
+
+        numeroStatus.style.color =
+          '#12843b';
+
+        numeroStatus.style.border =
+          '1px solid #8de0aa';
+
+        numeroStatus.textContent =
+          `✅ NÚMERO ${numero} RESERVADO COM SUCESSO`;
+
+
+        reservarNumero.style.display =
+          'none';
+
+
+        alert(
+          `✅ Número ${numero} reservado!\n\n` +
+          `Agora faça o pagamento pelo PIX ` +
+          `e depois envie o comprovante.`
+        );
+
+
+        /*
+         * Vai para a cartela mantendo
+         * o número selecionado.
+         */
+
+        setTimeout(
+          () => {
+
+            window.location.href =
+              `cartela.html?numero=${numero}`;
+
+          },
+          700
+        );
+
+
+      } catch (erro) {
+
+        console.error(
+          '❌ Erro ao reservar número:',
+          erro
+        );
+
+
+        reservarNumero.disabled =
+          false;
+
+        reservarNumero.textContent =
+          `🎟️ RESERVAR ${numero}`;
+
+
+        mostrarErro(
+          'Não foi possível reservar o número.'
+        );
+
+
+        alert(
+          '❌ Não foi possível reservar o número. Verifique sua conexão e tente novamente.'
+        );
+
+      }
+
+    }
+  );
 
 }
 
-}
-
-function mostrarDisponivel(numero) {
-
-if (!numeroStatus) return;  
-
-numeroStatus.style.display =  
-  'block';  
-
-numeroStatus.style.background =  
-  '#e8fff0';  
-
-numeroStatus.style.color =  
-  '#12843b';  
-
-numeroStatus.style.border =  
-  '1px solid #8de0aa';  
-
-numeroStatus.textContent =  
-  `🟢 NÚMERO ${numero} DISPONÍVEL`;  
-
-
-if (reservarNumero) {  
-
-  reservarNumero.style.display =  
-    'block';  
-
-  reservarNumero.dataset.numero =  
-    numero;  
-
-}
-
-}
-
-function mostrarIndisponivel(numero) {
-
-if (!numeroStatus) return;  
-
-numeroStatus.style.display =  
-  'block';  
-
-numeroStatus.style.background =  
-  '#fff0f0';  
-
-numeroStatus.style.color =  
-  '#c62828';  
-
-numeroStatus.style.border =  
-  '1px solid #f0a0a0';  
-
-numeroStatus.textContent =  
-  `🔴 NÚMERO ${numero} NÃO DISPONÍVEL`;  
-
-if (reservarNumero) {  
-
-  reservarNumero.style.display =  
-    'none';  
-
-}
-
-}
-
-function mostrarErro(mensagem) {
-
-if (!numeroStatus) return;  
-
-numeroStatus.style.display =  
-  'block';  
-
-numeroStatus.style.background =  
-  '#fff7e6';  
-
-numeroStatus.style.color =  
-  '#9a6500';  
-
-numeroStatus.style.border =  
-  '1px solid #efd28a';  
-
-numeroStatus.textContent =  
-  `⚠️ ${mensagem}`;
-
-}
-
-/* -------------------------------------------------------
-VERIFICAR NO FIREBASE
-------------------------------------------------------- */
-
-async function verificarNumero() {
-
-limparStatus();  
-
-const raw =  
-  numeroDireto.value.trim();  
-
-if (raw === '') return;  
-
-
-const n =  
-  Number(raw);  
-
-
-if (  
-  !Number.isInteger(n) ||  
-  n < 0 ||  
-  n > 999  
-) {  
-
-  mostrarErro(  
-    'Digite um número entre 000 e 999.'  
-  );  
-
-  return;  
-
-}  
-
-
-const numero =  
-  String(n).padStart(3, '0');  
-
-
-/*  
- * Enquanto consulta.  
- */  
-
-if (numeroStatus) {  
-
-  numeroStatus.style.display =  
-    'block';  
-
-  numeroStatus.style.background =  
-    '#eef6ff';  
-
-  numeroStatus.style.color =  
-    '#1766a5';  
-
-  numeroStatus.style.border =  
-    '1px solid #a8cff2';  
-
-  numeroStatus.textContent =  
-    '🔎 Verificando disponibilidade...';  
-
-}  
-
-
-if (!db) {  
-
-  mostrarErro(  
-    'Firebase não está configurado.'  
-  );  
-
-  return;  
-
-}  
-
-
-try {  
-
-  const numeroRef =  
-    ref(  
-      db,  
-      `rifa/numeros/${numero}`  
-    );  
-
-
-  const snapshot =  
-    await get(numeroRef);  
-
-
-  /*  
-   * Número ainda não existe:  
-   * consideramos disponível.  
-   */  
-
-  if (!snapshot.exists()) {  
-
-    mostrarDisponivel(numero);  
-
-    return;  
-
-  }  
-
-
-  const dados =  
-    snapshot.val();  
-
-
-  /*  
-   * Aceita diferentes formatos  
-   * que podem existir na sua estrutura.  
-   */  
-
-  const status =  
-    String(  
-      dados?.status ||  
-      dados?.situacao ||  
-      ''  
-    ).toLowerCase();  
-
-
-  const reservado =  
-    status === 'reservado' ||  
-    status === 'vendido' ||  
-    status === 'pago' ||  
-    status === 'ocupado' ||  
-    dados?.reservado === true ||  
-    dados?.vendido === true ||  
-    dados?.ocupado === true;  
-
-
-  if (reservado) {  
-
-    mostrarIndisponivel(numero);  
-
-  } else {  
-
-    mostrarDisponivel(numero);  
-
-  }  
-
-} catch (erro) {  
-
-  console.error(  
-    'Erro ao consultar número:',  
-    erro  
-  );  
-
-  mostrarErro(  
-    'Não foi possível verificar o número.'  
-  );  
-
-}
-
-}
-
-/* -------------------------------------------------------
-DIGITAÇÃO
-------------------------------------------------------- */
-
-numeroDireto.addEventListener(
-'input',
-() => {
-
-numeroDireto.value =  
-    numeroDireto.value  
-      .replace(/\D/g, '')  
-      .slice(0, 3);  
-
-
-  /*  
-   * Verifica automaticamente quando  
-   * o usuário completar os 3 dígitos.  
-   */  
-
-  if (  
-    numeroDireto.value.length === 3  
-  ) {  
-
-    verificarNumero();  
-
-  } else {  
-
-    limparStatus();  
-
-  }  
-
-}
-
-);
-
-/* -------------------------------------------------------
-ENTER
-------------------------------------------------------- */
-
-numeroDireto.addEventListener(
-'keydown',
-evento => {
-
-if (  
-    evento.key === 'Enter'  
-  ) {  
-
-    evento.preventDefault();  
-
-    verificarNumero();  
-
-  }  
-
-}
-
-);
-
-/* -------------------------------------------------------
-RESERVAR NÚMERO
-------------------------------------------------------- */
-
-if (reservarNumero) {
-
-reservarNumero.addEventListener(  
-  'click',  
-  async () => {  
-
-    const numero =  
-      reservarNumero.dataset.numero;  
-
-
-    if (!numero) return;  
-
-
-    if (!db) {  
-
-      alert(  
-        'Firebase não está configurado.'  
-      );  
-
-      return;  
-
-    }  
-
-
-    reservarNumero.disabled =  
-      true;  
-
-    reservarNumero.textContent =  
-      '⏳ RESERVANDO...';  
-
-
-    try {  
-
-      const numeroRef =  
-        ref(  
-          db,  
-          `rifa/numeros/${numero}`  
-        );  
-
-
-      /*  
-       * Transaction evita que duas pessoas  
-       * reservem o mesmo número ao mesmo tempo.  
-       */  
-
-      const resultado =  
-        await runTransaction(  
-          numeroRef,  
-          atual => {  
-
-            /*  
-             * Se alguém já gravou o número,  
-             * não permite outra reserva.  
-             */  
-
-            if (  
-              atual !== null  
-            ) {  
-
-              const status =  
-                String(  
-                  atual?.status ||  
-                  atual?.situacao ||  
-                  ''  
-                ).toLowerCase();  
-
-
-              const ocupado =  
-                status === 'reservado' ||  
-                status === 'vendido' ||  
-                status === 'pago' ||  
-                status === 'ocupado' ||  
-                atual?.reservado === true ||  
-                atual?.vendido === true ||  
-                atual?.ocupado === true;  
-
-
-              if (ocupado) {  
-
-                return;  
-
-              }  
-
-            }  
-
-
-            /*  
-             * Cria a reserva.  
-             */  
-
-            return {  
-
-              numero: numero,  
-
-              status:  
-                'reservado',  
-
-              reservado:  
-                true,  
-
-              dataReserva:  
-                new Date().toISOString()  
-
-            };  
-
-          }  
-        );  
-
-
-      if (  
-        !resultado.committed  
-      ) {  
-
-        mostrarIndisponivel(  
-          numero  
-        );  
-
-        alert(  
-          '❌ Esse número acabou de ser reservado por outra pessoa.'  
-        );  
-
-        return;  
-
-      }  
-
-
-      /*  
-       * Reserva confirmada.  
-       */  
-
-      if (numeroStatus) {  
-
-        numeroStatus.style.display =  
-          'block';  
-
-        numeroStatus.style.background =  
-          '#e8fff0';  
-
-        numeroStatus.style.color =  
-          '#12843b';  
-
-        numeroStatus.style.border =  
-          '1px solid #8de0aa';  
-
-        numeroStatus.textContent =  
-          `✅ NÚMERO ${numero} RESERVADO COM SUCESSO`;  
-
-      }  
-
-
-      reservarNumero.style.display =  
-        'none';  
-
-
-      alert(  
-        `✅ Número ${numero} reservado!\n\n` +  
-        `Agora faça o pagamento pelo PIX ` +  
-        `e depois envie o comprovante.`  
-      );  
-
-
-      /*  
-       * Mantém o número selecionado  
-       * para a cartela.  
-       */  
-
-      setTimeout(  
-        () => {  
-
-          location.href =  
-            `cartela.html?numero=${numero}`;  
-
-        },  
-        500  
-      );  
-
-
-    } catch (erro) {  
-
-      console.error(  
-        'Erro ao reservar número:',  
-        erro  
-      );  
-
-
-      reservarNumero.disabled =  
-        false;  
-
-      reservarNumero.textContent =  
-        '🎟️ RESERVAR NÚMERO';  
-
-
-      mostrarErro(  
-        'Não foi possível reservar o número.'  
-      );  
-
-
-      alert(  
-        '❌ Não foi possível reservar o número. ' +  
-        'Verifique sua conexão e tente novamente.'  
-      );  
-
-    }  
-
-  }  
-);
-
-}
-
-}
 
 /* =========================================================
-💠 COPIAR PIX
+   💠 COPIAR PIX
 ========================================================= */
 
 const copiarPix =
-document.getElementById('copiarPix');
+  document.getElementById(
+    'copiarPix'
+  );
+
 
 if (copiarPix) {
 
-copiarPix.onclick =
-async () => {
+  copiarPix.addEventListener(
+    'click',
+    async () => {
 
-const chave =  
-    CONFIG.pixChave;  
-
-
-  if (!chave) {  
-
-    alert(  
-      'Chave PIX não configurada.'  
-    );  
-
-    return;  
-
-  }  
+      const chave =
+        CONFIG &&
+        CONFIG.pixChave
+          ? String(
+              CONFIG.pixChave
+            ).trim()
+          : '';
 
 
-  try {  
+      if (!chave) {
 
-    if (  
-      navigator.clipboard  
-    ) {  
+        alert(
+          '⚠️ Chave PIX não configurada.'
+        );
 
-      await navigator.clipboard.writeText(  
-        chave  
-      );  
+        return;
 
-    } else {  
-
-      throw new Error(  
-        'Clipboard indisponível'  
-      );  
-
-    }  
+      }
 
 
-    alert(  
-      '✅ Chave PIX copiada!'  
-    );  
+      try {
+
+        await navigator.clipboard.writeText(
+          chave
+        );
 
 
-  } catch {  
-
-    try {  
-
-      const campo =  
-        document.createElement(  
-          'textarea'  
-        );  
+        copiarPix.textContent =
+          '✅ PIX COPIADO!';
 
 
-      campo.value =  
-        chave;  
+        setTimeout(
+          () => {
 
-      campo.style.position =  
-        'fixed';  
+            copiarPix.textContent =
+              '💠 Copiar chave PIX';
 
-      campo.style.opacity =  
-        '0';  
-
-
-      document.body.appendChild(  
-        campo  
-      );  
+          },
+          1800
+        );
 
 
-      campo.focus();  
+      } catch (erro) {
 
-      campo.select();  
-
-
-      document.execCommand(  
-        'copy'  
-      );  
+        console.warn(
+          'Clipboard moderno indisponível:',
+          erro
+        );
 
 
-      campo.remove();  
+        try {
+
+          const campo =
+            document.createElement(
+              'textarea'
+            );
 
 
-      alert(  
-        '✅ Chave PIX copiada!'  
-      );  
+          campo.value =
+            chave;
+
+          campo.style.position =
+            'fixed';
+
+          campo.style.left =
+            '-9999px';
+
+          campo.style.top =
+            '0';
 
 
-    } catch {  
+          document.body.appendChild(
+            campo
+          );
 
-      alert(  
-        'Não foi possível copiar automaticamente. ' +  
-        'Toque e segure a chave PIX para copiar.'  
-      );  
 
-    }  
+          campo.focus();
 
-  }  
+          campo.select();
 
-};
+          campo.setSelectionRange(
+            0,
+            campo.value.length
+          );
+
+
+          const copiou =
+            document.execCommand(
+              'copy'
+            );
+
+
+          campo.remove();
+
+
+          if (copiou) {
+
+            copiarPix.textContent =
+              '✅ PIX COPIADO!';
+
+
+            setTimeout(
+              () => {
+
+                copiarPix.textContent =
+                  '💠 Copiar chave PIX';
+
+              },
+              1800
+            );
+
+          } else {
+
+            throw new Error(
+              'Não foi possível copiar.'
+            );
+
+          }
+
+        } catch {
+
+          alert(
+            `Copie manualmente a chave PIX:\n\n${chave}`
+          );
+
+        }
+
+      }
+
+    }
+  );
 
 }
 
+
 /* =========================================================
-🍀 RASPADINHA DA SORTE
+   🍀 RASPADINHA DA SORTE
 ========================================================= */
 
 const canvas =
-document.getElementById(
-'scratchCanvas'
-);
+  document.getElementById(
+    'scratchCanvas'
+  );
 
 const area =
-document.querySelector(
-'.scratch-area'
-);
+  document.querySelector(
+    '.scratch-area'
+  );
 
 const premio =
-document.getElementById(
-'scratchPremio'
-);
+  document.getElementById(
+    'scratchPremio'
+  );
+
 
 if (
-canvas &&
-area &&
-premio
+  canvas &&
+  area &&
+  premio
 ) {
 
-const ctx =
-canvas.getContext(
-'2d'
-);
-
-let raspando =
-false;
-
-let finalizada =
-false;
-
-const premios = [
-
-'🧉 LIQUIDIFICADOR',  
-
-'🔥 FERRO ELÉTRICO'
-
-];
-
-const premioEscolhido =
-premios[
-Math.floor(
-Math.random() *
-premios.length
-)
-];
-
-function ajustarCanvas() {
-
-const rect =  
-  area.getBoundingClientRect();  
+  const ctx =
+    canvas.getContext(
+      '2d',
+      {
+        willReadFrequently:
+          true
+      }
+    );
 
 
-const escala =  
-  window.devicePixelRatio ||  
-  1;  
+  let raspando =
+    false;
+
+  let finalizada =
+    false;
 
 
-canvas.width =  
-  rect.width * escala;  
+  const premios = [
 
-canvas.height =  
-  rect.height * escala;  
+    '🧉 LIQUIDIFICADOR',
 
+    '🔥 FERRO ELÉTRICO'
 
-canvas.style.width =  
-  rect.width + 'px';  
-
-canvas.style.height =  
-  rect.height + 'px';  
+  ];
 
 
-ctx.setTransform(  
-  escala,  
-  0,  
-  0,  
-  escala,  
-  0,  
-  0  
-);  
+  const premioEscolhido =
+    premios[
+      Math.floor(
+        Math.random() *
+        premios.length
+      )
+    ];
 
 
-ctx.fillStyle =  
-  '#b9bec4';  
+  /* =======================================================
+     CONFIGURAR CANVAS
+  ======================================================= */
+
+  function ajustarCanvas() {
+
+    const rect =
+      area.getBoundingClientRect();
 
 
-ctx.fillRect(  
-  0,  
-  0,  
-  rect.width,  
-  rect.height  
-);  
+    const largura =
+      Math.max(
+        1,
+        Math.round(
+          rect.width
+        )
+      );
 
 
-ctx.fillStyle =  
-  'rgba(255,255,255,.35)';  
+    const altura =
+      Math.max(
+        1,
+        Math.round(
+          rect.height
+        )
+      );
 
 
-for (  
-  let x = -rect.height;  
-  x < rect.width;  
-  x += 35  
-) {  
-
-  ctx.beginPath();  
-
-  ctx.moveTo(  
-    x,  
-    0  
-  );  
-
-  ctx.lineTo(  
-    x + rect.height,  
-    rect.height  
-  );  
+    const escala =
+      window.devicePixelRatio ||
+      1;
 
 
-  ctx.strokeStyle =  
-    'rgba(255,255,255,.25)';  
+    canvas.width =
+      largura * escala;
 
-  ctx.lineWidth =  
-    10;  
-
-  ctx.stroke();  
-
-}  
+    canvas.height =
+      altura * escala;
 
 
-ctx.fillStyle =  
-  '#6d7379';  
+    canvas.style.width =
+      `${largura}px`;
+
+    canvas.style.height =
+      `${altura}px`;
 
 
-ctx.font =  
-  '900 18px Arial';  
+    ctx.setTransform(
+      escala,
+      0,
+      0,
+      escala,
+      0,
+      0
+    );
 
 
-ctx.textAlign =  
-  'center';  
-
-ctx.textBaseline =  
-  'middle';  
+    ctx.globalCompositeOperation =
+      'source-over';
 
 
-ctx.fillText(  
-  'RASPE AQUI',  
-  rect.width / 2,  
-  rect.height / 2  
-);
+    /*
+     * Fundo da raspadinha.
+     */
+
+    const gradiente =
+      ctx.createLinearGradient(
+        0,
+        0,
+        largura,
+        altura
+      );
+
+
+    gradiente.addColorStop(
+      0,
+      '#c7ccd1'
+    );
+
+    gradiente.addColorStop(
+      .5,
+      '#9da4aa'
+    );
+
+    gradiente.addColorStop(
+      1,
+      '#c7ccd1'
+    );
+
+
+    ctx.fillStyle =
+      gradiente;
+
+
+    ctx.fillRect(
+      0,
+      0,
+      largura,
+      altura
+    );
+
+
+    /*
+     * Faixas diagonais.
+     */
+
+    ctx.strokeStyle =
+      'rgba(255,255,255,.22)';
+
+    ctx.lineWidth =
+      10;
+
+
+    for (
+      let x = -altura;
+      x < largura + altura;
+      x += 35
+    ) {
+
+      ctx.beginPath();
+
+      ctx.moveTo(
+        x,
+        0
+      );
+
+      ctx.lineTo(
+        x + altura,
+        altura
+      );
+
+      ctx.stroke();
+
+    }
+
+
+    /*
+     * Texto.
+     */
+
+    ctx.fillStyle =
+      '#62686d';
+
+    ctx.font =
+      '900 18px Arial';
+
+    ctx.textAlign =
+      'center';
+
+    ctx.textBaseline =
+      'middle';
+
+    ctx.fillText(
+      'RASPE AQUI',
+      largura / 2,
+      altura / 2
+    );
+
+  }
+
+
+  /* =======================================================
+     POSIÇÃO DO TOQUE / MOUSE
+  ======================================================= */
+
+  function obterPosicao(
+    evento
+  ) {
+
+    const rect =
+      canvas.getBoundingClientRect();
+
+
+    let clientX;
+    let clientY;
+
+
+    if (
+      evento.touches &&
+      evento.touches.length
+    ) {
+
+      clientX =
+        evento.touches[0].clientX;
+
+      clientY =
+        evento.touches[0].clientY;
+
+    } else {
+
+      clientX =
+        evento.clientX;
+
+      clientY =
+        evento.clientY;
+
+    }
+
+
+    return {
+
+      x:
+        clientX -
+        rect.left,
+
+      y:
+        clientY -
+        rect.top
+
+    };
+
+  }
+
+
+  /* =======================================================
+     RASPAR
+  ======================================================= */
+
+  function raspar(
+    evento
+  ) {
+
+    if (
+      !raspando ||
+      finalizada
+    ) {
+
+      return;
+
+    }
+
+
+    evento.preventDefault();
+
+
+    const {
+      x,
+      y
+    } =
+      obterPosicao(
+        evento
+      );
+
+
+    ctx.globalCompositeOperation =
+      'destination-out';
+
+
+    ctx.beginPath();
+
+
+    ctx.arc(
+      x,
+      y,
+      25,
+      0,
+      Math.PI * 2
+    );
+
+
+    ctx.fill();
+
+  }
+
+
+  /* =======================================================
+     INICIAR
+  ======================================================= */
+
+  function iniciar(
+    evento
+  ) {
+
+    if (finalizada) {
+      return;
+    }
+
+
+    raspando =
+      true;
+
+
+    evento.preventDefault();
+
+
+    raspar(
+      evento
+    );
+
+  }
+
+
+  /* =======================================================
+     PARAR
+  ======================================================= */
+
+  function parar() {
+
+    if (!raspando) {
+      return;
+    }
+
+
+    raspando =
+      false;
+
+
+    verificarProgresso();
+
+  }
+
+
+  /* =======================================================
+     VERIFICAR QUANTO FOI RASPADO
+  ======================================================= */
+
+  function verificarProgresso() {
+
+    if (finalizada) {
+      return;
+    }
+
+
+    const rect =
+      canvas.getBoundingClientRect();
+
+
+    const escala =
+      window.devicePixelRatio ||
+      1;
+
+
+    const largura =
+      Math.max(
+        1,
+        Math.floor(
+          rect.width *
+          escala
+        )
+      );
+
+
+    const altura =
+      Math.max(
+        1,
+        Math.floor(
+          rect.height *
+          escala
+        )
+      );
+
+
+    let imagem;
+
+
+    try {
+
+      imagem =
+        ctx.getImageData(
+          0,
+          0,
+          largura,
+          altura
+        );
+
+    } catch {
+
+      return;
+
+    }
+
+
+    let transparentes =
+      0;
+
+
+    for (
+      let i = 3;
+      i < imagem.data.length;
+      i += 4
+    ) {
+
+      if (
+        imagem.data[i] === 0
+      ) {
+
+        transparentes++;
+
+      }
+
+    }
+
+
+    const total =
+      imagem.data.length /
+      4;
+
+
+    const porcentagem =
+      transparentes /
+      total;
+
+
+    /*
+     * Ao raspar 45%,
+     * revela automaticamente.
+     */
+
+    if (
+      porcentagem >= 0.45
+    ) {
+
+      finalizada =
+        true;
+
+
+      premio.textContent =
+        premioEscolhido;
+
+
+      ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+      );
+
+    }
+
+  }
+
+
+  /* =======================================================
+     EVENTOS — MOUSE
+  ======================================================= */
+
+  canvas.addEventListener(
+    'mousedown',
+    iniciar
+  );
+
+
+  canvas.addEventListener(
+    'mousemove',
+    raspar
+  );
+
+
+  window.addEventListener(
+    'mouseup',
+    parar
+  );
+
+
+  /* =======================================================
+     EVENTOS — CELULAR
+  ======================================================= */
+
+  canvas.addEventListener(
+    'touchstart',
+    iniciar,
+    {
+      passive: false
+    }
+  );
+
+
+  canvas.addEventListener(
+    'touchmove',
+    raspar,
+    {
+      passive: false
+    }
+  );
+
+
+  canvas.addEventListener(
+    'touchend',
+    parar,
+    {
+      passive: true
+    }
+  );
+
+
+  canvas.addEventListener(
+    'touchcancel',
+    parar,
+    {
+      passive: true
+    }
+  );
+
+
+  window.addEventListener(
+    'resize',
+    () => {
+
+      /*
+       * Não redesenha enquanto
+       * a raspadinha já foi revelada.
+       */
+
+      if (!finalizada) {
+
+        ajustarCanvas();
+
+      }
+
+    }
+  );
+
+
+  ajustarCanvas();
 
 }
 
-function obterPosicao(evento) {
-
-const rect =  
-  canvas.getBoundingClientRect();  
-
-
-let x;  
-
-let y;  
-
-
-if (  
-  evento.touches &&  
-  evento.touches.length  
-) {  
-
-  x =  
-    evento.touches[0].clientX -  
-    rect.left;  
-
-  y =  
-    evento.touches[0].clientY -  
-    rect.top;  
-
-} else {  
-
-  x =  
-    evento.clientX -  
-    rect.left;  
-
-  y =  
-    evento.clientY -  
-    rect.top;  
-
-}  
-
-
-return {  
-  x,  
-  y  
-};
-
-}
-
-function raspar(evento) {
-
-if (  
-  !raspando ||  
-  finalizada  
-) return;  
-
-
-evento.preventDefault();  
-
-
-const {  
-  x,  
-  y  
-} =  
-  obterPosicao(  
-    evento  
-  );  
-
-
-ctx.globalCompositeOperation =  
-  'destination-out';  
-
-
-ctx.beginPath();  
-
-
-ctx.arc(  
-  x,  
-  y,  
-  24,  
-  0,  
-  Math.PI * 2  
-);  
-
-
-ctx.fill();
-
-}
-
-function iniciar(evento) {
-
-raspando =  
-  true;  
-
-
-evento.preventDefault();  
-
-
-raspar(  
-  evento  
-);
-
-}
-
-function parar() {
-
-raspando =  
-  false;  
-
-
-verificarProgresso();
-
-}
-
-function verificarProgresso() {
-
-if (  
-  finalizada  
-) return;  
-
-
-const rect =  
-  canvas.getBoundingClientRect();  
-
-
-const largura =  
-  Math.max(  
-    1,  
-    Math.floor(  
-      rect.width  
-    )  
-  );  
-
-
-const altura =  
-  Math.max(  
-    1,  
-    Math.floor(  
-      rect.height  
-    )  
-  );  
-
-
-const imagem =  
-  ctx.getImageData(  
-    0,  
-    0,  
-    Math.min(  
-      canvas.width,  
-      largura  
-    ),  
-    Math.min(  
-      canvas.height,  
-      altura  
-    )  
-  );  
-
-
-let transparentes =  
-  0;  
-
-
-for (  
-  let i = 3;  
-  i < imagem.data.length;  
-  i += 4  
-) {  
-
-  if (  
-    imagem.data[i] === 0  
-  ) {  
-
-    transparentes++;  
-
-  }  
-
-}  
-
-
-const total =  
-  imagem.data.length /  
-  4;  
-
-
-const porcentagem =  
-  transparentes /  
-  total;  
-
-
-if (  
-  porcentagem > 0.45  
-) {  
-
-  finalizada =  
-    true;  
-
-
-  premio.textContent =  
-    premioEscolhido;  
-
-
-  ctx.clearRect(  
-    0,  
-    0,  
-    canvas.width,  
-    canvas.height  
-  );  
-
-}
-
-}
-
-canvas.addEventListener(
-'mousedown',
-iniciar
-);
-
-canvas.addEventListener(
-'mousemove',
-raspar
-);
-
-window.addEventListener(
-'mouseup',
-parar
-);
-
-canvas.addEventListener(
-'touchstart',
-iniciar,
-{
-passive: false
-}
-);
-
-canvas.addEventListener(
-'touchmove',
-raspar,
-{
-passive: false
-}
-);
-
-canvas.addEventListener(
-'touchend',
-parar
-);
-
-window.addEventListener(
-'resize',
-ajustarCanvas
-);
-
-ajustarCanvas();
-
-}
 
 /* =========================================================
-📲 COMPROVANTE + WHATSAPP
+   📲 COMPROVANTE + WHATSAPP
 ========================================================= */
 
 const comprovante =
-document.getElementById(
-'comprovante'
-);
+  document.getElementById(
+    'comprovante'
+  );
 
 const comprovanteNome =
-document.getElementById(
-'comprovanteNome'
-);
+  document.getElementById(
+    'comprovanteNome'
+  );
 
 const enviarWhatsApp =
-document.getElementById(
-'enviarWhatsApp'
-);
+  document.getElementById(
+    'enviarWhatsApp'
+  );
 
 const comprovanteMsg =
-document.getElementById(
-'comprovanteMsg'
-);
+  document.getElementById(
+    'comprovanteMsg'
+  );
+
 
 if (
-comprovante &&
-comprovanteNome &&
-enviarWhatsApp
+  comprovante &&
+  comprovanteNome &&
+  enviarWhatsApp
 ) {
 
-comprovante.addEventListener(
-'change',
-() => {
+  comprovante.addEventListener(
+    'change',
+    () => {
 
-const arquivo =  
-    comprovante.files[0];  
+      const arquivo =
+        comprovante.files &&
+        comprovante.files[0];
 
 
-  if (!arquivo) {  
+      if (!arquivo) {
 
-    comprovanteNome.textContent =  
-      'Nenhum arquivo selecionado.';  
+        comprovanteNome.textContent =
+          'Nenhum arquivo selecionado.';
 
+        enviarWhatsApp.disabled =
+          true;
 
-    enviarWhatsApp.disabled =  
-      true;  
 
+        if (comprovanteMsg) {
 
-    if (comprovanteMsg) {  
+          comprovanteMsg.textContent =
+            '';
 
-      comprovanteMsg.textContent =  
-        '';  
+        }
 
-    }  
 
+        return;
 
-    return;  
+      }
 
-  }  
 
+      const tamanhoMaximo =
+        10 *
+        1024 *
+        1024;
 
-  const tamanhoMaximo =  
-    10 *  
-    1024 *  
-    1024;  
 
+      if (
+        arquivo.size >
+        tamanhoMaximo
+      ) {
 
-  if (  
-    arquivo.size >  
-    tamanhoMaximo  
-  ) {  
+        comprovante.value =
+          '';
 
-    comprovante.value =  
-      '';  
+        comprovanteNome.textContent =
+          'Nenhum arquivo selecionado.';
 
+        enviarWhatsApp.disabled =
+          true;
 
-    comprovanteNome.textContent =  
-      'Nenhum arquivo selecionado.';  
 
+        if (comprovanteMsg) {
 
-    enviarWhatsApp.disabled =  
-      true;  
+          comprovanteMsg.textContent =
+            '⚠️ O arquivo deve ter no máximo 10 MB.';
 
+        }
 
-    if (comprovanteMsg) {  
 
-      comprovanteMsg.textContent =  
-        '⚠️ O arquivo deve ter no máximo 10 MB.';  
+        return;
 
-    }  
+      }
 
 
-    return;  
+      comprovanteNome.textContent =
+        `✅ ${arquivo.name}`;
 
-  }  
 
+      enviarWhatsApp.disabled =
+        false;
 
-  comprovanteNome.textContent =  
-    `✅ ${arquivo.name}`;  
 
+      if (comprovanteMsg) {
 
-  enviarWhatsApp.disabled =  
-    false;  
+        comprovanteMsg.textContent =
+          'Comprovante pronto para envio.';
 
+      }
 
-  if (comprovanteMsg) {  
+    }
+  );
 
-    comprovanteMsg.textContent =  
-      'Comprovante pronto para envio.';  
 
-  }  
+  enviarWhatsApp.addEventListener(
+    'click',
+    async () => {
 
-}
+      const arquivo =
+        comprovante.files &&
+        comprovante.files[0];
 
-);
 
-enviarWhatsApp.addEventListener(
-'click',
-async () => {
+      if (!arquivo) {
 
-const arquivo =  
-    comprovante.files[0];  
+        if (comprovanteMsg) {
 
+          comprovanteMsg.textContent =
+            '⚠️ Selecione o comprovante primeiro.';
 
-  if (!arquivo) {  
+        }
 
-    if (comprovanteMsg) {  
 
-      comprovanteMsg.textContent =  
-        '⚠️ Selecione o comprovante primeiro.';  
+        return;
 
-    }  
+      }
 
 
-    return;  
+      const mensagem =
+        'Olá! Estou enviando o comprovante de pagamento da Rifa Solidária — GILFEST.';
 
-  }  
 
+      try {
 
-  const mensagem =  
-    'Olá! Estou enviando o comprovante de pagamento da Rifa Solidária — GILFEST.';  
+        const dados = {
 
+          files: [
+            arquivo
+          ],
 
-  try {  
+          text:
+            mensagem,
 
-    const dados = {  
+          title:
+            mensagem
 
-      files: [  
-        arquivo  
-      ],  
+        };
 
-      text:  
-        mensagem,  
 
-      title:  
-        mensagem  
+        if (
+          navigator.share &&
+          navigator.canShare &&
+          navigator.canShare(
+            dados
+          )
+        ) {
 
-    };  
+          await navigator.share(
+            dados
+          );
 
 
-    if (  
-      navigator.share &&  
-      navigator.canShare &&  
-      navigator.canShare(  
-        dados  
-      )  
-    ) {  
+          if (comprovanteMsg) {
 
-      await navigator.share(  
-        dados  
-      );  
+            comprovanteMsg.textContent =
+              '✅ Escolha o WhatsApp e envie o comprovante com a mensagem.';
 
+          }
 
-      if (comprovanteMsg) {  
 
-        comprovanteMsg.textContent =  
-          '✅ Escolha o WhatsApp e envie o comprovante com a mensagem.';  
+          return;
 
-      }  
+        }
 
 
-      return;  
+        throw new Error(
+          'Compartilhamento de arquivo indisponível.'
+        );
 
-    }  
 
+      } catch (erro) {
 
-    throw new Error(  
-      'Compartilhamento de arquivo indisponível.'  
-    );  
+        console.log(
+          'Compartilhamento:',
+          erro
+        );
 
 
-  } catch (erro) {  
+        if (
+          erro &&
+          erro.name ===
+          'AbortError'
+        ) {
 
-    console.log(  
-      'Compartilhamento:',  
-      erro  
-    );  
+          if (comprovanteMsg) {
 
+            comprovanteMsg.textContent =
+              'Compartilhamento cancelado.';
 
-    if (  
-      erro.name ===  
-      'AbortError'  
-    ) {  
+          }
 
-      if (comprovanteMsg) {  
 
-        comprovanteMsg.textContent =  
-          'Compartilhamento cancelado.';  
+          return;
 
-      }  
+        }
 
 
-      return;  
+        /*
+         * Fallback:
+         * abre o WhatsApp com a mensagem.
+         * O arquivo precisa ser anexado manualmente
+         * quando o navegador não suporta compartilhamento
+         * de arquivos.
+         */
 
-    }  
+        const numeroWhatsApp =
+          '5579999145044';
 
 
-    const numeroWhatsApp =  
-      '5579999145044';  
+        const url =
+          `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
 
 
-    const url =  
-      `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;  
+        window.open(
+          url,
+          '_blank'
+        );
 
 
-    window.open(  
-      url,  
-      '_blank'  
-    );  
+        if (comprovanteMsg) {
 
+          comprovanteMsg.textContent =
+            '📲 WhatsApp aberto. Anexe o comprovante na conversa.';
 
-    if (comprovanteMsg) {  
+        }
 
-      comprovanteMsg.textContent =  
-        '📲 WhatsApp aberto. Anexe o comprovante na conversa.';  
+      }
 
-    }  
-
-  }  
-
-}
-
-);
+    }
+  );
 
 }
