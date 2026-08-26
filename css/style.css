@@ -1,6 +1,6 @@
 /* =========================================================
    🎨 RIFA SOLIDÁRIA — GILFEST
-   CSS PRINCIPAL — VERSÃO ORGANIZADA
+   CSS PRINCIPAL — VERSÃO COMPLETA E CORRIGIDA
 ========================================================= */
 
 :root {
@@ -17,19 +17,27 @@
    RESET
 ========================================================= */
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
-html,
-body {
+html {
   width: 100%;
   min-height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 body {
   position: relative;
+  width: 100%;
+  min-width: 0;
+  min-height: 100vh;
   margin: 0;
+  padding: 0;
+
   overflow-x: hidden;
 
   font-family: Arial, Helvetica, sans-serif;
@@ -45,7 +53,7 @@ body {
 }
 
 /* =========================================================
-   ✨ BRILHO DO FUNDO
+   BRILHO DO FUNDO
 ========================================================= */
 
 .bg-glow {
@@ -58,12 +66,12 @@ body {
   background:
     radial-gradient(
       circle at 20% 20%,
-      rgba(255,255,255,.35),
+      rgba(255, 255, 255, .35),
       transparent 28%
     ),
     radial-gradient(
       circle at 85% 70%,
-      rgba(255,255,255,.22),
+      rgba(255, 255, 255, .22),
       transparent 30%
     );
 }
@@ -84,12 +92,12 @@ body::before {
   background:
     radial-gradient(
       circle,
-      rgba(255,255,255,.28) 0 3px,
+      rgba(255, 255, 255, .30) 0 3px,
       transparent 4px
     ),
     radial-gradient(
       circle,
-      rgba(255,255,255,.18) 0 2px,
+      rgba(255, 255, 255, .20) 0 2px,
       transparent 3px
     );
 
@@ -101,16 +109,16 @@ body::before {
 }
 
 @keyframes estrelasSubindo {
-  from {
+  0% {
     background-position:
-      0 0,
-      0 0;
+      0 100vh,
+      60px 100vh;
   }
 
-  to {
+  100% {
     background-position:
-      0 -240px,
-      0 -360px;
+      0 -120px,
+      60px -180px;
   }
 }
 
@@ -180,7 +188,7 @@ body::after {
 }
 
 /* =========================================================
-   🍭 TOPO
+   CABEÇALHO
 ========================================================= */
 
 .topbar {
@@ -197,6 +205,7 @@ body::after {
 
   color: #fff;
   font-weight: 900;
+
   text-align: center;
 }
 
@@ -207,6 +216,7 @@ body::after {
 
 .gilfest-top {
   display: flex;
+
   flex-direction: column;
 
   align-items: center;
@@ -218,24 +228,28 @@ body::after {
 }
 
 .gilfest-top img {
+  display: block;
+
   width: 64px;
+  max-width: 100%;
   max-height: 52px;
 
   object-fit: contain;
 }
 
 .gilfest-top small {
-  margin-top: 4px;
+  margin-top: 5px;
 
   font-size: .95rem;
   font-weight: 900;
 
   color: #fff;
+
   letter-spacing: .5px;
 }
 
 /* =========================================================
-   🏷️ TAGS
+   TAGS
 ========================================================= */
 
 .pill,
@@ -263,7 +277,7 @@ body::after {
 }
 
 /* =========================================================
-   📦 CONTEÚDO PRINCIPAL
+   CONTEÚDO PRINCIPAL
 ========================================================= */
 
 main {
@@ -275,25 +289,26 @@ main {
 }
 
 /* =========================================================
-   🧩 CARTÃO PADRÃO
+   CARTÃO PADRÃO
 ========================================================= */
 
 .card {
   width: 100%;
+  max-width: 100%;
 
   margin: 14px 0;
   padding: 20px;
 
   border-radius: 24px;
 
-  background: rgba(255,255,255,.96);
+  background: rgba(255, 255, 255, .96);
 
   box-shadow:
-    0 14px 32px rgba(0,35,90,.18);
+    0 14px 32px rgba(0, 35, 90, .18);
 }
 
 /* =========================================================
-   🏠 HERO
+   HERO
 ========================================================= */
 
 .hero {
@@ -317,6 +332,7 @@ main {
 
 .hero-copy {
   flex: 1;
+  min-width: 0;
 }
 
 .hero h1 {
@@ -338,6 +354,8 @@ main {
 }
 
 .hero-photo {
+  flex: 0 0 auto;
+
   width: 180px;
   height: 180px;
 
@@ -351,7 +369,7 @@ main {
 }
 
 /* =========================================================
-   🎁 PRÊMIO
+   PRÊMIO
 ========================================================= */
 
 .prize {
@@ -365,6 +383,7 @@ main {
 
 .prize > div {
   flex: 1;
+  min-width: 0;
 }
 
 .prize h2 {
@@ -381,6 +400,8 @@ main {
 }
 
 .prize img {
+  flex: 0 0 auto;
+
   width: 280px;
   max-width: 40%;
   max-height: 240px;
@@ -390,6 +411,7 @@ main {
 
 .price {
   font-size: 1.8rem;
+
   font-weight: 900;
 
   color: var(--pink);
@@ -397,17 +419,18 @@ main {
 
 .price small {
   font-size: .8rem;
+
   color: var(--text);
 }
 
 /* =========================================================
-   🔎 BUSCA DOS NÚMEROS
+   BUSCA DOS NÚMEROS
 ========================================================= */
 
 .search {
   display: grid;
 
-  grid-template-columns: 1fr 240px;
+  grid-template-columns: minmax(0, 1fr) 240px;
 
   align-items: center;
 
@@ -473,15 +496,16 @@ main {
 }
 
 /* =========================================================
-   ⭐ OS 3 CARTÕES PRINCIPAIS
+   ⭐ TRÊS CARTÕES PRINCIPAIS
 ========================================================= */
 
 /*
-   COMPUTADOR:
-   3 cartões lado a lado.
+   DESKTOP:
+   Os três cartões ficam lado a lado.
 
    CELULAR:
-   1 cartão por linha.
+   A regra no final deste arquivo transforma
+   esta área em UMA ÚNICA COLUNA.
 */
 
 .steps-grid {
@@ -490,131 +514,42 @@ main {
   grid-template-columns:
     repeat(3, minmax(0, 1fr));
 
-  grid-template-rows: auto;
-
   align-items: stretch;
 
   gap: 14px;
 
   width: 100%;
+  max-width: 100%;
+
+  margin: 0;
+  padding: 0;
 }
 
 .steps-grid > article {
   width: 100%;
+  max-width: 100%;
   min-width: 0;
-  margin: 0;
 }
 
 /* =========================================================
-   📄 COMPROVANTE
+   COMO PARTICIPAR
 ========================================================= */
 
-.upload {
-  text-align: center;
-}
-
-.upload-box {
-  margin-top: 16px;
-
-  padding: 22px;
-
-  border: 2px dashed #f4a6ca;
-  border-radius: 18px;
-
-  background: #fff4fa;
-
-  text-align: center;
-}
-
-.upload-icon {
-  margin-bottom: 8px;
-
-  font-size: 2.5rem;
-}
-
-.upload-box strong {
-  display: block;
-
-  font-size: 1.05rem;
-
-  color: #12365b;
-}
-
-.upload-box small {
-  display: block;
-
-  margin-top: 6px;
-
-  color: #6b7c8f;
-}
-
-.upload-box input[type="file"] {
+.steps {
   width: 100%;
-
-  margin-top: 16px;
-  padding: 12px;
-
-  border: 1px solid #f0b4d2;
-  border-radius: 12px;
-
-  background: #fff;
 }
 
-.comprovante-nome {
-  margin: 12px 0;
+.steps ol {
+  margin-top: 16px;
+  padding-left: 24px;
+}
 
-  font-size: .9rem;
+.steps li {
+  margin: 14px 0;
+
   font-weight: 700;
 
-  color: #1766a5;
-
-  word-break: break-word;
-}
-
-.whatsapp-btn {
-  width: 100%;
-
-  margin-top: 10px;
-  padding: 14px 16px;
-
-  border: 0;
-  border-radius: 14px;
-
-  background: #25d366;
-
-  color: #fff;
-
-  font-size: .95rem;
-  font-weight: 900;
-
-  cursor: pointer;
-
-  transition:
-    transform .15s ease,
-    opacity .15s ease;
-}
-
-.whatsapp-btn:hover {
-  transform: translateY(-1px);
-}
-
-.whatsapp-btn:disabled {
-  opacity: .45;
-
-  cursor: not-allowed;
-
-  transform: none;
-}
-
-.comprovante-msg {
-  min-height: 20px;
-
-  margin: 10px 0 0;
-
-  font-size: .85rem;
-  font-weight: 700;
-
-  color: #1766a5;
+  line-height: 1.4;
 }
 
 /* =========================================================
@@ -623,6 +558,8 @@ main {
 
 .scratch {
   position: relative;
+
+  width: 100%;
 
   text-align: center;
 
@@ -637,8 +574,11 @@ main {
 }
 
 .trevo-mini {
-  font-size: 1.5rem;
+  font-size: 32px;
+
   line-height: 1;
+
+  margin-bottom: 4px;
 }
 
 .scratch h2 {
@@ -692,7 +632,8 @@ main {
   position: absolute;
   inset: 7px;
 
-  border: 2px dashed
+  border:
+    2px dashed
     rgba(255,255,255,.65);
 
   border-radius: 13px;
@@ -727,6 +668,7 @@ main {
 
 .scratch-result strong {
   font-size: 1rem;
+
   letter-spacing: .5px;
 }
 
@@ -757,6 +699,10 @@ main {
   color: #08783f;
 }
 
+.scratch-instruction span {
+  font-size: 1rem;
+}
+
 .scratch-prizes {
   display: flex;
 
@@ -769,6 +715,8 @@ main {
 
 .scratch-prize {
   flex: 1;
+
+  min-width: 0;
 
   padding: 7px 5px;
 
@@ -793,17 +741,129 @@ main {
 }
 
 /* =========================================================
-   📋 COMO PARTICIPAR
+   📄 COMPROVANTE
 ========================================================= */
 
-.steps ol {
-  padding-left: 24px;
+.upload {
+  width: 100%;
+
+  text-align: center;
 }
 
-.steps li {
-  margin: 14px 0;
+.upload-box {
+  width: 100%;
 
+  margin-top: 16px;
+
+  padding: 22px;
+
+  border:
+    2px dashed
+    #f4a6ca;
+
+  border-radius: 18px;
+
+  background: #fff4fa;
+
+  text-align: center;
+}
+
+.upload-icon {
+  margin-bottom: 8px;
+
+  font-size: 2.5rem;
+}
+
+.upload-box strong {
+  display: block;
+
+  font-size: 1.05rem;
+
+  color: #12365b;
+}
+
+.upload-box small {
+  display: block;
+
+  margin-top: 6px;
+
+  color: #6b7c8f;
+}
+
+.upload-box input[type="file"] {
+  display: block;
+
+  width: 100%;
+
+  margin-top: 16px;
+  padding: 12px;
+
+  border:
+    1px solid
+    #f0b4d2;
+
+  border-radius: 12px;
+
+  background: #fff;
+}
+
+.comprovante-nome {
+  margin: 12px 0;
+
+  font-size: .9rem;
   font-weight: 700;
+
+  color: #1766a5;
+
+  word-break: break-word;
+}
+
+.whatsapp-btn {
+  display: block;
+
+  width: 100%;
+
+  margin-top: 10px;
+  padding: 14px 16px;
+
+  border: 0;
+  border-radius: 14px;
+
+  background: #25d366;
+
+  color: #fff;
+
+  font-size: .95rem;
+  font-weight: 900;
+
+  cursor: pointer;
+
+  transition:
+    transform .15s ease,
+    opacity .15s ease;
+}
+
+.whatsapp-btn:hover {
+  transform: translateY(-1px);
+}
+
+.whatsapp-btn:disabled {
+  opacity: .45;
+
+  cursor: not-allowed;
+
+  transform: none;
+}
+
+.comprovante-msg {
+  min-height: 20px;
+
+  margin: 10px 0 0;
+
+  font-size: .85rem;
+  font-weight: 700;
+
+  color: #1766a5;
 }
 
 /* =========================================================
@@ -847,6 +907,8 @@ main {
 
   gap: 15px;
 
+  width: 100%;
+
   text-align: center;
 
   background:
@@ -884,28 +946,15 @@ footer {
 }
 
 /* =========================================================
-   📱📱📱 CELULAR
-   =========================================================
+   📱 CELULAR
+   ========================================================
 
-   ESTA É A PARTE MAIS IMPORTANTE.
+   ESTA É A REGRA PRINCIPAL.
 
-   Os 3 cartões NÃO podem compartilhar linha.
+   A .steps-grid deixa de ser uma grade de 3 colunas
+   e passa a ser uma coluna única.
 
-   Aqui o GRID vira uma única coluna.
-
-   Resultado:
-
-   ┌──────────────────────┐
-   │ COMPROVANTE          │
-   └──────────────────────┘
-
-   ┌──────────────────────┐
-   │ RASPADINHA           │
-   └──────────────────────┘
-
-   ┌──────────────────────┐
-   │ COMO PARTICIPAR      │
-   └──────────────────────┘
+   Cada article ocupa 100% da largura.
 
 ========================================================= */
 
@@ -914,6 +963,7 @@ footer {
   html,
   body {
     width: 100%;
+    min-width: 0;
     max-width: 100%;
 
     overflow-x: hidden;
@@ -926,7 +976,7 @@ footer {
   main {
     display: block;
 
-    width: calc(100% - 12px) !important;
+    width: calc(100% - 16px) !important;
     max-width: none !important;
 
     margin-left: auto !important;
@@ -942,13 +992,15 @@ footer {
 
     padding: 10px 8px;
 
-    justify-content: center;
-
-    gap: 12px;
+    gap: 10px;
   }
 
   .brand {
     font-size: 1rem;
+  }
+
+  .gilfest-top {
+    transform: scale(1);
   }
 
   .gilfest-top img {
@@ -961,14 +1013,17 @@ footer {
   }
 
   /* -------------------------------------------------------
-     CARTÕES
+     CARTÃO PADRÃO
   ------------------------------------------------------- */
 
   .card {
+    display: block;
+
     width: 100% !important;
     max-width: 100% !important;
+    min-width: 0 !important;
 
-    margin: 8px 0;
+    margin: 10px 0;
 
     padding: 16px;
 
@@ -987,6 +1042,8 @@ footer {
     align-items: center;
     justify-content: center;
 
+    width: 100% !important;
+
     gap: 12px;
 
     text-align: center;
@@ -994,12 +1051,19 @@ footer {
 
   .hero-copy {
     width: 100%;
+    min-width: 0;
   }
 
   .hero h1 {
     margin: 12px 0;
 
     font-size: 1.7rem;
+
+    line-height: 1.15;
+  }
+
+  .hero p {
+    margin-bottom: 4px;
   }
 
   .hero-photo {
@@ -1021,6 +1085,8 @@ footer {
     align-items: center;
     justify-content: center;
 
+    width: 100% !important;
+
     gap: 10px;
 
     text-align: center;
@@ -1028,10 +1094,13 @@ footer {
 
   .prize > div {
     width: 100%;
+    min-width: 0;
   }
 
   .prize h2 {
     font-size: 1.8rem;
+
+    line-height: 1.1;
   }
 
   .prize img {
@@ -1052,129 +1121,176 @@ footer {
 
     grid-template-columns: 1fr;
 
+    width: 100% !important;
+
     text-align: center;
   }
 
+  .search > div {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .search input {
+    width: 100%;
+  }
+
+  .pix {
+    width: 100%;
+  }
+
   /* =======================================================
-     🚨 CORREÇÃO DEFINITIVA DOS 3 CARTÕES
+     ⭐⭐⭐ CORREÇÃO DEFINITIVA DOS 3 CARTÕES ⭐⭐⭐
+     
+     NADA DE GRID DE 3 COLUNAS NO CELULAR.
+
+     A área inteira vira:
+     
+     1 cartão
+     ↓
+     2 cartão
+     ↓
+     3 cartão
+
+     Cada cartão ocupa 100%.
   ======================================================= */
 
   main .steps-grid {
+    display: flex !important;
 
-    display: grid !important;
+    flex-direction: column !important;
 
-    /*
-       SOMENTE UMA COLUNA.
-
-       Isto é o que impede os cartões
-       de ficarem lado a lado.
-    */
-    grid-template-columns: minmax(0, 1fr) !important;
-
-    /*
-       Uma linha automática para cada cartão.
-    */
-    grid-template-rows: auto auto auto !important;
-
-    grid-auto-flow: row !important;
+    flex-wrap: nowrap !important;
 
     align-items: stretch !important;
 
-    width: 100% !important;
-    max-width: 100% !important;
-
-    gap: 12px !important;
-
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
-  /*
-     Cada cartão ocupa a linha inteira.
-  */
-
-  main .steps-grid > article.card {
-
-    display: block !important;
+    justify-content: flex-start !important;
 
     width: 100% !important;
     max-width: 100% !important;
     min-width: 0 !important;
 
     margin: 0 !important;
+    padding: 0 !important;
 
-    flex: none !important;
+    gap: 14px !important;
+  }
 
-    grid-column: 1 / -1 !important;
+  /*
+     Todos os artigos diretamente dentro de
+     .steps-grid recebem largura total.
+  */
+
+  main .steps-grid > article {
+    display: block !important;
+
+    position: relative;
+
+    flex: 0 0 auto !important;
+
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+
+    margin: 0 !important;
+  }
+
+  /*
+     IMPORTANTE:
+     Não deixar nenhuma regra de grid interna
+     transformar os cartões novamente em colunas.
+  */
+
+  main .steps-grid > article.upload,
+  main .steps-grid > article.scratch,
+  main .steps-grid > article.steps {
+    grid-column: auto !important;
+    grid-row: auto !important;
+
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
   }
 
   /* -------------------------------------------------------
      ORDEM DOS CARTÕES
+     
+     1 — COMPROVANTE
+     2 — RASPADINHA
+     3 — COMO PARTICIPAR
   ------------------------------------------------------- */
 
   main .steps-grid > article.upload {
     order: 1 !important;
-    grid-row: 1 !important;
   }
 
   main .steps-grid > article.scratch {
     order: 2 !important;
-    grid-row: 2 !important;
   }
 
   main .steps-grid > article.steps {
     order: 3 !important;
-    grid-row: 3 !important;
   }
 
   /* -------------------------------------------------------
      COMPROVANTE
   ------------------------------------------------------- */
 
-  .upload {
+  main .steps-grid > .upload {
     width: 100% !important;
-
-    text-align: center;
   }
 
   .upload-box {
     width: 100%;
-
     padding: 20px 14px;
+  }
+
+  .upload-box input[type="file"] {
+    width: 100%;
+  }
+
+  .whatsapp-btn {
+    width: 100%;
   }
 
   /* -------------------------------------------------------
      RASPADINHA
   ------------------------------------------------------- */
 
-  .scratch {
+  main .steps-grid > .scratch {
     width: 100% !important;
 
     text-align: center;
   }
 
   .scratch-area {
-    width: 100%;
+    width: 100% !important;
 
     height: 135px;
+  }
+
+  .scratch-prizes {
+    width: 100%;
   }
 
   /* -------------------------------------------------------
      COMO PARTICIPAR
   ------------------------------------------------------- */
 
-  .steps {
+  main .steps-grid > .steps {
     width: 100% !important;
   }
 
   .steps ol {
-    padding-left: 24px;
+    width: 100%;
 
-    text-align: left;
+    padding-left: 24px;
   }
 
   /* -------------------------------------------------------
-     ESCOLHA DOS NÚMEROS
+     ESCOLHA SEUS NÚMEROS
+     
+     ESTE CARTÃO ESTÁ FORA DA .steps-grid.
   ------------------------------------------------------- */
 
   main > .choose {
@@ -1182,12 +1298,11 @@ footer {
 
     width: 100% !important;
     max-width: 100% !important;
+    min-width: 0 !important;
 
     margin: 10px 0 !important;
 
     padding: 24px 16px !important;
-
-    border-radius: 22px !important;
 
     text-align: center;
   }
@@ -1196,6 +1311,8 @@ footer {
     margin: 5px 0 12px;
 
     font-size: 1.8rem;
+
+    line-height: 1.15;
   }
 
   .choose p {
@@ -1221,11 +1338,17 @@ footer {
   ------------------------------------------------------- */
 
   .luck {
-    width: 100% !important;
+    display: flex;
 
     flex-direction: column;
 
+    width: 100% !important;
+
     text-align: center;
+  }
+
+  .luck span {
+    font-size: 3rem;
   }
 
   /* -------------------------------------------------------
@@ -1237,16 +1360,26 @@ footer {
 
     padding: 20px 12px;
   }
+
+  /* -------------------------------------------------------
+     TREVOS NO CELULAR
+  ------------------------------------------------------- */
+
+  body::after {
+    font-size: 58px;
+
+    letter-spacing: 42px;
+  }
 }
 
 /* =========================================================
-   📱 CELULARES PEQUENOS
+   📱 CELULARES MUITO PEQUENOS
 ========================================================= */
 
 @media screen and (max-width: 380px) {
 
   main {
-    width: calc(100% - 10px) !important;
+    width: calc(100% - 12px) !important;
   }
 
   .card {
@@ -1269,8 +1402,42 @@ footer {
     height: 125px;
   }
 
-  body::after {
-    font-size: 52px;
-    letter-spacing: 35px;
+  .scratch-prize {
+    font-size: .62rem;
+  }
+}
+
+/* =========================================================
+   💻 TELAS GRANDES
+========================================================= */
+
+@media screen and (min-width: 701px) {
+
+  /*
+     Mantém os três cartões principais
+     lado a lado no computador.
+  */
+
+  .steps-grid {
+    display: grid;
+
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+
+    align-items: stretch;
+  }
+
+  .steps-grid > article {
+    width: 100%;
+    min-width: 0;
+  }
+
+  /*
+     O cartão de escolha dos números
+     permanece independente e grande.
+  */
+
+  main > .choose {
+    width: 100%;
   }
 }
