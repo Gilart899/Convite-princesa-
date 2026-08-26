@@ -1794,4 +1794,13 @@ if (
         if (comprovanteMsg) {
 
           comprovanteMsg.textContent =
-            '📲 WhatsApp aberto
+            '📲 WhatsApp aberto. Anexe o comprovante na conversa.';
+
+        }
+
+      }
+
+    }
+  );
+
+}
