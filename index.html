@@ -1,5 +1,3 @@
-index.html
-
 <!doctype html>
 <html lang="pt-BR">
 
@@ -33,7 +31,9 @@ index.html
 
   <div class="bg-glow"></div>
 
-  <!-- CABEÇALHO -->
+  <!-- =====================================================
+       CABEÇALHO
+  ====================================================== -->
 
   <header class="topbar">
 
@@ -59,7 +59,9 @@ index.html
 
   <main>
 
-    <!-- CARTÃO PRINCIPAL -->
+    <!-- =====================================================
+         CARTÃO PRINCIPAL
+    ====================================================== -->
 
     <section class="hero card">
 
@@ -89,7 +91,9 @@ index.html
     </section>
 
 
-    <!-- PRÊMIO PRINCIPAL -->
+    <!-- =====================================================
+         PRÊMIO PRINCIPAL
+    ====================================================== -->
 
     <section class="prize card">
 
@@ -128,10 +132,10 @@ index.html
 
     <!-- =====================================================
          COMO PARTICIPAR
-         AGORA FICA ANTES DA BUSCA DOS NÚMEROS
+         FICA ANTES DA BUSCA DOS NÚMEROS
     ====================================================== -->
 
-    <article class="card steps">
+    <section class="card steps">
 
       <span class="tag blue">
         COMO PARTICIPAR
@@ -153,181 +157,242 @@ index.html
 
       </ol>
 
-    </article>
+    </section>
 
 
-    <!-- BUSCA DE NÚMEROS -->
+    <!-- =====================================================
+         BUSCA / RESERVA DE NÚMERO
+    ====================================================== -->
 
     <section class="search card">
 
-      <div>
+      <div class="search-content">
 
         <h2>
           Digite seu número de 000 a 999
         </h2>
 
-        <input
-          id="numeroDireto"
-          inputmode="numeric"
-          maxlength="3"
-          placeholder="Ex.: 750"
-        >
+
+        <div class="numero-reserva">
+
+          <input
+            id="numeroDireto"
+            inputmode="numeric"
+            maxlength="3"
+            placeholder="Ex.: 750"
+            autocomplete="off"
+          >
+
+
+          <!-- STATUS DO NÚMERO -->
+
+          <div
+            id="numeroStatus"
+            class="numero-status"
+            aria-live="polite"
+          >
+            Digite um número
+          </div>
+
+        </div>
+
 
         <small>
           Digite um número para verificar a disponibilidade
           e marcar na cartela.
         </small>
 
+
+        <!-- BOTÃO RESERVAR -->
+
+        <button
+          id="reservarNumero"
+          class="reservar-btn"
+          type="button"
+          disabled
+        >
+          🔒 RESERVAR NÚMERO
+        </button>
+
       </div>
 
-      <button
-        class="pix"
-        id="copiarPix"
-        type="button"
-      >
-        💠 Copiar chave PIX
-      </button>
+
+      <!-- ===================================================
+           PAGAMENTO PIX
+      ==================================================== -->
+
+      <div class="pix-area">
+
+        <span class="pix-label">
+          💠 PAGAMENTO
+        </span>
+
+        <button
+          class="pix"
+          id="copiarPix"
+          type="button"
+        >
+          💠 COPIAR CHAVE PIX
+        </button>
+
+        <small>
+          Após reservar, faça o pagamento via PIX
+          e envie o comprovante abaixo.
+        </small>
+
+      </div>
 
     </section>
 
 
     <!-- =====================================================
-         CARTÕES PRINCIPAIS
+         ENVIE SEU COMPROVANTE
     ====================================================== -->
 
-    <section class="steps-grid">
+    <article class="card upload">
+
+      <span class="tag blue">
+        ENVIE SEU COMPROVANTE
+      </span>
 
 
-      <!-- 1 — COMPROVANTE -->
+      <div class="upload-box">
 
-      <article class="card upload">
+        <div class="upload-icon">
+          📄
+        </div>
 
-        <span class="tag blue">
-          ENVIE SEU COMPROVANTE
-        </span>
 
-        <div class="upload-box">
+        <strong>
+          Selecione o comprovante
+        </strong>
 
-          <div class="upload-icon">
-            📄
-          </div>
 
-          <strong>
-            Selecione o comprovante
+        <small>
+          Foto ou PDF do comprovante de pagamento
+        </small>
+
+
+        <input
+          id="comprovante"
+          type="file"
+          accept="image/*,application/pdf"
+        >
+
+
+        <p
+          id="comprovanteNome"
+          class="comprovante-nome"
+        >
+          Nenhum arquivo selecionado.
+        </p>
+
+
+        <button
+          id="enviarWhatsApp"
+          class="whatsapp-btn"
+          type="button"
+          disabled
+        >
+          📲 ENVIAR PELO WHATSAPP
+        </button>
+
+
+        <p
+          id="comprovanteMsg"
+          class="comprovante-msg"
+        ></p>
+
+      </div>
+
+    </article>
+
+
+    <!-- =====================================================
+         RASPADINHA DA SORTE
+    ====================================================== -->
+
+    <article class="card scratch">
+
+      <div class="trevo-mini">
+        🍀
+      </div>
+
+
+      <h2>
+        RASPADINHA<br>
+        <strong>DA SORTE</strong>
+      </h2>
+
+
+      <p class="scratch-subtitle">
+        Sua sorte pode estar escondida aqui!
+      </p>
+
+
+      <div class="scratch-area">
+
+        <div class="scratch-result">
+
+          <span class="icone">
+            🎁
+          </span>
+
+          <strong id="scratchPremio">
+            RASPE AQUI
           </strong>
 
           <small>
-            Foto ou PDF do comprovante de pagamento
+            Descubra sua sorte
           </small>
 
-          <input
-            id="comprovante"
-            type="file"
-            accept="image/*,application/pdf"
-          >
+        </div>
 
-          <p
-            id="comprovanteNome"
-            class="comprovante-nome"
-          >
-            Nenhum arquivo selecionado.
-          </p>
 
-          <button
-            id="enviarWhatsApp"
-            class="whatsapp-btn"
-            type="button"
-            disabled
-          >
-            📲 ENVIAR PELO WHATSAPP
-          </button>
+        <canvas
+          id="scratchCanvas"
+          class="scratch-canvas"
+        ></canvas>
 
-          <p
-            id="comprovanteMsg"
-            class="comprovante-msg"
-          ></p>
+      </div>
+
+
+      <p class="scratch-instruction">
+        👆 Raspe com o dedo para descobrir!
+      </p>
+
+
+      <div class="scratch-prizes">
+
+        <div class="scratch-prize">
+
+          <span>
+            🧉
+          </span>
+
+          Liquidificador
 
         </div>
 
-      </article>
 
+        <div class="scratch-prize">
 
-      <!-- 2 — RASPADINHA -->
+          <span>
+            🔥
+          </span>
 
-      <article class="card scratch">
-
-        <div class="trevo-mini">
-          🍀
-        </div>
-
-        <h2>
-          RASPADINHA<br>
-          <strong>DA SORTE</strong>
-        </h2>
-
-        <p class="scratch-subtitle">
-          Sua sorte pode estar escondida aqui!
-        </p>
-
-        <div class="scratch-area">
-
-          <div class="scratch-result">
-
-            <span class="icone">
-              🎁
-            </span>
-
-            <strong id="scratchPremio">
-              RASPE AQUI
-            </strong>
-
-            <small>
-              Descubra sua sorte
-            </small>
-
-          </div>
-
-          <canvas
-            id="scratchCanvas"
-            class="scratch-canvas"
-          ></canvas>
+          Ferro elétrico
 
         </div>
 
-        <p class="scratch-instruction">
-          👆 Raspe com o dedo para descobrir!
-        </p>
+      </div>
 
-        <div class="scratch-prizes">
-
-          <div class="scratch-prize">
-
-            <span>
-              🧉
-            </span>
-
-            Liquidificador
-
-          </div>
-
-          <div class="scratch-prize">
-
-            <span>
-              🔥
-            </span>
-
-            Ferro elétrico
-
-          </div>
-
-        </div>
-
-      </article>
-
-    </section>
+    </article>
 
 
-    <!-- ESCOLHA DOS NÚMEROS -->
+    <!-- =====================================================
+         ESCOLHA DOS NÚMEROS
+    ====================================================== -->
 
     <section class="card choose">
 
@@ -335,9 +400,11 @@ index.html
         🎟️ Escolha seus números
       </h2>
 
+
       <p>
         Você pode selecionar de 1 a 10 números.
       </p>
+
 
       <button
         class="primary"
@@ -346,6 +413,7 @@ index.html
       >
         ESCOLHER NÚMEROS →
       </button>
+
 
       <button
         class="secondary"
@@ -358,7 +426,9 @@ index.html
     </section>
 
 
-    <!-- NÚMERO DA SORTE -->
+    <!-- =====================================================
+         NÚMERO DA SORTE
+    ====================================================== -->
 
     <section class="luck card">
 
@@ -366,11 +436,13 @@ index.html
         🍀
       </span>
 
+
       <div>
 
         <h2>
           NÚMERO DA SORTE
         </h2>
+
 
         <p>
           Não é sorte, é fé, é esperança, é solidariedade!
@@ -383,14 +455,18 @@ index.html
   </main>
 
 
-  <!-- RODAPÉ -->
+  <!-- =====================================================
+       RODAPÉ
+  ====================================================== -->
 
   <footer>
     Rifa Solidária • GilFest • Em benefício de Dona Bené
   </footer>
 
 
-  <!-- JAVASCRIPT -->
+  <!-- =====================================================
+       JAVASCRIPT
+  ====================================================== -->
 
   <script
     type="module"
