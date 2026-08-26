@@ -1,5 +1,3 @@
-js/index.js
-
 import { CONFIG } from './config.js';
 
 import {
@@ -122,7 +120,7 @@ const pixArea =
 
 
 /* =========================================================
-   📌 COLOCAR O BOTÃO RESERVAR ABAIXO DO PIX
+   📌 COLOCAR RESERVAR ABAIXO DO PIX
 ========================================================= */
 
 if (
@@ -139,7 +137,7 @@ if (
 
 
 /* =========================================================
-   🎟️ ESTILO INICIAL DO RESERVAR
+   🎟️ ESTILO INICIAL
 ========================================================= */
 
 if (reservarNumero) {
@@ -545,7 +543,6 @@ if (numeroDireto) {
           .replace(/\D/g, '')
           .slice(0, 3);
 
-
       limparNumeroStatus();
 
     }
@@ -940,19 +937,19 @@ if (
 
 
   /* =======================================================
-     🎁 PRÊMIOS + IMAGENS
+     🎁 PRÊMIOS
   ======================================================= */
 
   const premios = [
 
     {
       nome: 'LIQUIDIFICADOR',
-      imagem: 'img/liquidificador.png'
+      imagem: './img/liquidificador.png'
     },
 
     {
       nome: 'FERRO ELÉTRICO',
-      imagem: 'img/ferro.png'
+      imagem: './img/ferro.png'
     }
 
   ];
@@ -965,6 +962,23 @@ if (
         premios.length
       )
     ];
+
+
+  /* =======================================================
+     🎨 PREPARAR ÁREA DO PRÊMIO
+  ======================================================= */
+
+  premio.style.display =
+    'flex';
+
+  premio.style.flexDirection =
+    'column';
+
+  premio.style.alignItems =
+    'center';
+
+  premio.style.justifyContent =
+    'center';
 
 
   /* =======================================================
@@ -1025,7 +1039,7 @@ if (
 
 
     /* -----------------------------------------------------
-       FUNDO DA RASPADINHA
+       FUNDO METÁLICO
     ----------------------------------------------------- */
 
     const gradiente =
@@ -1043,7 +1057,7 @@ if (
     );
 
     gradiente.addColorStop(
-      .5,
+      0.5,
       '#9da4aa'
     );
 
@@ -1066,11 +1080,11 @@ if (
 
 
     /* -----------------------------------------------------
-       EFEITO METÁLICO
+       BRILHO METÁLICO
     ----------------------------------------------------- */
 
     ctx.strokeStyle =
-      'rgba(255,255,255,.22)';
+      'rgba(255,255,255,.25)';
 
     ctx.lineWidth =
       10;
@@ -1126,7 +1140,7 @@ if (
 
 
   /* =======================================================
-     📍 POSIÇÃO DO TOQUE / MOUSE
+     📍 POSIÇÃO
   ======================================================= */
 
   function obterPosicao(
@@ -1143,7 +1157,7 @@ if (
 
     if (
       evento.touches &&
-      evento.touches.length
+      evento.touches.length > 0
     ) {
 
       clientX =
@@ -1199,10 +1213,7 @@ if (
     evento.preventDefault();
 
 
-    const {
-      x,
-      y
-    } =
+    const posicao =
       obterPosicao(
         evento
       );
@@ -1216,9 +1227,9 @@ if (
 
 
     ctx.arc(
-      x,
-      y,
-      25,
+      posicao.x,
+      posicao.y,
+      28,
       0,
       Math.PI * 2
     );
@@ -1282,28 +1293,92 @@ if (
 
   function mostrarPremio() {
 
+    if (finalizada) {
+      return;
+    }
+
+
     finalizada =
       true;
 
 
-    premio.innerHTML = `
+    /*
+     * Monta novamente o conteúdo
+     * para garantir que a imagem
+     * seja carregada corretamente.
+     */
 
-      <img
-        class="scratch-premio-imagem"
-        src="${premioEscolhido.imagem}"
-        alt="${premioEscolhido.nome}"
-      >
+    premio.innerHTML = '';
 
-      <strong class="scratch-premio-nome">
-        🎉 ${premioEscolhido.nome}
-      </strong>
 
-      <small>
-        PARABÉNS! VOCÊ GANHOU!
-      </small>
+    const imagem =
+      document.createElement('img');
 
-    `;
 
+    imagem.className =
+      'scratch-premio-imagem';
+
+
+    imagem.src =
+      premioEscolhido.imagem;
+
+
+    imagem.alt =
+      premioEscolhido.nome;
+
+
+    imagem.loading =
+      'eager';
+
+
+    imagem.onerror =
+      () => {
+
+        console.error(
+          '❌ Não foi possível carregar a imagem:',
+          premioEscolhido.imagem
+        );
+
+      };
+
+
+    const nome =
+      document.createElement('strong');
+
+
+    nome.className =
+      'scratch-premio-nome';
+
+
+    nome.textContent =
+      `🎉 ${premioEscolhido.nome}`;
+
+
+    const mensagem =
+      document.createElement('small');
+
+
+    mensagem.textContent =
+      'PARABÉNS! VOCÊ GANHOU!';
+
+
+    premio.appendChild(
+      imagem
+    );
+
+    premio.appendChild(
+      nome
+    );
+
+    premio.appendChild(
+      mensagem
+    );
+
+
+    /*
+     * Remove completamente a camada
+     * metálica da raspadinha.
+     */
 
     ctx.clearRect(
       0,
@@ -1311,6 +1386,10 @@ if (
       canvas.width,
       canvas.height
     );
+
+
+    canvas.style.pointerEvents =
+      'none';
 
   }
 
@@ -1346,7 +1425,12 @@ if (
           altura
         );
 
-    } catch {
+    } catch (erro) {
+
+      console.warn(
+        'Não foi possível verificar a raspagem:',
+        erro
+      );
 
       return;
 
@@ -1374,19 +1458,19 @@ if (
     }
 
 
-    const total =
-      imagem.data.length /
-      4;
+    const totalPixels =
+      imagem.data.length / 4;
 
 
     const porcentagem =
       transparentes /
-      total;
+      totalPixels;
 
 
-    /* -----------------------------------------------------
-       REVELA COM 45% RASPADO
-    ----------------------------------------------------- */
+    /*
+     * Revela depois de aproximadamente
+     * 45% raspado.
+     */
 
     if (
       porcentagem >= 0.45
@@ -1480,7 +1564,7 @@ if (
 
 
   /* =======================================================
-     🚀 INICIAR
+     🚀 INICIAR RASPADINHA
   ======================================================= */
 
   ajustarCanvas();
@@ -1710,13 +1794,4 @@ if (
         if (comprovanteMsg) {
 
           comprovanteMsg.textContent =
-            '📲 WhatsApp aberto. Anexe o comprovante na conversa.';
-
-        }
-
-      }
-
-    }
-  );
-
-}
+            '📲 WhatsApp aberto
