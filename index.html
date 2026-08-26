@@ -2,6 +2,7 @@
 <html lang="pt-BR">
 
 <head>
+
   <meta charset="utf-8">
 
   <meta
@@ -25,11 +26,15 @@
     rel="stylesheet"
     href="css/style.css"
   >
+
 </head>
+
 
 <body>
 
+  <!-- BRILHO DO FUNDO -->
   <div class="bg-glow"></div>
+
 
   <!-- =====================================================
        CABEÇALHO
@@ -59,8 +64,9 @@
 
   <main>
 
+
     <!-- =====================================================
-         CARTÃO PRINCIPAL
+         HERO
     ====================================================== -->
 
     <section class="hero card">
@@ -82,6 +88,7 @@
 
       </div>
 
+
       <img
         class="hero-photo"
         src="img/mae.png"
@@ -92,7 +99,7 @@
 
 
     <!-- =====================================================
-         PRÊMIO PRINCIPAL
+         PRÊMIO
     ====================================================== -->
 
     <section class="prize card">
@@ -122,6 +129,7 @@
 
       </div>
 
+
       <img
         src="img/geladeira.png"
         alt="Geladeira Midea Frost Free"
@@ -132,10 +140,11 @@
 
     <!-- =====================================================
          COMO PARTICIPAR
-         FICA ANTES DA BUSCA DOS NÚMEROS
+         
+         Fica antes da busca dos números.
     ====================================================== -->
 
-    <section class="card steps">
+    <article class="card steps">
 
       <span class="tag blue">
         COMO PARTICIPAR
@@ -157,88 +166,54 @@
 
       </ol>
 
-    </section>
+    </article>
 
 
     <!-- =====================================================
-         BUSCA / RESERVA DE NÚMERO
+         BUSCA / RESERVA DO NÚMERO
     ====================================================== -->
 
     <section class="search card">
 
-      <div class="search-content">
+      <div class="search-number">
 
         <h2>
           Digite seu número de 000 a 999
         </h2>
 
-
-        <div class="numero-reserva">
-
-          <input
-            id="numeroDireto"
-            inputmode="numeric"
-            maxlength="3"
-            placeholder="Ex.: 750"
-            autocomplete="off"
-          >
-
-
-          <!-- STATUS DO NÚMERO -->
-
-          <div
-            id="numeroStatus"
-            class="numero-status"
-            aria-live="polite"
-          >
-            Digite um número
-          </div>
-
-        </div>
-
+        <input
+          id="numeroDireto"
+          type="text"
+          inputmode="numeric"
+          maxlength="3"
+          autocomplete="off"
+          placeholder="Ex.: 750"
+          aria-label="Digite um número de 000 a 999"
+        >
 
         <small>
           Digite um número para verificar a disponibilidade
           e marcar na cartela.
         </small>
 
-
-        <!-- BOTÃO RESERVAR -->
-
-        <button
-          id="reservarNumero"
-          class="reservar-btn"
-          type="button"
-          disabled
-        >
-          🔒 RESERVAR NÚMERO
-        </button>
+        <!--
+          O JavaScript coloca aqui:
+          DISPONÍVEL / NÃO DISPONÍVEL
+          e o botão RESERVAR.
+        -->
 
       </div>
 
 
-      <!-- ===================================================
-           PAGAMENTO PIX
-      ==================================================== -->
-
       <div class="pix-area">
-
-        <span class="pix-label">
-          💠 PAGAMENTO
-        </span>
 
         <button
           class="pix"
           id="copiarPix"
           type="button"
         >
-          💠 COPIAR CHAVE PIX
+          💠 Copiar chave PIX
         </button>
-
-        <small>
-          Após reservar, faça o pagamento via PIX
-          e envie o comprovante abaixo.
-        </small>
 
       </div>
 
@@ -246,152 +221,204 @@
 
 
     <!-- =====================================================
-         ENVIE SEU COMPROVANTE
+         TRÊS CARTÕES
+         
+         NO CELULAR:
+         1 — COMPROVANTE
+         2 — RASPADINHA
+         3 — COMO PARTICIPAR
+         
+         A ordem visual poderá ser controlada pelo CSS.
     ====================================================== -->
 
-    <article class="card upload">
-
-      <span class="tag blue">
-        ENVIE SEU COMPROVANTE
-      </span>
+    <section class="steps-grid">
 
 
-      <div class="upload-box">
+      <!-- ===================================================
+           COMPROVANTE
+      ==================================================== -->
 
-        <div class="upload-icon">
-          📄
+      <article class="card upload">
+
+        <span class="tag blue">
+          ENVIE SEU COMPROVANTE
+        </span>
+
+
+        <div class="upload-box">
+
+          <div class="upload-icon">
+            📄
+          </div>
+
+
+          <strong>
+            Selecione o comprovante
+          </strong>
+
+
+          <small>
+            Foto ou PDF do comprovante de pagamento
+          </small>
+
+
+          <input
+            id="comprovante"
+            type="file"
+            accept="image/*,application/pdf"
+          >
+
+
+          <p
+            id="comprovanteNome"
+            class="comprovante-nome"
+          >
+            Nenhum arquivo selecionado.
+          </p>
+
+
+          <button
+            id="enviarWhatsApp"
+            class="whatsapp-btn"
+            type="button"
+            disabled
+          >
+            📲 ENVIAR PELO WHATSAPP
+          </button>
+
+
+          <p
+            id="comprovanteMsg"
+            class="comprovante-msg"
+          ></p>
+
+        </div>
+
+      </article>
+
+
+      <!-- ===================================================
+           RASPADINHA
+      ==================================================== -->
+
+      <article class="card scratch">
+
+        <div class="trevo-mini">
+          🍀
         </div>
 
 
-        <strong>
-          Selecione o comprovante
-        </strong>
+        <h2>
+          RASPADINHA<br>
+          <strong>DA SORTE</strong>
+        </h2>
 
 
-        <small>
-          Foto ou PDF do comprovante de pagamento
-        </small>
-
-
-        <input
-          id="comprovante"
-          type="file"
-          accept="image/*,application/pdf"
-        >
-
-
-        <p
-          id="comprovanteNome"
-          class="comprovante-nome"
-        >
-          Nenhum arquivo selecionado.
+        <p class="scratch-subtitle">
+          Sua sorte pode estar escondida aqui!
         </p>
 
 
-        <button
-          id="enviarWhatsApp"
-          class="whatsapp-btn"
-          type="button"
-          disabled
-        >
-          📲 ENVIAR PELO WHATSAPP
-        </button>
+        <div class="scratch-area">
+
+          <div class="scratch-result">
+
+            <span class="icone">
+              🎁
+            </span>
+
+            <strong id="scratchPremio">
+              RASPE AQUI
+            </strong>
+
+            <small>
+              Descubra sua sorte
+            </small>
+
+          </div>
 
 
-        <p
-          id="comprovanteMsg"
-          class="comprovante-msg"
-        ></p>
+          <canvas
+            id="scratchCanvas"
+            class="scratch-canvas"
+          ></canvas>
 
-      </div>
+        </div>
 
-    </article>
+
+        <p class="scratch-instruction">
+          👆 Raspe com o dedo para descobrir!
+        </p>
+
+
+        <div class="scratch-prizes">
+
+          <div class="scratch-prize">
+
+            <span>
+              🧉
+            </span>
+
+            Liquidificador
+
+          </div>
+
+
+          <div class="scratch-prize">
+
+            <span>
+              🔥
+            </span>
+
+            Ferro elétrico
+
+          </div>
+
+        </div>
+
+      </article>
+
+
+      <!-- ===================================================
+           COMO PARTICIPAR
+           
+           Mantido aqui também porque o CSS atual
+           trabalha com .steps-grid.
+           
+           O CSS definitivo poderá controlar
+           exatamente onde ele aparece.
+      ==================================================== -->
+
+      <article class="card steps">
+
+        <span class="tag blue">
+          COMO PARTICIPAR
+        </span>
+
+
+        <ol>
+
+          <li>
+            Escolha seus números de 000 a 999
+          </li>
+
+          <li>
+            Faça o pagamento via PIX
+          </li>
+
+          <li>
+            Envie o comprovante e aguarde a confirmação
+          </li>
+
+        </ol>
+
+      </article>
+
+    </section>
 
 
     <!-- =====================================================
-         RASPADINHA DA SORTE
-    ====================================================== -->
-
-    <article class="card scratch">
-
-      <div class="trevo-mini">
-        🍀
-      </div>
-
-
-      <h2>
-        RASPADINHA<br>
-        <strong>DA SORTE</strong>
-      </h2>
-
-
-      <p class="scratch-subtitle">
-        Sua sorte pode estar escondida aqui!
-      </p>
-
-
-      <div class="scratch-area">
-
-        <div class="scratch-result">
-
-          <span class="icone">
-            🎁
-          </span>
-
-          <strong id="scratchPremio">
-            RASPE AQUI
-          </strong>
-
-          <small>
-            Descubra sua sorte
-          </small>
-
-        </div>
-
-
-        <canvas
-          id="scratchCanvas"
-          class="scratch-canvas"
-        ></canvas>
-
-      </div>
-
-
-      <p class="scratch-instruction">
-        👆 Raspe com o dedo para descobrir!
-      </p>
-
-
-      <div class="scratch-prizes">
-
-        <div class="scratch-prize">
-
-          <span>
-            🧉
-          </span>
-
-          Liquidificador
-
-        </div>
-
-
-        <div class="scratch-prize">
-
-          <span>
-            🔥
-          </span>
-
-          Ferro elétrico
-
-        </div>
-
-      </div>
-
-    </article>
-
-
-    <!-- =====================================================
-         ESCOLHA DOS NÚMEROS
+         ESCOLHA SEUS NÚMEROS
     ====================================================== -->
 
     <section class="card choose">
@@ -443,7 +470,6 @@
           NÚMERO DA SORTE
         </h2>
 
-
         <p>
           Não é sorte, é fé, é esperança, é solidariedade!
         </p>
@@ -460,12 +486,15 @@
   ====================================================== -->
 
   <footer>
-    Rifa Solidária • GilFest • Em benefício de Dona Bené
+
+    Rifa Solidária • GilFest •
+    Em benefício de Dona Bené
+
   </footer>
 
 
   <!-- =====================================================
-       JAVASCRIPT
+       JAVASCRIPT PRINCIPAL
   ====================================================== -->
 
   <script
