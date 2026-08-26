@@ -1,3 +1,5 @@
+js/index.js
+
 import { CONFIG } from './config.js';
 
 import {
@@ -32,9 +34,7 @@ try {
 
     db = getDatabase(app);
 
-    console.log(
-      '✅ Firebase conectado.'
-    );
+    console.log('✅ Firebase conectado.');
 
   } else {
 
@@ -151,7 +151,7 @@ if (reservarNumero) {
 
 
 /* =========================================================
-   🟢 FUNÇÃO — MOSTRAR STATUS
+   🟢 MOSTRAR STATUS
 ========================================================= */
 
 function mostrarStatus(
@@ -261,7 +261,7 @@ function limparNumeroStatus() {
 
 
 /* =========================================================
-   🔎 VERIFICAR SE ESTÁ OCUPADO
+   🔎 VERIFICAR OCUPAÇÃO
 ========================================================= */
 
 function numeroEstaOcupado(
@@ -279,24 +279,18 @@ function numeroEstaOcupado(
       ''
     ).toLowerCase();
 
+
   return (
 
     status === 'reservado' ||
-
     status === 'vendido' ||
-
     status === 'pago' ||
-
     status === 'ocupado' ||
-
     status === 'indisponivel' ||
 
     dados.reservado === true ||
-
     dados.vendido === true ||
-
     dados.pago === true ||
-
     dados.ocupado === true
 
   );
@@ -305,7 +299,7 @@ function numeroEstaOcupado(
 
 
 /* =========================================================
-   🟢 MOSTRAR DISPONÍVEL
+   🟢 DISPONÍVEL
 ========================================================= */
 
 function mostrarDisponivel(
@@ -338,7 +332,7 @@ function mostrarDisponivel(
 
 
 /* =========================================================
-   🔴 MOSTRAR INDISPONÍVEL
+   🔴 INDISPONÍVEL
 ========================================================= */
 
 function mostrarIndisponivel(
@@ -433,12 +427,8 @@ async function verificarNumero() {
 
 
   const numero =
-    String(
-      numeroInteiro
-    ).padStart(
-      3,
-      '0'
-    );
+    String(numeroInteiro)
+      .padStart(3, '0');
 
 
   numeroDireto.value =
@@ -527,7 +517,7 @@ async function verificarNumero() {
 
 
 /* =========================================================
-   🔎 CLIQUE NO BOTÃO VERIFICAR
+   🔎 BOTÃO VERIFICAR
 ========================================================= */
 
 if (verificarNumeroBotao) {
@@ -554,6 +544,7 @@ if (numeroDireto) {
         numeroDireto.value
           .replace(/\D/g, '')
           .slice(0, 3);
+
 
       limparNumeroStatus();
 
@@ -825,13 +816,7 @@ if (copiarPix) {
         );
 
 
-      } catch (erro) {
-
-        console.warn(
-          'Clipboard moderno indisponível:',
-          erro
-        );
-
+      } catch {
 
         try {
 
@@ -955,25 +940,19 @@ if (
 
 
   /* =======================================================
-     🎁 PRÊMIOS
+     🎁 PRÊMIOS + IMAGENS
   ======================================================= */
 
   const premios = [
 
     {
-      nome:
-        'LIQUIDIFICADOR',
-
-      imagem:
-        'img/liquidificador.png'
+      nome: 'LIQUIDIFICADOR',
+      imagem: 'img/liquidificador.png'
     },
 
     {
-      nome:
-        'FERRO ELÉTRICO',
-
-      imagem:
-        'img/ferro.png'
+      nome: 'FERRO ELÉTRICO',
+      imagem: 'img/ferro.png'
     }
 
   ];
@@ -1001,18 +980,14 @@ if (
     const largura =
       Math.max(
         1,
-        Math.round(
-          rect.width
-        )
+        Math.round(rect.width)
       );
 
 
     const altura =
       Math.max(
         1,
-        Math.round(
-          rect.height
-        )
+        Math.round(rect.height)
       );
 
 
@@ -1049,9 +1024,9 @@ if (
       'source-over';
 
 
-    /* =====================================================
-       FUNDO METÁLICO
-    ====================================================== */
+    /* -----------------------------------------------------
+       FUNDO DA RASPADINHA
+    ----------------------------------------------------- */
 
     const gradiente =
       ctx.createLinearGradient(
@@ -1090,9 +1065,9 @@ if (
     );
 
 
-    /* =====================================================
-       RISCOS METÁLICOS
-    ====================================================== */
+    /* -----------------------------------------------------
+       EFEITO METÁLICO
+    ----------------------------------------------------- */
 
     ctx.strokeStyle =
       'rgba(255,255,255,.22)';
@@ -1124,9 +1099,9 @@ if (
     }
 
 
-    /* =====================================================
-       TEXTO RASPE AQUI
-    ====================================================== */
+    /* -----------------------------------------------------
+       TEXTO
+    ----------------------------------------------------- */
 
     ctx.fillStyle =
       '#62686d';
@@ -1151,7 +1126,7 @@ if (
 
 
   /* =======================================================
-     📍 POSIÇÃO DO TOQUE
+     📍 POSIÇÃO DO TOQUE / MOUSE
   ======================================================= */
 
   function obterPosicao(
@@ -1204,7 +1179,7 @@ if (
 
 
   /* =======================================================
-     🖐️ RASPAR
+     ✏️ RASPAR
   ======================================================= */
 
   function raspar(
@@ -1255,19 +1230,15 @@ if (
 
 
   /* =======================================================
-     👆 INICIAR
+     🖐️ INICIAR
   ======================================================= */
 
   function iniciar(
     evento
   ) {
 
-    if (
-      finalizada
-    ) {
-
+    if (finalizada) {
       return;
-
     }
 
 
@@ -1286,17 +1257,13 @@ if (
 
 
   /* =======================================================
-     🛑 PARAR
+     ✋ PARAR
   ======================================================= */
 
   function parar() {
 
-    if (
-      !raspando
-    ) {
-
+    if (!raspando) {
       return;
-
     }
 
 
@@ -1310,47 +1277,60 @@ if (
 
 
   /* =======================================================
-     📊 VERIFICAR QUANTO RASPOU
+     🎉 MOSTRAR PRÊMIO
+  ======================================================= */
+
+  function mostrarPremio() {
+
+    finalizada =
+      true;
+
+
+    premio.innerHTML = `
+
+      <img
+        class="scratch-premio-imagem"
+        src="${premioEscolhido.imagem}"
+        alt="${premioEscolhido.nome}"
+      >
+
+      <strong class="scratch-premio-nome">
+        🎉 ${premioEscolhido.nome}
+      </strong>
+
+      <small>
+        PARABÉNS! VOCÊ GANHOU!
+      </small>
+
+    `;
+
+
+    ctx.clearRect(
+      0,
+      0,
+      canvas.width,
+      canvas.height
+    );
+
+  }
+
+
+  /* =======================================================
+     📊 VERIFICAR PROGRESSO
   ======================================================= */
 
   function verificarProgresso() {
 
-    if (
-      finalizada
-    ) {
-
+    if (finalizada) {
       return;
-
     }
 
 
-    const rect =
-      canvas.getBoundingClientRect();
-
-
-    const escala =
-      window.devicePixelRatio ||
-      1;
-
-
     const largura =
-      Math.max(
-        1,
-        Math.floor(
-          rect.width *
-          escala
-        )
-      );
-
+      canvas.width;
 
     const altura =
-      Math.max(
-        1,
-        Math.floor(
-          rect.height *
-          escala
-        )
-      );
+      canvas.height;
 
 
     let imagem;
@@ -1404,43 +1384,15 @@ if (
       total;
 
 
-    /* =====================================================
-       🎉 REVELAR COM 45% RASPADO
-    ====================================================== */
+    /* -----------------------------------------------------
+       REVELA COM 45% RASPADO
+    ----------------------------------------------------- */
 
     if (
       porcentagem >= 0.45
     ) {
 
-      finalizada =
-        true;
-
-
-      premio.innerHTML = `
-
-        <img
-          class="premio-imagem"
-          src="${premioEscolhido.imagem}"
-          alt="${premioEscolhido.nome}"
-        >
-
-        <strong>
-          🎉 ${premioEscolhido.nome}
-        </strong>
-
-        <small>
-          PARABÉNS! VOCÊ GANHOU!
-        </small>
-
-      `;
-
-
-      ctx.clearRect(
-        0,
-        0,
-        canvas.width,
-        canvas.height
-      );
+      mostrarPremio();
 
     }
 
@@ -1510,16 +1462,14 @@ if (
 
 
   /* =======================================================
-     🔄 REDIMENSIONAR
+     🔄 REDIMENSIONAMENTO
   ======================================================= */
 
   window.addEventListener(
     'resize',
     () => {
 
-      if (
-        !finalizada
-      ) {
+      if (!finalizada) {
 
         ajustarCanvas();
 
@@ -1528,6 +1478,10 @@ if (
     }
   );
 
+
+  /* =======================================================
+     🚀 INICIAR
+  ======================================================= */
 
   ajustarCanvas();
 
