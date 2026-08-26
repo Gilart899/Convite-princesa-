@@ -26,17 +26,13 @@ try {
     CONFIG.firebaseConfig.apiKey
   ) {
 
-    const app =
-      initializeApp(
-        CONFIG.firebaseConfig
-      );
-
-    db =
-      getDatabase(app);
-
-    console.log(
-      '✅ Firebase conectado.'
+    const app = initializeApp(
+      CONFIG.firebaseConfig
     );
+
+    db = getDatabase(app);
+
+    console.log('✅ Firebase conectado.');
 
   } else {
 
@@ -61,9 +57,7 @@ try {
 ========================================================= */
 
 const abrirCartelas =
-  document.getElementById(
-    'abrirCartelas'
-  );
+  document.getElementById('abrirCartelas');
 
 if (abrirCartelas) {
 
@@ -85,9 +79,7 @@ if (abrirCartelas) {
 ========================================================= */
 
 const sugerir =
-  document.getElementById(
-    'sugerir'
-  );
+  document.getElementById('sugerir');
 
 if (sugerir) {
 
@@ -105,129 +97,159 @@ if (sugerir) {
 
 
 /* =========================================================
-   🔢 DIGITAR / VERIFICAR / RESERVAR NÚMERO
+   🔢 VERIFICAR / RESERVAR NÚMERO
 ========================================================= */
 
 const numeroDireto =
-  document.getElementById(
-    'numeroDireto'
+  document.getElementById('numeroDireto');
+
+const verificarNumeroBotao =
+  document.getElementById('verificarNumero');
+
+const numeroStatus =
+  document.getElementById('numeroStatus');
+
+const reservarNumero =
+  document.getElementById('reservarNumero');
+
+const numeroArea =
+  document.querySelector('.numero-area');
+
+const pixArea =
+  document.querySelector('.pix-area');
+
+
+/* =========================================================
+   📌 COLOCAR O BOTÃO RESERVAR ABAIXO DO PIX
+========================================================= */
+
+if (
+  reservarNumero &&
+  pixArea &&
+  numeroArea
+) {
+
+  /*
+   * O botão já existe no HTML.
+   * Apenas movemos o mesmo botão para
+   * dentro da área do PIX.
+   */
+
+  pixArea.appendChild(
+    reservarNumero
   );
 
-
-if (numeroDireto) {
-
-  const areaNumero =
-    numeroDireto.parentElement;
+}
 
 
-  /* =======================================================
-     STATUS
-  ======================================================= */
+/* =========================================================
+   🎟️ ESTILO INICIAL DO RESERVAR
+========================================================= */
 
-  const numeroStatus =
-    document.createElement(
-      'div'
-    );
-
-  numeroStatus.id =
-    'numeroStatus';
-
-  numeroStatus.style.display =
-    'none';
-
-  numeroStatus.style.margin =
-    '10px 0';
-
-  numeroStatus.style.padding =
-    '12px';
-
-  numeroStatus.style.borderRadius =
-    '12px';
-
-  numeroStatus.style.fontWeight =
-    '900';
-
-  numeroStatus.style.textAlign =
-    'center';
-
-  numeroStatus.style.fontSize =
-    '1rem';
-
-  areaNumero.appendChild(
-    numeroStatus
-  );
-
-
-  /* =======================================================
-     BOTÃO RESERVAR
-  ======================================================= */
-
-  const reservarNumero =
-    document.createElement(
-      'button'
-    );
-
-  reservarNumero.id =
-    'reservarNumero';
-
-  reservarNumero.type =
-    'button';
-
-  reservarNumero.textContent =
-    '🎟️ RESERVAR NÚMERO';
+if (reservarNumero) {
 
   reservarNumero.style.display =
     'none';
 
-  reservarNumero.style.width =
-    '100%';
-
-  reservarNumero.style.marginTop =
-    '8px';
-
-  reservarNumero.style.padding =
-    '14px';
-
-  reservarNumero.style.border =
-    '0';
-
-  reservarNumero.style.borderRadius =
-    '12px';
-
-  reservarNumero.style.background =
-    'linear-gradient(90deg,#0878e8,#f43b9a)';
-
-  reservarNumero.style.color =
-    '#fff';
-
-  reservarNumero.style.fontWeight =
-    '900';
-
-  reservarNumero.style.fontSize =
-    '1rem';
-
-  reservarNumero.style.cursor =
-    'pointer';
-
-  reservarNumero.style.boxShadow =
-    '0 6px 14px rgba(0,0,0,.15)';
-
-  areaNumero.appendChild(
-    reservarNumero
-  );
+}
 
 
-  /* =======================================================
-     FUNÇÃO — LIMPAR
-  ======================================================= */
+/* =========================================================
+   🟢 FUNÇÃO — MOSTRAR STATUS
+========================================================= */
 
-  function limparNumeroStatus() {
+function mostrarStatus(
+  mensagem,
+  tipo
+) {
+
+  if (!numeroStatus) {
+    return;
+  }
+
+  numeroStatus.style.display =
+    'flex';
+
+  numeroStatus.textContent =
+    mensagem;
+
+
+  if (tipo === 'disponivel') {
+
+    numeroStatus.style.background =
+      '#e8fff0';
+
+    numeroStatus.style.color =
+      '#12843b';
+
+    numeroStatus.style.border =
+      '1px solid #8de0aa';
+
+  }
+
+
+  else if (tipo === 'indisponivel') {
+
+    numeroStatus.style.background =
+      '#fff0f0';
+
+    numeroStatus.style.color =
+      '#c62828';
+
+    numeroStatus.style.border =
+      '1px solid #f0a0a0';
+
+  }
+
+
+  else if (tipo === 'verificando') {
+
+    numeroStatus.style.background =
+      '#eef6ff';
+
+    numeroStatus.style.color =
+      '#1766a5';
+
+    numeroStatus.style.border =
+      '1px solid #a8cff2';
+
+  }
+
+
+  else {
+
+    numeroStatus.style.background =
+      '#fff7e6';
+
+    numeroStatus.style.color =
+      '#9a6500';
+
+    numeroStatus.style.border =
+      '1px solid #efd28a';
+
+  }
+
+}
+
+
+/* =========================================================
+   🧹 LIMPAR STATUS
+========================================================= */
+
+function limparNumeroStatus() {
+
+  if (numeroStatus) {
 
     numeroStatus.style.display =
       'none';
 
     numeroStatus.textContent =
       '';
+
+  }
+
+
+  if (reservarNumero) {
 
     reservarNumero.style.display =
       'none';
@@ -242,59 +264,73 @@ if (numeroDireto) {
 
   }
 
+}
 
-  /* =======================================================
-     FUNÇÃO — CARREGANDO
-  ======================================================= */
 
-  function mostrarVerificando() {
+/* =========================================================
+   🔎 VERIFICAR SE ESTÁ OCUPADO
+========================================================= */
 
-    numeroStatus.style.display =
-      'block';
+function numeroEstaOcupado(
+  dados
+) {
 
-    numeroStatus.style.background =
-      '#eef6ff';
-
-    numeroStatus.style.color =
-      '#1766a5';
-
-    numeroStatus.style.border =
-      '1px solid #a8cff2';
-
-    numeroStatus.textContent =
-      '🔎 Verificando disponibilidade...';
-
-    reservarNumero.style.display =
-      'none';
-
+  if (!dados) {
+    return false;
   }
 
 
-  /* =======================================================
-     FUNÇÃO — DISPONÍVEL
-  ======================================================= */
+  const status =
+    String(
+      dados.status ||
+      dados.situacao ||
+      ''
+    ).toLowerCase();
 
-  function mostrarDisponivel(
-    numero
-  ) {
 
-    numeroStatus.style.display =
-      'block';
+  return (
 
-    numeroStatus.style.background =
-      '#e8fff0';
+    status === 'reservado' ||
 
-    numeroStatus.style.color =
-      '#12843b';
+    status === 'vendido' ||
 
-    numeroStatus.style.border =
-      '1px solid #8de0aa';
+    status === 'pago' ||
 
-    numeroStatus.textContent =
-      `🟢 NÚMERO ${numero} DISPONÍVEL`;
+    status === 'ocupado' ||
+
+    status === 'indisponivel' ||
+
+    dados.reservado === true ||
+
+    dados.vendido === true ||
+
+    dados.pago === true ||
+
+    dados.ocupado === true
+
+  );
+
+}
+
+
+/* =========================================================
+   🟢 MOSTRAR DISPONÍVEL
+========================================================= */
+
+function mostrarDisponivel(
+  numero
+) {
+
+  mostrarStatus(
+    `🟢 NÚMERO ${numero} DISPONÍVEL`,
+    'disponivel'
+  );
+
+
+  if (reservarNumero) {
 
     reservarNumero.style.display =
-      'block';
+      'flex';
 
     reservarNumero.disabled =
       false;
@@ -307,29 +343,24 @@ if (numeroDireto) {
 
   }
 
+}
 
-  /* =======================================================
-     FUNÇÃO — INDISPONÍVEL
-  ======================================================= */
 
-  function mostrarIndisponivel(
-    numero
-  ) {
+/* =========================================================
+   🔴 MOSTRAR INDISPONÍVEL
+========================================================= */
 
-    numeroStatus.style.display =
-      'block';
+function mostrarIndisponivel(
+  numero
+) {
 
-    numeroStatus.style.background =
-      '#fff0f0';
+  mostrarStatus(
+    `🔴 NÚMERO ${numero} NÃO DISPONÍVEL`,
+    'indisponivel'
+  );
 
-    numeroStatus.style.color =
-      '#c62828';
 
-    numeroStatus.style.border =
-      '1px solid #f0a0a0';
-
-    numeroStatus.textContent =
-      `🔴 NÚMERO ${numero} NÃO DISPONÍVEL`;
+  if (reservarNumero) {
 
     reservarNumero.style.display =
       'none';
@@ -338,218 +369,200 @@ if (numeroDireto) {
 
   }
 
+}
 
-  /* =======================================================
-     FUNÇÃO — ERRO
-  ======================================================= */
 
-  function mostrarErro(
-    mensagem
-  ) {
+/* =========================================================
+   ⚠️ ERRO
+========================================================= */
 
-    numeroStatus.style.display =
-      'block';
+function mostrarErro(
+  mensagem
+) {
 
-    numeroStatus.style.background =
-      '#fff7e6';
+  mostrarStatus(
+    `⚠️ ${mensagem}`,
+    'erro'
+  );
 
-    numeroStatus.style.color =
-      '#9a6500';
 
-    numeroStatus.style.border =
-      '1px solid #efd28a';
-
-    numeroStatus.textContent =
-      `⚠️ ${mensagem}`;
+  if (reservarNumero) {
 
     reservarNumero.style.display =
       'none';
 
   }
 
+}
 
-  /* =======================================================
-     VERIFICAR SE NÚMERO ESTÁ OCUPADO
-  ======================================================= */
 
-  function numeroEstaOcupado(
-    dados
+/* =========================================================
+   🔎 VERIFICAR NÚMERO
+========================================================= */
+
+async function verificarNumero() {
+
+  if (!numeroDireto) {
+    return;
+  }
+
+
+  const valor =
+    numeroDireto.value.trim();
+
+
+  if (valor === '') {
+
+    mostrarErro(
+      'Digite um número entre 000 e 999.'
+    );
+
+    return;
+
+  }
+
+
+  const numeroInteiro =
+    Number(valor);
+
+
+  if (
+    !Number.isInteger(numeroInteiro) ||
+    numeroInteiro < 0 ||
+    numeroInteiro > 999
   ) {
 
-    if (!dados) {
-      return false;
+    mostrarErro(
+      'Digite um número entre 000 e 999.'
+    );
+
+    return;
+
+  }
+
+
+  const numero =
+    String(
+      numeroInteiro
+    ).padStart(
+      3,
+      '0'
+    );
+
+
+  /*
+   * Mantém o campo sempre no formato 000.
+   */
+
+  numeroDireto.value =
+    numero;
+
+
+  mostrarStatus(
+    '🔎 Verificando disponibilidade...',
+    'verificando'
+  );
+
+
+  if (!db) {
+
+    mostrarErro(
+      'Firebase não está conectado. Verifique o config.js.'
+    );
+
+    return;
+
+  }
+
+
+  try {
+
+    const numeroRef =
+      ref(
+        db,
+        `rifa/numeros/${numero}`
+      );
+
+
+    const snapshot =
+      await get(
+        numeroRef
+      );
+
+
+    /*
+     * Se não existe no Firebase,
+     * consideramos disponível.
+     */
+
+    if (!snapshot.exists()) {
+
+      mostrarDisponivel(
+        numero
+      );
+
+      return;
+
     }
 
 
-    const status =
-      String(
-        dados.status ||
-        dados.situacao ||
-        ''
-      ).toLowerCase();
+    const dados =
+      snapshot.val();
 
 
-    return (
+    if (
+      numeroEstaOcupado(
+        dados
+      )
+    ) {
 
-      status === 'reservado' ||
+      mostrarIndisponivel(
+        numero
+      );
 
-      status === 'vendido' ||
+    } else {
 
-      status === 'pago' ||
+      mostrarDisponivel(
+        numero
+      );
 
-      status === 'ocupado' ||
+    }
 
-      status === 'indisponivel' ||
+  } catch (erro) {
 
-      dados.reservado === true ||
+    console.error(
+      '❌ Erro ao verificar número:',
+      erro
+    );
 
-      dados.vendido === true ||
-
-      dados.pago === true ||
-
-      dados.ocupado === true
-
+    mostrarErro(
+      'Não foi possível verificar o número.'
     );
 
   }
 
-
-  /* =======================================================
-     VERIFICAR NÚMERO
-  ======================================================= */
-
-  async function verificarNumero() {
-
-    const valor =
-      numeroDireto.value
-        .trim();
+}
 
 
-    if (valor === '') {
+/* =========================================================
+   🔎 CLIQUE NO BOTÃO VERIFICAR
+========================================================= */
 
-      limparNumeroStatus();
+if (verificarNumeroBotao) {
 
-      return;
+  verificarNumeroBotao.addEventListener(
+    'click',
+    verificarNumero
+  );
 
-    }
-
-
-    const numeroInteiro =
-      Number(valor);
-
-
-    if (
-      !Number.isInteger(
-        numeroInteiro
-      ) ||
-      numeroInteiro < 0 ||
-      numeroInteiro > 999
-    ) {
-
-      mostrarErro(
-        'Digite um número entre 000 e 999.'
-      );
-
-      return;
-
-    }
+}
 
 
-    const numero =
-      String(
-        numeroInteiro
-      ).padStart(
-        3,
-        '0'
-      );
+/* =========================================================
+   🔢 DIGITAÇÃO
+========================================================= */
 
-
-    mostrarVerificando();
-
-
-    if (!db) {
-
-      mostrarErro(
-        'Firebase não está conectado. Verifique o config.js.'
-      );
-
-      return;
-
-    }
-
-
-    try {
-
-      const numeroRef =
-        ref(
-          db,
-          `rifa/numeros/${numero}`
-        );
-
-
-      const snapshot =
-        await get(
-          numeroRef
-        );
-
-
-      /*
-       * Se o número não existe,
-       * consideramos disponível.
-       */
-
-      if (!snapshot.exists()) {
-
-        mostrarDisponivel(
-          numero
-        );
-
-        return;
-
-      }
-
-
-      const dados =
-        snapshot.val();
-
-
-      if (
-        numeroEstaOcupado(
-          dados
-        )
-      ) {
-
-        mostrarIndisponivel(
-          numero
-        );
-
-      } else {
-
-        mostrarDisponivel(
-          numero
-        );
-
-      }
-
-    } catch (erro) {
-
-      console.error(
-        '❌ Erro ao verificar número:',
-        erro
-      );
-
-      mostrarErro(
-        'Não foi possível verificar o número.'
-      );
-
-    }
-
-  }
-
-
-  /* =======================================================
-     DIGITAÇÃO
-  ======================================================= */
+if (numeroDireto) {
 
   numeroDireto.addEventListener(
     'input',
@@ -557,40 +570,24 @@ if (numeroDireto) {
 
       numeroDireto.value =
         numeroDireto.value
-          .replace(
-            /\D/g,
-            ''
-          )
-          .slice(
-            0,
-            3
-          );
+          .replace(/\D/g, '')
+          .slice(0, 3);
 
 
       /*
-       * Só consulta quando
-       * completar os 3 dígitos.
+       * Quando o usuário altera o número,
+       * limpamos o resultado anterior.
        */
 
-      if (
-        numeroDireto.value.length === 3
-      ) {
-
-        verificarNumero();
-
-      } else {
-
-        limparNumeroStatus();
-
-      }
+      limparNumeroStatus();
 
     }
   );
 
 
-  /* =======================================================
-     ENTER
-  ======================================================= */
+  /*
+   * ENTER também verifica.
+   */
 
   numeroDireto.addEventListener(
     'keydown',
@@ -609,10 +606,14 @@ if (numeroDireto) {
     }
   );
 
+}
 
-  /* =======================================================
-     RESERVAR NÚMERO
-  ======================================================= */
+
+/* =========================================================
+   🎟️ RESERVAR NÚMERO
+========================================================= */
+
+if (reservarNumero) {
 
   reservarNumero.addEventListener(
     'click',
@@ -657,9 +658,8 @@ if (numeroDireto) {
 
 
         /*
-         * Transaction é importante:
-         * duas pessoas não conseguem
-         * reservar o mesmo número
+         * Transaction impede duas pessoas
+         * de reservarem o mesmo número
          * simultaneamente.
          */
 
@@ -669,8 +669,7 @@ if (numeroDireto) {
             atual => {
 
               /*
-               * Número ainda não existe:
-               * pode ser criado como reservado.
+               * Número ainda não existe.
                */
 
               if (
@@ -698,8 +697,7 @@ if (numeroDireto) {
 
 
               /*
-               * Se já existe e está ocupado,
-               * cancela a transação.
+               * Já está ocupado.
                */
 
               if (
@@ -715,8 +713,6 @@ if (numeroDireto) {
 
               /*
                * Existe, mas está livre.
-               * Mantemos os dados existentes
-               * e marcamos como reservado.
                */
 
               return {
@@ -743,7 +739,7 @@ if (numeroDireto) {
 
 
         /*
-         * Outra pessoa ganhou a corrida.
+         * Não conseguiu reservar.
          */
 
         if (
@@ -767,20 +763,10 @@ if (numeroDireto) {
          * Reserva concluída.
          */
 
-        numeroStatus.style.display =
-          'block';
-
-        numeroStatus.style.background =
-          '#e8fff0';
-
-        numeroStatus.style.color =
-          '#12843b';
-
-        numeroStatus.style.border =
-          '1px solid #8de0aa';
-
-        numeroStatus.textContent =
-          `✅ NÚMERO ${numero} RESERVADO COM SUCESSO`;
+        mostrarStatus(
+          `✅ NÚMERO ${numero} RESERVADO COM SUCESSO`,
+          'disponivel'
+        );
 
 
         reservarNumero.style.display =
@@ -795,8 +781,7 @@ if (numeroDireto) {
 
 
         /*
-         * Vai para a cartela mantendo
-         * o número selecionado.
+         * Abre a cartela com o número.
          */
 
         setTimeout(
@@ -809,7 +794,6 @@ if (numeroDireto) {
           700
         );
 
-
       } catch (erro) {
 
         console.error(
@@ -820,6 +804,9 @@ if (numeroDireto) {
 
         reservarNumero.disabled =
           false;
+
+        reservarNumero.style.display =
+          'flex';
 
         reservarNumero.textContent =
           `🎟️ RESERVAR ${numero}`;
@@ -847,9 +834,7 @@ if (numeroDireto) {
 ========================================================= */
 
 const copiarPix =
-  document.getElementById(
-    'copiarPix'
-  );
+  document.getElementById('copiarPix');
 
 
 if (copiarPix) {
@@ -893,7 +878,7 @@ if (copiarPix) {
           () => {
 
             copiarPix.textContent =
-              '💠 Copiar chave PIX';
+              '💠 COPIAR CHAVE PIX';
 
           },
           1800
@@ -963,7 +948,7 @@ if (copiarPix) {
               () => {
 
                 copiarPix.textContent =
-                  '💠 Copiar chave PIX';
+                  '💠 COPIAR CHAVE PIX';
 
               },
               1800
@@ -998,19 +983,13 @@ if (copiarPix) {
 ========================================================= */
 
 const canvas =
-  document.getElementById(
-    'scratchCanvas'
-  );
+  document.getElementById('scratchCanvas');
 
 const area =
-  document.querySelector(
-    '.scratch-area'
-  );
+  document.querySelector('.scratch-area');
 
 const premio =
-  document.getElementById(
-    'scratchPremio'
-  );
+  document.getElementById('scratchPremio');
 
 
 if (
@@ -1023,8 +1002,7 @@ if (
     canvas.getContext(
       '2d',
       {
-        willReadFrequently:
-          true
+        willReadFrequently: true
       }
     );
 
@@ -1054,10 +1032,6 @@ if (
     ];
 
 
-  /* =======================================================
-     CONFIGURAR CANVAS
-  ======================================================= */
-
   function ajustarCanvas() {
 
     const rect =
@@ -1067,18 +1041,14 @@ if (
     const largura =
       Math.max(
         1,
-        Math.round(
-          rect.width
-        )
+        Math.round(rect.width)
       );
 
 
     const altura =
       Math.max(
         1,
-        Math.round(
-          rect.height
-        )
+        Math.round(rect.height)
       );
 
 
@@ -1114,10 +1084,6 @@ if (
     ctx.globalCompositeOperation =
       'source-over';
 
-
-    /*
-     * Fundo da raspadinha.
-     */
 
     const gradiente =
       ctx.createLinearGradient(
@@ -1156,10 +1122,6 @@ if (
     );
 
 
-    /*
-     * Faixas diagonais.
-     */
-
     ctx.strokeStyle =
       'rgba(255,255,255,.22)';
 
@@ -1190,10 +1152,6 @@ if (
     }
 
 
-    /*
-     * Texto.
-     */
-
     ctx.fillStyle =
       '#62686d';
 
@@ -1206,6 +1164,7 @@ if (
     ctx.textBaseline =
       'middle';
 
+
     ctx.fillText(
       'RASPE AQUI',
       largura / 2,
@@ -1214,10 +1173,6 @@ if (
 
   }
 
-
-  /* =======================================================
-     POSIÇÃO DO TOQUE / MOUSE
-  ======================================================= */
 
   function obterPosicao(
     evento
@@ -1268,10 +1223,6 @@ if (
   }
 
 
-  /* =======================================================
-     RASPAR
-  ======================================================= */
-
   function raspar(
     evento
   ) {
@@ -1319,10 +1270,6 @@ if (
   }
 
 
-  /* =======================================================
-     INICIAR
-  ======================================================= */
-
   function iniciar(
     evento
   ) {
@@ -1346,10 +1293,6 @@ if (
   }
 
 
-  /* =======================================================
-     PARAR
-  ======================================================= */
-
   function parar() {
 
     if (!raspando) {
@@ -1365,10 +1308,6 @@ if (
 
   }
 
-
-  /* =======================================================
-     VERIFICAR QUANTO FOI RASPADO
-  ======================================================= */
 
   function verificarProgresso() {
 
@@ -1457,11 +1396,6 @@ if (
       total;
 
 
-    /*
-     * Ao raspar 45%,
-     * revela automaticamente.
-     */
-
     if (
       porcentagem >= 0.45
     ) {
@@ -1486,10 +1420,6 @@ if (
   }
 
 
-  /* =======================================================
-     EVENTOS — MOUSE
-  ======================================================= */
-
   canvas.addEventListener(
     'mousedown',
     iniciar
@@ -1507,10 +1437,6 @@ if (
     parar
   );
 
-
-  /* =======================================================
-     EVENTOS — CELULAR
-  ======================================================= */
 
   canvas.addEventListener(
     'touchstart',
@@ -1552,11 +1478,6 @@ if (
     'resize',
     () => {
 
-      /*
-       * Não redesenha enquanto
-       * a raspadinha já foi revelada.
-       */
-
       if (!finalizada) {
 
         ajustarCanvas();
@@ -1577,24 +1498,16 @@ if (
 ========================================================= */
 
 const comprovante =
-  document.getElementById(
-    'comprovante'
-  );
+  document.getElementById('comprovante');
 
 const comprovanteNome =
-  document.getElementById(
-    'comprovanteNome'
-  );
+  document.getElementById('comprovanteNome');
 
 const enviarWhatsApp =
-  document.getElementById(
-    'enviarWhatsApp'
-  );
+  document.getElementById('enviarWhatsApp');
 
 const comprovanteMsg =
-  document.getElementById(
-    'comprovanteMsg'
-  );
+  document.getElementById('comprovanteMsg');
 
 
 if (
@@ -1635,9 +1548,7 @@ if (
 
 
       const tamanhoMaximo =
-        10 *
-        1024 *
-        1024;
+        10 * 1024 * 1024;
 
 
       if (
@@ -1735,9 +1646,7 @@ if (
         if (
           navigator.share &&
           navigator.canShare &&
-          navigator.canShare(
-            dados
-          )
+          navigator.canShare(dados)
         ) {
 
           await navigator.share(
@@ -1773,8 +1682,7 @@ if (
 
         if (
           erro &&
-          erro.name ===
-          'AbortError'
+          erro.name === 'AbortError'
         ) {
 
           if (comprovanteMsg) {
@@ -1789,14 +1697,6 @@ if (
 
         }
 
-
-        /*
-         * Fallback:
-         * abre o WhatsApp com a mensagem.
-         * O arquivo precisa ser anexado manualmente
-         * quando o navegador não suporta compartilhamento
-         * de arquivos.
-         */
 
         const numeroWhatsApp =
           '5579999145044';
