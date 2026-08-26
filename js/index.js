@@ -1,1510 +1,507 @@
-js/index.js
+<!doctype html>
+<html lang="pt-BR">
 
-import { CONFIG } from './config.js';
+<head>
 
-import {
-  initializeApp
-} from 'https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js';
+  <meta charset="utf-8">
 
-import {
-  getDatabase,
-  ref,
-  get,
-  runTransaction
-} from 'https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js';
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  >
 
+  <meta
+    name="theme-color"
+    content="#0878e8"
+  >
 
-/* =========================================================
-   🔥 FIREBASE
-========================================================= */
+  <meta
+    name="description"
+    content="Rifa Solidária — em prol da saúde de Dona Bené."
+  >
 
-let db = null;
+  <title>Rifa Solidária — Dona Bené</title>
 
-try {
+  <link
+    rel="stylesheet"
+    href="css/style.css"
+  >
 
-  /*
-   * O projeto precisa ter a configuração do Firebase
-   * disponível em CONFIG.firebaseConfig.
-   */
+</head>
 
-  if (CONFIG.firebaseConfig) {
 
-    const app = initializeApp(
-      CONFIG.firebaseConfig
-    );
+<body>
 
-    db = getDatabase(app);
+  <!-- BRILHO DO FUNDO -->
+  <div class="bg-glow"></div>
 
-  }
 
-} catch (erro) {
+  <!-- =====================================================
+       CABEÇALHO
+  ====================================================== -->
 
-  console.error(
-    'Erro ao iniciar Firebase:',
-    erro
-  );
+  <header class="topbar">
 
-}
+    <div class="brand">
+      🍀 RIFA SOLIDÁRIA
+    </div>
 
+    <div class="gilfest-top">
 
-/* =========================================================
-   ESCOLHER NÚMEROS
-========================================================= */
+      <img
+        src="img/gilfest.png"
+        alt="GILFEST"
+      >
 
-const abrirCartelas =
-  document.getElementById('abrirCartelas');
+      <small>
+        APOIO
+      </small>
 
-if (abrirCartelas) {
+    </div>
 
-  abrirCartelas.onclick = () => {
+  </header>
 
-    location.href =
-      'cartela.html';
 
-  };
+  <main>
 
-}
 
+    <!-- =====================================================
+         HERO
+    ====================================================== -->
 
-/* =========================================================
-   SUGERIR NÚMERO
-========================================================= */
+    <section class="hero card">
 
-const sugerir =
-  document.getElementById('sugerir');
+      <div class="hero-copy">
 
-if (sugerir) {
+        <span class="tag">
+          ♥ RIFA SOLIDÁRIA
+        </span>
 
-  sugerir.onclick = () => {
+        <h1>
+          Em prol da saúde de
+          <strong>Dona Bené</strong>
+        </h1>
 
-    location.href =
-      'cartela.html?sugerir=1';
+        <p>
+          Sua contribuição faz a diferença!
+        </p>
 
-  };
+      </div>
 
-}
 
+      <img
+        class="hero-photo"
+        src="img/mae.png"
+        alt="Dona Bené"
+      >
 
-/* =========================================================
-   🎟️ DIGITAR / VERIFICAR NÚMERO
-========================================================= */
+    </section>
 
-const numeroDireto =
-  document.getElementById('numeroDireto');
 
+    <!-- =====================================================
+         PRÊMIO
+    ====================================================== -->
 
-/*
- * Criamos automaticamente a área de status
- * logo abaixo do campo.
- */
+    <section class="prize card">
 
-let numeroStatus = null;
-let reservarNumero = null;
+      <div>
 
+        <span class="tag blue">
+          🎁 PRÊMIO
+        </span>
 
-if (numeroDireto) {
+        <h2>
+          Geladeira<br>
+          <strong>Midea Frost Free</strong>
+        </h2>
 
-  const areaNumero =
-    numeroDireto.parentElement;
+        <p class="price">
+          R$ 10,00
+          <small>por número</small>
+        </p>
 
+        <p>
+          ℹ️ Sorteio:
+          <strong>
+            30/12/2026 às 20:00
+          </strong>
+        </p>
 
-  /* -------------------------------------------------------
-     STATUS
-  ------------------------------------------------------- */
+      </div>
 
-  numeroStatus =
-    document.createElement('div');
 
-  numeroStatus.id =
-    'numeroStatus';
+      <img
+        src="img/geladeira.png"
+        alt="Geladeira Midea Frost Free"
+      >
 
-  numeroStatus.style.display =
-    'none';
+    </section>
 
-  numeroStatus.style.margin =
-    '8px 0';
 
-  numeroStatus.style.padding =
-    '10px 12px';
+    <!-- =====================================================
+         COMO PARTICIPAR
+         
+         Fica antes da busca dos números.
+    ====================================================== -->
 
-  numeroStatus.style.borderRadius =
-    '10px';
+    <article class="card steps">
 
-  numeroStatus.style.fontWeight =
-    '900';
+      <span class="tag blue">
+        COMO PARTICIPAR
+      </span>
 
-  numeroStatus.style.textAlign =
-    'center';
+      <ol>
 
-  areaNumero.appendChild(
-    numeroStatus
-  );
+        <li>
+          Escolha seus números de 000 a 999
+        </li>
 
+        <li>
+          Faça o pagamento via PIX
+        </li>
 
-  /* -------------------------------------------------------
-     BOTÃO RESERVAR
-  ------------------------------------------------------- */
+        <li>
+          Envie o comprovante e aguarde a confirmação
+        </li>
 
-  reservarNumero =
-    document.createElement('button');
+      </ol>
 
-  reservarNumero.id =
-    'reservarNumero';
+    </article>
 
-  reservarNumero.type =
-    'button';
 
-  reservarNumero.textContent =
-    '🎟️ RESERVAR NÚMERO';
+    <!-- =====================================================
+         BUSCA / RESERVA DO NÚMERO
+    ====================================================== -->
 
-  reservarNumero.style.display =
-    'none';
+    <section class="search card">
 
-  reservarNumero.style.width =
-    '100%';
+      <div class="search-number">
 
-  reservarNumero.style.marginTop =
-    '8px';
+        <h2>
+          Digite seu número de 000 a 999
+        </h2>
 
-  reservarNumero.style.padding =
-    '14px';
+        <input
+          id="numeroDireto"
+          type="text"
+          inputmode="numeric"
+          maxlength="3"
+          autocomplete="off"
+          placeholder="Ex.: 750"
+          aria-label="Digite um número de 000 a 999"
+        >
 
-  reservarNumero.style.border =
-    '0';
+        <small>
+          Digite um número para verificar a disponibilidade
+          e marcar na cartela.
+        </small>
 
-  reservarNumero.style.borderRadius =
-    '12px';
+        <!--
+          O JavaScript coloca aqui:
+          DISPONÍVEL / NÃO DISPONÍVEL
+          e o botão RESERVAR.
+        -->
 
-  reservarNumero.style.background =
-    'linear-gradient(90deg,#0878e8,#f43b9a)';
+      </div>
 
-  reservarNumero.style.color =
-    '#fff';
 
-  reservarNumero.style.fontWeight =
-    '900';
+      <div class="pix-area">
 
-  reservarNumero.style.cursor =
-    'pointer';
+        <button
+          class="pix"
+          id="copiarPix"
+          type="button"
+        >
+          💠 Copiar chave PIX
+        </button>
 
-  areaNumero.appendChild(
-    reservarNumero
-  );
+      </div>
 
+    </section>
 
-  /* -------------------------------------------------------
-     FUNÇÕES VISUAIS
-  ------------------------------------------------------- */
 
-  function limparStatus() {
+    <!-- =====================================================
+         TRÊS CARTÕES
+         
+         NO CELULAR:
+         1 — COMPROVANTE
+         2 — RASPADINHA
+         3 — COMO PARTICIPAR
+         
+         A ordem visual poderá ser controlada pelo CSS.
+    ====================================================== -->
 
-    if (numeroStatus) {
+    <section class="steps-grid">
 
-      numeroStatus.style.display =
-        'none';
 
-      numeroStatus.textContent =
-        '';
+      <!-- ===================================================
+           COMPROVANTE
+      ==================================================== -->
 
-    }
+      <article class="card upload">
 
-    if (reservarNumero) {
+        <span class="tag blue">
+          ENVIE SEU COMPROVANTE
+        </span>
 
-      reservarNumero.style.display =
-        'none';
 
-      reservarNumero.disabled =
-        false;
+        <div class="upload-box">
 
-    }
+          <div class="upload-icon">
+            📄
+          </div>
 
-  }
 
+          <strong>
+            Selecione o comprovante
+          </strong>
 
-  function mostrarDisponivel(numero) {
 
-    if (!numeroStatus) return;
+          <small>
+            Foto ou PDF do comprovante de pagamento
+          </small>
 
-    numeroStatus.style.display =
-      'block';
 
-    numeroStatus.style.background =
-      '#e8fff0';
+          <input
+            id="comprovante"
+            type="file"
+            accept="image/*,application/pdf"
+          >
 
-    numeroStatus.style.color =
-      '#12843b';
 
-    numeroStatus.style.border =
-      '1px solid #8de0aa';
+          <p
+            id="comprovanteNome"
+            class="comprovante-nome"
+          >
+            Nenhum arquivo selecionado.
+          </p>
 
-    numeroStatus.textContent =
-      `🟢 NÚMERO ${numero} DISPONÍVEL`;
 
+          <button
+            id="enviarWhatsApp"
+            class="whatsapp-btn"
+            type="button"
+            disabled
+          >
+            📲 ENVIAR PELO WHATSAPP
+          </button>
 
-    if (reservarNumero) {
 
-      reservarNumero.style.display =
-        'block';
+          <p
+            id="comprovanteMsg"
+            class="comprovante-msg"
+          ></p>
 
-      reservarNumero.dataset.numero =
-        numero;
+        </div>
 
-    }
+      </article>
 
-  }
 
+      <!-- ===================================================
+           RASPADINHA
+      ==================================================== -->
 
-  function mostrarIndisponivel(numero) {
+      <article class="card scratch">
 
-    if (!numeroStatus) return;
+        <div class="trevo-mini">
+          🍀
+        </div>
 
-    numeroStatus.style.display =
-      'block';
 
-    numeroStatus.style.background =
-      '#fff0f0';
+        <h2>
+          RASPADINHA<br>
+          <strong>DA SORTE</strong>
+        </h2>
 
-    numeroStatus.style.color =
-      '#c62828';
 
-    numeroStatus.style.border =
-      '1px solid #f0a0a0';
+        <p class="scratch-subtitle">
+          Sua sorte pode estar escondida aqui!
+        </p>
 
-    numeroStatus.textContent =
-      `🔴 NÚMERO ${numero} NÃO DISPONÍVEL`;
 
-    if (reservarNumero) {
+        <div class="scratch-area">
 
-      reservarNumero.style.display =
-        'none';
+          <div class="scratch-result">
 
-    }
+            <span class="icone">
+              🎁
+            </span>
 
-  }
+            <strong id="scratchPremio">
+              RASPE AQUI
+            </strong>
 
+            <small>
+              Descubra sua sorte
+            </small>
 
-  function mostrarErro(mensagem) {
+          </div>
 
-    if (!numeroStatus) return;
 
-    numeroStatus.style.display =
-      'block';
+          <canvas
+            id="scratchCanvas"
+            class="scratch-canvas"
+          ></canvas>
 
-    numeroStatus.style.background =
-      '#fff7e6';
+        </div>
 
-    numeroStatus.style.color =
-      '#9a6500';
 
-    numeroStatus.style.border =
-      '1px solid #efd28a';
+        <p class="scratch-instruction">
+          👆 Raspe com o dedo para descobrir!
+        </p>
 
-    numeroStatus.textContent =
-      `⚠️ ${mensagem}`;
 
-  }
+        <div class="scratch-prizes">
 
+          <div class="scratch-prize">
 
-  /* -------------------------------------------------------
-     VERIFICAR NO FIREBASE
-  ------------------------------------------------------- */
+            <span>
+              🧉
+            </span>
 
-  async function verificarNumero() {
+            Liquidificador
 
-    limparStatus();
+          </div>
 
-    const raw =
-      numeroDireto.value.trim();
 
-    if (raw === '') return;
+          <div class="scratch-prize">
 
+            <span>
+              🔥
+            </span>
 
-    const n =
-      Number(raw);
+            Ferro elétrico
 
+          </div>
 
-    if (
-      !Number.isInteger(n) ||
-      n < 0 ||
-      n > 999
-    ) {
+        </div>
 
-      mostrarErro(
-        'Digite um número entre 000 e 999.'
-      );
+      </article>
 
-      return;
 
-    }
+      <!-- ===================================================
+           COMO PARTICIPAR
+           
+           Mantido aqui também porque o CSS atual
+           trabalha com .steps-grid.
+           
+           O CSS definitivo poderá controlar
+           exatamente onde ele aparece.
+      ==================================================== -->
 
+      <article class="card steps">
 
-    const numero =
-      String(n).padStart(3, '0');
+        <span class="tag blue">
+          COMO PARTICIPAR
+        </span>
 
 
-    /*
-     * Enquanto consulta.
-     */
+        <ol>
 
-    if (numeroStatus) {
+          <li>
+            Escolha seus números de 000 a 999
+          </li>
 
-      numeroStatus.style.display =
-        'block';
+          <li>
+            Faça o pagamento via PIX
+          </li>
 
-      numeroStatus.style.background =
-        '#eef6ff';
+          <li>
+            Envie o comprovante e aguarde a confirmação
+          </li>
 
-      numeroStatus.style.color =
-        '#1766a5';
+        </ol>
 
-      numeroStatus.style.border =
-        '1px solid #a8cff2';
+      </article>
 
-      numeroStatus.textContent =
-        '🔎 Verificando disponibilidade...';
+    </section>
 
-    }
 
+    <!-- =====================================================
+         ESCOLHA SEUS NÚMEROS
+    ====================================================== -->
 
-    if (!db) {
+    <section class="card choose">
 
-      mostrarErro(
-        'Firebase não está configurado.'
-      );
+      <h2>
+        🎟️ Escolha seus números
+      </h2>
 
-      return;
 
-    }
+      <p>
+        Você pode selecionar de 1 a 10 números.
+      </p>
 
 
-    try {
+      <button
+        class="primary"
+        id="abrirCartelas"
+        type="button"
+      >
+        ESCOLHER NÚMEROS →
+      </button>
 
-      const numeroRef =
-        ref(
-          db,
-          `rifa/numeros/${numero}`
-        );
 
+      <button
+        class="secondary"
+        id="sugerir"
+        type="button"
+      >
+        🍀 SUGERIR UM NÚMERO
+      </button>
 
-      const snapshot =
-        await get(numeroRef);
+    </section>
 
 
-      /*
-       * Número ainda não existe:
-       * consideramos disponível.
-       */
+    <!-- =====================================================
+         NÚMERO DA SORTE
+    ====================================================== -->
 
-      if (!snapshot.exists()) {
+    <section class="luck card">
 
-        mostrarDisponivel(numero);
+      <span>
+        🍀
+      </span>
 
-        return;
 
-      }
+      <div>
 
+        <h2>
+          NÚMERO DA SORTE
+        </h2>
 
-      const dados =
-        snapshot.val();
+        <p>
+          Não é sorte, é fé, é esperança, é solidariedade!
+        </p>
 
+      </div>
 
-      /*
-       * Aceita diferentes formatos
-       * que podem existir na sua estrutura.
-       */
+    </section>
 
-      const status =
-        String(
-          dados?.status ||
-          dados?.situacao ||
-          ''
-        ).toLowerCase();
+  </main>
 
 
-      const reservado =
-        status === 'reservado' ||
-        status === 'vendido' ||
-        status === 'pago' ||
-        status === 'ocupado' ||
-        dados?.reservado === true ||
-        dados?.vendido === true ||
-        dados?.ocupado === true;
+  <!-- =====================================================
+       RODAPÉ
+  ====================================================== -->
 
+  <footer>
 
-      if (reservado) {
+    Rifa Solidária • GilFest •
+    Em benefício de Dona Bené
 
-        mostrarIndisponivel(numero);
+  </footer>
 
-      } else {
 
-        mostrarDisponivel(numero);
+  <!-- =====================================================
+       JAVASCRIPT PRINCIPAL
+  ====================================================== -->
 
-      }
+  <script
+    type="module"
+    src="js/index.js"
+  ></script>
 
-    } catch (erro) {
+</body>
 
-      console.error(
-        'Erro ao consultar número:',
-        erro
-      );
-
-      mostrarErro(
-        'Não foi possível verificar o número.'
-      );
-
-    }
-
-  }
-
-
-  /* -------------------------------------------------------
-     DIGITAÇÃO
-  ------------------------------------------------------- */
-
-  numeroDireto.addEventListener(
-    'input',
-    () => {
-
-      numeroDireto.value =
-        numeroDireto.value
-          .replace(/\D/g, '')
-          .slice(0, 3);
-
-
-      /*
-       * Verifica automaticamente quando
-       * o usuário completar os 3 dígitos.
-       */
-
-      if (
-        numeroDireto.value.length === 3
-      ) {
-
-        verificarNumero();
-
-      } else {
-
-        limparStatus();
-
-      }
-
-    }
-  );
-
-
-  /* -------------------------------------------------------
-     ENTER
-  ------------------------------------------------------- */
-
-  numeroDireto.addEventListener(
-    'keydown',
-    evento => {
-
-      if (
-        evento.key === 'Enter'
-      ) {
-
-        evento.preventDefault();
-
-        verificarNumero();
-
-      }
-
-    }
-  );
-
-
-  /* -------------------------------------------------------
-     RESERVAR NÚMERO
-  ------------------------------------------------------- */
-
-  if (reservarNumero) {
-
-    reservarNumero.addEventListener(
-      'click',
-      async () => {
-
-        const numero =
-          reservarNumero.dataset.numero;
-
-
-        if (!numero) return;
-
-
-        if (!db) {
-
-          alert(
-            'Firebase não está configurado.'
-          );
-
-          return;
-
-        }
-
-
-        reservarNumero.disabled =
-          true;
-
-        reservarNumero.textContent =
-          '⏳ RESERVANDO...';
-
-
-        try {
-
-          const numeroRef =
-            ref(
-              db,
-              `rifa/numeros/${numero}`
-            );
-
-
-          /*
-           * Transaction evita que duas pessoas
-           * reservem o mesmo número ao mesmo tempo.
-           */
-
-          const resultado =
-            await runTransaction(
-              numeroRef,
-              atual => {
-
-                /*
-                 * Se alguém já gravou o número,
-                 * não permite outra reserva.
-                 */
-
-                if (
-                  atual !== null
-                ) {
-
-                  const status =
-                    String(
-                      atual?.status ||
-                      atual?.situacao ||
-                      ''
-                    ).toLowerCase();
-
-
-                  const ocupado =
-                    status === 'reservado' ||
-                    status === 'vendido' ||
-                    status === 'pago' ||
-                    status === 'ocupado' ||
-                    atual?.reservado === true ||
-                    atual?.vendido === true ||
-                    atual?.ocupado === true;
-
-
-                  if (ocupado) {
-
-                    return;
-
-                  }
-
-                }
-
-
-                /*
-                 * Cria a reserva.
-                 */
-
-                return {
-
-                  numero: numero,
-
-                  status:
-                    'reservado',
-
-                  reservado:
-                    true,
-
-                  dataReserva:
-                    new Date().toISOString()
-
-                };
-
-              }
-            );
-
-
-          if (
-            !resultado.committed
-          ) {
-
-            mostrarIndisponivel(
-              numero
-            );
-
-            alert(
-              '❌ Esse número acabou de ser reservado por outra pessoa.'
-            );
-
-            return;
-
-          }
-
-
-          /*
-           * Reserva confirmada.
-           */
-
-          if (numeroStatus) {
-
-            numeroStatus.style.display =
-              'block';
-
-            numeroStatus.style.background =
-              '#e8fff0';
-
-            numeroStatus.style.color =
-              '#12843b';
-
-            numeroStatus.style.border =
-              '1px solid #8de0aa';
-
-            numeroStatus.textContent =
-              `✅ NÚMERO ${numero} RESERVADO COM SUCESSO`;
-
-          }
-
-
-          reservarNumero.style.display =
-            'none';
-
-
-          alert(
-            `✅ Número ${numero} reservado!\n\n` +
-            `Agora faça o pagamento pelo PIX ` +
-            `e depois envie o comprovante.`
-          );
-
-
-          /*
-           * Mantém o número selecionado
-           * para a cartela.
-           */
-
-          setTimeout(
-            () => {
-
-              location.href =
-                `cartela.html?numero=${numero}`;
-
-            },
-            500
-          );
-
-
-        } catch (erro) {
-
-          console.error(
-            'Erro ao reservar número:',
-            erro
-          );
-
-
-          reservarNumero.disabled =
-            false;
-
-          reservarNumero.textContent =
-            '🎟️ RESERVAR NÚMERO';
-
-
-          mostrarErro(
-            'Não foi possível reservar o número.'
-          );
-
-
-          alert(
-            '❌ Não foi possível reservar o número. ' +
-            'Verifique sua conexão e tente novamente.'
-          );
-
-        }
-
-      }
-    );
-
-  }
-
-}
-
-
-/* =========================================================
-   💠 COPIAR PIX
-========================================================= */
-
-const copiarPix =
-  document.getElementById('copiarPix');
-
-if (copiarPix) {
-
-  copiarPix.onclick =
-    async () => {
-
-      const chave =
-        CONFIG.pixChave;
-
-
-      if (!chave) {
-
-        alert(
-          'Chave PIX não configurada.'
-        );
-
-        return;
-
-      }
-
-
-      try {
-
-        if (
-          navigator.clipboard
-        ) {
-
-          await navigator.clipboard.writeText(
-            chave
-          );
-
-        } else {
-
-          throw new Error(
-            'Clipboard indisponível'
-          );
-
-        }
-
-
-        alert(
-          '✅ Chave PIX copiada!'
-        );
-
-
-      } catch {
-
-        try {
-
-          const campo =
-            document.createElement(
-              'textarea'
-            );
-
-
-          campo.value =
-            chave;
-
-          campo.style.position =
-            'fixed';
-
-          campo.style.opacity =
-            '0';
-
-
-          document.body.appendChild(
-            campo
-          );
-
-
-          campo.focus();
-
-          campo.select();
-
-
-          document.execCommand(
-            'copy'
-          );
-
-
-          campo.remove();
-
-
-          alert(
-            '✅ Chave PIX copiada!'
-          );
-
-
-        } catch {
-
-          alert(
-            'Não foi possível copiar automaticamente. ' +
-            'Toque e segure a chave PIX para copiar.'
-          );
-
-        }
-
-      }
-
-    };
-
-}
-
-
-/* =========================================================
-   🍀 RASPADINHA DA SORTE
-========================================================= */
-
-const canvas =
-  document.getElementById(
-    'scratchCanvas'
-  );
-
-const area =
-  document.querySelector(
-    '.scratch-area'
-  );
-
-const premio =
-  document.getElementById(
-    'scratchPremio'
-  );
-
-
-if (
-  canvas &&
-  area &&
-  premio
-) {
-
-  const ctx =
-    canvas.getContext(
-      '2d'
-    );
-
-
-  let raspando =
-    false;
-
-  let finalizada =
-    false;
-
-
-  const premios = [
-
-    '🧉 LIQUIDIFICADOR',
-
-    '🔥 FERRO ELÉTRICO'
-
-  ];
-
-
-  const premioEscolhido =
-    premios[
-      Math.floor(
-        Math.random() *
-        premios.length
-      )
-    ];
-
-
-  function ajustarCanvas() {
-
-    const rect =
-      area.getBoundingClientRect();
-
-
-    const escala =
-      window.devicePixelRatio ||
-      1;
-
-
-    canvas.width =
-      rect.width * escala;
-
-    canvas.height =
-      rect.height * escala;
-
-
-    canvas.style.width =
-      rect.width + 'px';
-
-    canvas.style.height =
-      rect.height + 'px';
-
-
-    ctx.setTransform(
-      escala,
-      0,
-      0,
-      escala,
-      0,
-      0
-    );
-
-
-    ctx.fillStyle =
-      '#b9bec4';
-
-
-    ctx.fillRect(
-      0,
-      0,
-      rect.width,
-      rect.height
-    );
-
-
-    ctx.fillStyle =
-      'rgba(255,255,255,.35)';
-
-
-    for (
-      let x = -rect.height;
-      x < rect.width;
-      x += 35
-    ) {
-
-      ctx.beginPath();
-
-      ctx.moveTo(
-        x,
-        0
-      );
-
-      ctx.lineTo(
-        x + rect.height,
-        rect.height
-      );
-
-
-      ctx.strokeStyle =
-        'rgba(255,255,255,.25)';
-
-      ctx.lineWidth =
-        10;
-
-      ctx.stroke();
-
-    }
-
-
-    ctx.fillStyle =
-      '#6d7379';
-
-
-    ctx.font =
-      '900 18px Arial';
-
-
-    ctx.textAlign =
-      'center';
-
-    ctx.textBaseline =
-      'middle';
-
-
-    ctx.fillText(
-      'RASPE AQUI',
-      rect.width / 2,
-      rect.height / 2
-    );
-
-  }
-
-
-  function obterPosicao(evento) {
-
-    const rect =
-      canvas.getBoundingClientRect();
-
-
-    let x;
-
-    let y;
-
-
-    if (
-      evento.touches &&
-      evento.touches.length
-    ) {
-
-      x =
-        evento.touches[0].clientX -
-        rect.left;
-
-      y =
-        evento.touches[0].clientY -
-        rect.top;
-
-    } else {
-
-      x =
-        evento.clientX -
-        rect.left;
-
-      y =
-        evento.clientY -
-        rect.top;
-
-    }
-
-
-    return {
-      x,
-      y
-    };
-
-  }
-
-
-  function raspar(evento) {
-
-    if (
-      !raspando ||
-      finalizada
-    ) return;
-
-
-    evento.preventDefault();
-
-
-    const {
-      x,
-      y
-    } =
-      obterPosicao(
-        evento
-      );
-
-
-    ctx.globalCompositeOperation =
-      'destination-out';
-
-
-    ctx.beginPath();
-
-
-    ctx.arc(
-      x,
-      y,
-      24,
-      0,
-      Math.PI * 2
-    );
-
-
-    ctx.fill();
-
-  }
-
-
-  function iniciar(evento) {
-
-    raspando =
-      true;
-
-
-    evento.preventDefault();
-
-
-    raspar(
-      evento
-    );
-
-  }
-
-
-  function parar() {
-
-    raspando =
-      false;
-
-
-    verificarProgresso();
-
-  }
-
-
-  function verificarProgresso() {
-
-    if (
-      finalizada
-    ) return;
-
-
-    const rect =
-      canvas.getBoundingClientRect();
-
-
-    const largura =
-      Math.max(
-        1,
-        Math.floor(
-          rect.width
-        )
-      );
-
-
-    const altura =
-      Math.max(
-        1,
-        Math.floor(
-          rect.height
-        )
-      );
-
-
-    const imagem =
-      ctx.getImageData(
-        0,
-        0,
-        Math.min(
-          canvas.width,
-          largura
-        ),
-        Math.min(
-          canvas.height,
-          altura
-        )
-      );
-
-
-    let transparentes =
-      0;
-
-
-    for (
-      let i = 3;
-      i < imagem.data.length;
-      i += 4
-    ) {
-
-      if (
-        imagem.data[i] === 0
-      ) {
-
-        transparentes++;
-
-      }
-
-    }
-
-
-    const total =
-      imagem.data.length /
-      4;
-
-
-    const porcentagem =
-      transparentes /
-      total;
-
-
-    if (
-      porcentagem > 0.45
-    ) {
-
-      finalizada =
-        true;
-
-
-      premio.textContent =
-        premioEscolhido;
-
-
-      ctx.clearRect(
-        0,
-        0,
-        canvas.width,
-        canvas.height
-      );
-
-    }
-
-  }
-
-
-  canvas.addEventListener(
-    'mousedown',
-    iniciar
-  );
-
-  canvas.addEventListener(
-    'mousemove',
-    raspar
-  );
-
-  window.addEventListener(
-    'mouseup',
-    parar
-  );
-
-
-  canvas.addEventListener(
-    'touchstart',
-    iniciar,
-    {
-      passive: false
-    }
-  );
-
-  canvas.addEventListener(
-    'touchmove',
-    raspar,
-    {
-      passive: false
-    }
-  );
-
-  canvas.addEventListener(
-    'touchend',
-    parar
-  );
-
-
-  window.addEventListener(
-    'resize',
-    ajustarCanvas
-  );
-
-
-  ajustarCanvas();
-
-}
-
-
-/* =========================================================
-   📲 COMPROVANTE + WHATSAPP
-========================================================= */
-
-const comprovante =
-  document.getElementById(
-    'comprovante'
-  );
-
-const comprovanteNome =
-  document.getElementById(
-    'comprovanteNome'
-  );
-
-const enviarWhatsApp =
-  document.getElementById(
-    'enviarWhatsApp'
-  );
-
-const comprovanteMsg =
-  document.getElementById(
-    'comprovanteMsg'
-  );
-
-
-if (
-  comprovante &&
-  comprovanteNome &&
-  enviarWhatsApp
-) {
-
-  comprovante.addEventListener(
-    'change',
-    () => {
-
-      const arquivo =
-        comprovante.files[0];
-
-
-      if (!arquivo) {
-
-        comprovanteNome.textContent =
-          'Nenhum arquivo selecionado.';
-
-
-        enviarWhatsApp.disabled =
-          true;
-
-
-        if (comprovanteMsg) {
-
-          comprovanteMsg.textContent =
-            '';
-
-        }
-
-
-        return;
-
-      }
-
-
-      const tamanhoMaximo =
-        10 *
-        1024 *
-        1024;
-
-
-      if (
-        arquivo.size >
-        tamanhoMaximo
-      ) {
-
-        comprovante.value =
-          '';
-
-
-        comprovanteNome.textContent =
-          'Nenhum arquivo selecionado.';
-
-
-        enviarWhatsApp.disabled =
-          true;
-
-
-        if (comprovanteMsg) {
-
-          comprovanteMsg.textContent =
-            '⚠️ O arquivo deve ter no máximo 10 MB.';
-
-        }
-
-
-        return;
-
-      }
-
-
-      comprovanteNome.textContent =
-        `✅ ${arquivo.name}`;
-
-
-      enviarWhatsApp.disabled =
-        false;
-
-
-      if (comprovanteMsg) {
-
-        comprovanteMsg.textContent =
-          'Comprovante pronto para envio.';
-
-      }
-
-    }
-  );
-
-
-  enviarWhatsApp.addEventListener(
-    'click',
-    async () => {
-
-      const arquivo =
-        comprovante.files[0];
-
-
-      if (!arquivo) {
-
-        if (comprovanteMsg) {
-
-          comprovanteMsg.textContent =
-            '⚠️ Selecione o comprovante primeiro.';
-
-        }
-
-
-        return;
-
-      }
-
-
-      const mensagem =
-        'Olá! Estou enviando o comprovante de pagamento da Rifa Solidária — GILFEST.';
-
-
-      try {
-
-        const dados = {
-
-          files: [
-            arquivo
-          ],
-
-          text:
-            mensagem,
-
-          title:
-            mensagem
-
-        };
-
-
-        if (
-          navigator.share &&
-          navigator.canShare &&
-          navigator.canShare(
-            dados
-          )
-        ) {
-
-          await navigator.share(
-            dados
-          );
-
-
-          if (comprovanteMsg) {
-
-            comprovanteMsg.textContent =
-              '✅ Escolha o WhatsApp e envie o comprovante com a mensagem.';
-
-          }
-
-
-          return;
-
-        }
-
-
-        throw new Error(
-          'Compartilhamento de arquivo indisponível.'
-        );
-
-
-      } catch (erro) {
-
-        console.log(
-          'Compartilhamento:',
-          erro
-        );
-
-
-        if (
-          erro.name ===
-          'AbortError'
-        ) {
-
-          if (comprovanteMsg) {
-
-            comprovanteMsg.textContent =
-              'Compartilhamento cancelado.';
-
-          }
-
-
-          return;
-
-        }
-
-
-        const numeroWhatsApp =
-          '5579999145044';
-
-
-        const url =
-          `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
-
-
-        window.open(
-          url,
-          '_blank'
-        );
-
-
-        if (comprovanteMsg) {
-
-          comprovanteMsg.textContent =
-            '📲 WhatsApp aberto. Anexe o comprovante na conversa.';
-
-        }
-
-      }
-
-    }
-  );
-
-}
+</html>
