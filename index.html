@@ -1,3 +1,5 @@
+index.html
+
 <!doctype html>
 <html lang="pt-BR">
 
@@ -27,15 +29,11 @@
   >
 </head>
 
-
 <body>
 
   <div class="bg-glow"></div>
 
-
-  <!-- =====================================================
-       CABEÇALHO
-  ====================================================== -->
+  <!-- CABEÇALHO -->
 
   <header class="topbar">
 
@@ -61,10 +59,7 @@
 
   <main>
 
-
-    <!-- =====================================================
-         CARTÃO PRINCIPAL
-    ====================================================== -->
+    <!-- CARTÃO PRINCIPAL -->
 
     <section class="hero card">
 
@@ -85,7 +80,6 @@
 
       </div>
 
-
       <img
         class="hero-photo"
         src="img/mae.png"
@@ -95,10 +89,7 @@
     </section>
 
 
-
-    <!-- =====================================================
-         PRÊMIO PRINCIPAL
-    ====================================================== -->
+    <!-- PRÊMIO PRINCIPAL -->
 
     <section class="prize card">
 
@@ -127,7 +118,6 @@
 
       </div>
 
-
       <img
         src="img/geladeira.png"
         alt="Geladeira Midea Frost Free"
@@ -136,10 +126,37 @@
     </section>
 
 
-
     <!-- =====================================================
-         BUSCA DE NÚMEROS
+         COMO PARTICIPAR
+         AGORA FICA ANTES DA BUSCA DOS NÚMEROS
     ====================================================== -->
+
+    <article class="card steps">
+
+      <span class="tag blue">
+        COMO PARTICIPAR
+      </span>
+
+      <ol>
+
+        <li>
+          Escolha seus números de 000 a 999
+        </li>
+
+        <li>
+          Faça o pagamento via PIX
+        </li>
+
+        <li>
+          Envie o comprovante e aguarde a confirmação
+        </li>
+
+      </ol>
+
+    </article>
+
+
+    <!-- BUSCA DE NÚMEROS -->
 
     <section class="search card">
 
@@ -163,7 +180,6 @@
 
       </div>
 
-
       <button
         class="pix"
         id="copiarPix"
@@ -175,19 +191,14 @@
     </section>
 
 
-
     <!-- =====================================================
          CARTÕES PRINCIPAIS
-         IMPORTANTE:
-         SOMENTE OS 3 CARTÕES FICAM DENTRO DE .steps-grid
     ====================================================== -->
 
     <section class="steps-grid">
 
 
-      <!-- ===================================================
-           1 — ENVIE SEU COMPROVANTE
-      ==================================================== -->
+      <!-- 1 — COMPROVANTE -->
 
       <article class="card upload">
 
@@ -195,23 +206,19 @@
           ENVIE SEU COMPROVANTE
         </span>
 
-
         <div class="upload-box">
 
           <div class="upload-icon">
             📄
           </div>
 
-
           <strong>
             Selecione o comprovante
           </strong>
 
-
           <small>
             Foto ou PDF do comprovante de pagamento
           </small>
-
 
           <input
             id="comprovante"
@@ -219,14 +226,12 @@
             accept="image/*,application/pdf"
           >
 
-
           <p
             id="comprovanteNome"
             class="comprovante-nome"
           >
             Nenhum arquivo selecionado.
           </p>
-
 
           <button
             id="enviarWhatsApp"
@@ -236,7 +241,6 @@
           >
             📲 ENVIAR PELO WHATSAPP
           </button>
-
 
           <p
             id="comprovanteMsg"
@@ -248,10 +252,7 @@
       </article>
 
 
-
-      <!-- ===================================================
-           2 — RASPADINHA DA SORTE
-      ==================================================== -->
+      <!-- 2 — RASPADINHA -->
 
       <article class="card scratch">
 
@@ -259,17 +260,14 @@
           🍀
         </div>
 
-
         <h2>
           RASPADINHA<br>
           <strong>DA SORTE</strong>
         </h2>
 
-
         <p class="scratch-subtitle">
           Sua sorte pode estar escondida aqui!
         </p>
-
 
         <div class="scratch-area">
 
@@ -289,7 +287,6 @@
 
           </div>
 
-
           <canvas
             id="scratchCanvas"
             class="scratch-canvas"
@@ -297,11 +294,9 @@
 
         </div>
 
-
         <p class="scratch-instruction">
           👆 Raspe com o dedo para descobrir!
         </p>
-
 
         <div class="scratch-prizes">
 
@@ -314,7 +309,6 @@
             Liquidificador
 
           </div>
-
 
           <div class="scratch-prize">
 
@@ -330,47 +324,10 @@
 
       </article>
 
-
-
-      <!-- ===================================================
-           3 — COMO PARTICIPAR
-      ==================================================== -->
-
-      <article class="card steps">
-
-        <span class="tag blue">
-          COMO PARTICIPAR
-        </span>
-
-
-        <ol>
-
-          <li>
-            Escolha seus números de 000 a 999
-          </li>
-
-          <li>
-            Faça o pagamento via PIX
-          </li>
-
-          <li>
-            Envie o comprovante e aguarde a confirmação
-          </li>
-
-        </ol>
-
-      </article>
-
-
     </section>
 
 
-
-    <!-- =====================================================
-         ESCOLHA DOS NÚMEROS
-         FICA FORA DA .steps-grid
-         PARA SER UM CARTÃO GRANDE E INDEPENDENTE
-    ====================================================== -->
+    <!-- ESCOLHA DOS NÚMEROS -->
 
     <section class="card choose">
 
@@ -378,11 +335,9 @@
         🎟️ Escolha seus números
       </h2>
 
-
       <p>
         Você pode selecionar de 1 a 10 números.
       </p>
-
 
       <button
         class="primary"
@@ -391,7 +346,6 @@
       >
         ESCOLHER NÚMEROS →
       </button>
-
 
       <button
         class="secondary"
@@ -404,17 +358,13 @@
     </section>
 
 
-
-    <!-- =====================================================
-         NÚMERO DA SORTE
-    ====================================================== -->
+    <!-- NÚMERO DA SORTE -->
 
     <section class="luck card">
 
       <span>
         🍀
       </span>
-
 
       <div>
 
@@ -430,24 +380,17 @@
 
     </section>
 
-
   </main>
 
 
-
-  <!-- =====================================================
-       RODAPÉ
-  ====================================================== -->
+  <!-- RODAPÉ -->
 
   <footer>
     Rifa Solidária • GilFest • Em benefício de Dona Bené
   </footer>
 
 
-
-  <!-- =====================================================
-       JAVASCRIPT
-  ====================================================== -->
+  <!-- JAVASCRIPT -->
 
   <script
     type="module"
