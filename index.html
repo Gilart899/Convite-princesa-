@@ -138,7 +138,18 @@
 
 
     <!-- =====================================================
-         BUSCA / VERIFICAÇÃO / RESERVA / PIX
+         🔵 CARTÃO — VERIFICAR / RESERVAR / PIX
+         
+         ETAPA 1
+         
+         Ordem:
+         CAMPO → VERIFICAR → PIX
+         
+         Depois da verificação:
+         DISPONÍVEL / NÃO DISPONÍVEL
+         
+         Se disponível:
+         RESERVAR NÚMERO
     ====================================================== -->
 
     <section class="search card">
@@ -149,29 +160,66 @@
           Digite seu número de 000 a 999
         </h2>
 
-        <input
-          id="numeroDireto"
-          type="text"
-          inputmode="numeric"
-          maxlength="3"
-          autocomplete="off"
-          placeholder="Ex.: 750"
-          aria-label="Digite seu número de 000 a 999"
+
+        <div class="numero-controle">
+
+          <!-- CAMPO BRANCO -->
+
+          <input
+            id="numeroDireto"
+            type="text"
+            inputmode="numeric"
+            maxlength="3"
+            autocomplete="off"
+            placeholder="Ex.: 750"
+            aria-label="Digite seu número de 000 a 999"
+          >
+
+
+          <!-- BOTÃO VERIFICAR -->
+
+          <button
+            id="verificarNumero"
+            class="verificar-numero"
+            type="button"
+          >
+            🔎 VERIFICAR
+          </button>
+
+        </div>
+
+
+        <!-- STATUS -->
+
+        <div
+          id="numeroStatus"
+          class="numero-status"
+          aria-live="polite"
+        ></div>
+
+
+        <!-- RESERVAR -->
+
+        <button
+          id="reservarNumero"
+          class="reservar-numero"
+          type="button"
         >
+          🎟️ RESERVAR NÚMERO
+        </button>
+
 
         <small>
           Digite um número para verificar a disponibilidade
           e marcar na cartela.
         </small>
 
-        <!--
-          O JavaScript cria automaticamente aqui:
-          - indicador DISPONÍVEL / NÃO DISPONÍVEL
-          - botão RESERVAR NÚMERO
-        -->
-
       </div>
 
+
+      <!-- ===================================================
+           PIX
+      ==================================================== -->
 
       <div class="pix-area">
 
@@ -180,7 +228,7 @@
           id="copiarPix"
           type="button"
         >
-          💠 Copiar chave PIX
+          💠 COPIAR CHAVE PIX
         </button>
 
       </div>
