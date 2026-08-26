@@ -1,8 +1,6 @@
 /* =========================================================
 🎨 RIFA SOLIDÁRIA — GILFEST
 STYLE.CSS COMPLETO
-Layout vertical + cartão de número corrigido
-Raspadinha ampliada em 50%
 ========================================================= */
 
 :root {
@@ -14,10 +12,6 @@ Raspadinha ampliada em 50%
   --text: #12365b;
   --white: #ffffff;
 }
-
-/* =========================================================
-RESET
-========================================================= */
 
 * {
   box-sizing: border-box;
@@ -33,7 +27,6 @@ body {
 
 body {
   position: relative;
-
   font-family: Arial, Helvetica, sans-serif;
   color: var(--text);
 
@@ -53,7 +46,6 @@ body {
 .bg-glow {
   position: fixed;
   inset: 0;
-
   pointer-events: none;
   z-index: -2;
 
@@ -424,10 +416,6 @@ CARTÃO PADRÃO
     );
 }
 
-/* =========================================================
-ÁREA DO NÚMERO
-========================================================= */
-
 .numero-area {
   width: 100%;
   min-width: 0;
@@ -441,10 +429,6 @@ CARTÃO PADRÃO
 
   font-size: 1.35rem;
 }
-
-/* =========================================================
-CAMPO DO NÚMERO
-========================================================= */
 
 #numeroDireto {
   display: block;
@@ -480,10 +464,6 @@ CAMPO DO NÚMERO
     0 0 0 3px rgba(255,255,255,.45),
     0 4px 12px rgba(0,0,0,.12);
 }
-
-/* =========================================================
-🔎 BOTÃO VERIFICAR
-========================================================= */
 
 #verificarNumero,
 .verificar-numero {
@@ -538,10 +518,6 @@ CAMPO DO NÚMERO
   transform: scale(.98);
 }
 
-/* =========================================================
-🟢🔴 STATUS
-========================================================= */
-
 #numeroStatus,
 .numero-status {
   display: none;
@@ -567,10 +543,6 @@ CAMPO DO NÚMERO
 
   overflow-wrap: anywhere;
 }
-
-/* =========================================================
-🎟️ RESERVAR
-========================================================= */
 
 #reservarNumero,
 .reservar-numero {
@@ -632,10 +604,6 @@ CAMPO DO NÚMERO
   transform: none;
 }
 
-/* =========================================================
-TEXTO DE AJUDA
-========================================================= */
-
 .numero-area > small {
   display: block;
 
@@ -651,22 +619,14 @@ TEXTO DE AJUDA
   text-align: left;
 }
 
-/* =========================================================
-💠 PIX
-========================================================= */
-
 .pix-area {
   width: 100%;
   min-width: 0;
 
   display: flex;
 
-  flex-direction: column;
-
-  align-items: stretch;
-  justify-content: flex-start;
-
-  gap: 10px;
+  align-items: flex-start;
+  justify-content: stretch;
 }
 
 .pix {
@@ -713,7 +673,7 @@ TEXTO DE AJUDA
 }
 
 /* =========================================================
-BOTÕES GERAIS
+BOTÕES
 ========================================================= */
 
 .primary,
@@ -809,7 +769,6 @@ BOTÕES GERAIS
 
 .steps li {
   margin: 14px 0;
-
   font-weight: 700;
 }
 
@@ -864,8 +823,7 @@ BOTÕES GERAIS
 }
 
 /* =========================================================
-ÁREA DA RASPADINHA
-50% MAIOR
+🎟️ ÁREA DA RASPADINHA — 50% MAIOR
 ANTES: 210px
 AGORA: 315px
 ========================================================= */
@@ -877,9 +835,11 @@ AGORA: 315px
 
   height: 315px;
 
+  min-height: 315px;
+
   overflow: hidden;
 
-  border-radius: 18px;
+  border-radius: 22px;
 
   background:
     linear-gradient(
@@ -891,22 +851,26 @@ AGORA: 315px
 
   box-shadow:
     inset 0 0 0 2px rgba(255,255,255,.7),
-    0 8px 18px rgba(120,85,0,.18);
+    0 10px 24px rgba(120,85,0,.22);
 }
 
 .scratch-area::before {
   content: "";
 
   position: absolute;
-  inset: 7px;
+  inset: 9px;
 
   border: 2px dashed
     rgba(255,255,255,.65);
 
-  border-radius: 13px;
+  border-radius: 16px;
 
   pointer-events: none;
 }
+
+/* =========================================================
+🏆 RESULTADO DO PRÊMIO
+========================================================= */
 
 .scratch-result {
   position: absolute;
@@ -919,7 +883,9 @@ AGORA: 315px
   align-items: center;
   justify-content: center;
 
-  gap: 7px;
+  gap: 8px;
+
+  padding: 25px;
 
   color: #fff;
 
@@ -927,28 +893,60 @@ AGORA: 315px
     0 2px 4px rgba(0,0,0,.35);
 
   z-index: 1;
-
-  padding: 20px;
 }
 
 .scratch-result .icone {
-  font-size: 35px;
+  font-size: 38px;
 }
 
 .scratch-result strong {
-  display: block;
-
-  font-size: 1rem;
-  font-weight: 900;
-
+  font-size: 1.25rem;
   letter-spacing: .5px;
 }
 
 .scratch-result small {
+  font-size: .78rem;
+}
+
+/* =========================================================
+🖼️ FOTO DO PRÊMIO
+========================================================= */
+
+.scratch-premio-imagem {
   display: block;
 
-  font-size: .7rem;
+  width: 190px;
+  height: 190px;
+
+  max-width: 75%;
+  max-height: 190px;
+
+  object-fit: contain;
+
+  margin: 0 auto 4px;
+
+  filter:
+    drop-shadow(
+      0 8px 10px rgba(0,0,0,.28)
+    );
 }
+
+.scratch-premio-nome {
+  display: block;
+
+  font-size: 1.35rem;
+  font-weight: 900;
+
+  line-height: 1.15;
+
+  color: #fff;
+
+  text-align: center;
+}
+
+/* =========================================================
+🖌️ CANVAS
+========================================================= */
 
 .scratch-canvas {
   position: absolute;
@@ -964,61 +962,14 @@ AGORA: 315px
   touch-action: none;
 }
 
-/* =========================================================
-🎁 IMAGEM DO PRÊMIO
-========================================================= */
-
-.premio-imagem {
-  display: block;
-
-  width: 170px;
-  height: 170px;
-
-  margin: 0 auto 8px;
-
-  object-fit: contain;
-
-  filter:
-    drop-shadow(
-      0 7px 9px rgba(0,0,0,.25)
-    );
-}
-
-.scratch-result strong {
-  color: #fff;
-
-  font-size: 1.05rem;
-
-  font-weight: 900;
-
-  text-shadow:
-    0 2px 5px rgba(0,0,0,.5);
-}
-
-.scratch-result small {
-  color: #fff;
+.scratch-instruction {
+  margin: 11px 0 0;
 
   font-size: .75rem;
-
-  font-weight: 800;
-}
-
-/* =========================================================
-INSTRUÇÃO
-========================================================= */
-
-.scratch-instruction {
-  margin: 12px 0 0;
-
-  font-size: .72rem;
   font-weight: 800;
 
   color: #08783f;
 }
-
-/* =========================================================
-PRÊMIOS
-========================================================= */
 
 .scratch-prizes {
   display: flex;
@@ -1033,16 +984,7 @@ PRÊMIOS
 .scratch-prize {
   flex: 1;
 
-  min-height: 100px;
-
-  display: flex;
-
-  flex-direction: column;
-
-  align-items: center;
-  justify-content: center;
-
-  padding: 8px 5px;
+  padding: 7px 5px;
 
   border-radius: 12px;
 
@@ -1054,8 +996,6 @@ PRÊMIOS
   font-weight: 900;
 
   color: #765713;
-
-  text-align: center;
 }
 
 .scratch-prize span {
@@ -1064,17 +1004,6 @@ PRÊMIOS
   margin-bottom: 2px;
 
   font-size: 22px;
-}
-
-.scratch-prize img {
-  display: block;
-
-  width: 65px;
-  height: 65px;
-
-  margin: 0 auto 5px;
-
-  object-fit: contain;
 }
 
 /* =========================================================
@@ -1102,7 +1031,6 @@ PRÊMIOS
 
 .upload-icon {
   margin-bottom: 8px;
-
   font-size: 2.5rem;
 }
 
@@ -1198,7 +1126,7 @@ PRÊMIOS
 }
 
 /* =========================================================
-🎟️ ESCOLHA DOS NÚMEROS
+🎟️ ESCOLHA
 ========================================================= */
 
 .choose {
@@ -1211,7 +1139,6 @@ PRÊMIOS
 
 .choose h2 {
   margin-top: 5px;
-
   font-size: 1.8rem;
 }
 
@@ -1294,22 +1221,18 @@ footer {
   body {
     width: 100%;
     max-width: 100%;
-
     overflow-x: hidden;
   }
 
   main {
     width: calc(100% - 16px);
     max-width: none;
-
     margin: 0 auto;
   }
 
   .topbar {
     width: 100%;
-
     padding: 10px 8px;
-
     gap: 10px;
   }
 
@@ -1340,9 +1263,7 @@ footer {
     border-radius: 20px;
   }
 
-  /* =====================================================
-  HERO
-  ====================================================== */
+  /* HERO */
 
   .hero {
     flex-direction: column;
@@ -1361,7 +1282,6 @@ footer {
 
   .hero h1 {
     margin: 12px 0;
-
     font-size: 1.7rem;
   }
 
@@ -1370,9 +1290,7 @@ footer {
     height: 145px;
   }
 
-  /* =====================================================
-  PRÊMIO
-  ====================================================== */
+  /* PRÊMIO */
 
   .prize {
     flex-direction: column;
@@ -1402,9 +1320,7 @@ footer {
     margin: auto;
   }
 
-  /* =====================================================
-  🔵 CARTÃO DO NÚMERO
-  ====================================================== */
+  /* CARTÃO DO NÚMERO */
 
   .search {
     display: flex;
@@ -1424,7 +1340,6 @@ footer {
 
   .numero-area h2 {
     font-size: 1.25rem;
-
     line-height: 1.25;
   }
 
@@ -1446,21 +1361,18 @@ footer {
   #verificarNumero,
   .verificar-numero {
     height: 54px;
-
     font-size: .95rem !important;
   }
 
   #reservarNumero,
   .reservar-numero {
     min-height: 54px;
-
     font-size: .95rem !important;
   }
 
   #numeroStatus,
   .numero-status {
     min-height: 54px;
-
     font-size: .9rem;
   }
 
@@ -1474,13 +1386,10 @@ footer {
 
   .pix {
     width: 100% !important;
-
     min-height: 54px;
   }
 
-  /* =====================================================
-  ⭐ TRÊS CARTÕES
-  ====================================================== */
+  /* TRÊS CARTÕES */
 
   .steps-grid {
     display: grid;
@@ -1511,7 +1420,6 @@ footer {
     min-width: 0;
 
     margin: 0;
-
     padding: 16px;
   }
 
@@ -1528,9 +1436,8 @@ footer {
   }
 
   /* =====================================================
-  🍀 RASPADINHA — CELULAR
-  50% MAIOR
-  ====================================================== */
+  🍀 RASPADINHA — 50% MAIOR TAMBÉM NO CELULAR
+  ===================================================== */
 
   .scratch {
     width: 100%;
@@ -1540,43 +1447,30 @@ footer {
     width: 100%;
 
     height: 315px;
+
+    min-height: 315px;
+
+    border-radius: 22px;
   }
 
-  .premio-imagem {
-    width: 150px;
-    height: 150px;
+  .scratch-premio-imagem {
+    width: 170px;
+    height: 170px;
+    max-height: 170px;
   }
 
-  .scratch-result strong {
-    font-size: 1rem;
+  .scratch-premio-nome {
+    font-size: 1.15rem;
   }
 
-  .scratch-result small {
-    font-size: .72rem;
-  }
-
-  .scratch-prize {
-    min-height: 95px;
-  }
-
-  .scratch-prize img {
-    width: 60px;
-    height: 60px;
-  }
-
-  /* =====================================================
-  COMPROVANTE
-  ====================================================== */
+  /* COMPROVANTE */
 
   .upload-box {
     width: 100%;
-
     padding: 18px 14px;
   }
 
-  /* =====================================================
-  ESCOLHA
-  ====================================================== */
+  /* ESCOLHA */
 
   .choose {
     display: block;
@@ -1593,7 +1487,6 @@ footer {
 
   .choose h2 {
     margin: 5px 0 12px;
-
     font-size: 1.8rem;
   }
 
@@ -1615,9 +1508,7 @@ footer {
     margin: 10px 0;
   }
 
-  /* =====================================================
-  NÚMERO DA SORTE
-  ====================================================== */
+  /* NÚMERO DA SORTE */
 
   .luck {
     width: 100%;
@@ -1635,7 +1526,6 @@ footer {
 
   footer {
     width: 100%;
-
     padding: 20px 12px;
   }
 
@@ -1674,11 +1564,12 @@ footer {
 
   .scratch-area {
     height: 285px;
+    min-height: 285px;
   }
 
-  .premio-imagem {
-    width: 135px;
-    height: 135px;
+  .scratch-premio-imagem {
+    width: 145px;
+    height: 145px;
   }
 
   .steps-grid {
