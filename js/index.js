@@ -54,21 +54,15 @@ erro
 ⚙️ CONFIGURAÇÕES
 ========================================================= */
 
-const numeroWhatsAppDestino =
+const WHATSAPP =
 '5579999145044';
 
-const valorPorNumero =
-Number(CONFIG?.valorNumero ?? 10);
+const VALOR_NUMERO =
+Number(CONFIG?.valorNumero || 10);
 
 /* =========================================================
-🎟️ ELEMENTOS
+🧰 ELEMENTOS
 ========================================================= */
-
-const abrirCartelas =
-document.getElementById('abrirCartelas');
-
-const sugerir =
-document.getElementById('sugerir');
 
 const numeroDireto =
 document.getElementById('numeroDireto');
@@ -79,12 +73,15 @@ document.getElementById('verificarNumero');
 const numeroStatus =
 document.getElementById('numeroStatus');
 
-const reservarNumero =
+const comprarNumero =
 document.getElementById('reservarNumero');
 
 /* =========================================================
-🧾 CONFIRMAR PARTICIPAÇÃO
+📝 CONFIRMAR PARTICIPAÇÃO
 ========================================================= */
+
+const reservaCard =
+document.querySelector('.reserva-inline');
 
 const reservaNumeros =
 document.getElementById('reservaNumeros');
@@ -92,11 +89,8 @@ document.getElementById('reservaNumeros');
 const reservaTotal =
 document.getElementById('reservaTotal');
 
-const reservaData =
-document.getElementById('reservaData');
-
-const reservaHora =
-document.getElementById('reservaHora');
+const pixReserva =
+document.getElementById('pixReserva');
 
 const copiarPixReserva =
 document.getElementById('copiarPixReserva');
@@ -117,53 +111,45 @@ const msgReserva =
 document.getElementById('msgReserva');
 
 /* =========================================================
-💾 DADOS DA COMPRA ATUAL
+🧹 REMOVER / OCULTAR ELEMENTOS ANTIGOS
 ========================================================= */
 
-let compraAtual = {
-numero: '',
-valor: valorPorNumero,
-data: '',
-hora: '',
-dataHoraISO: ''
-};
+/*
 
-/* =========================================================
-🎟️ ESCOLHER NÚMEROS
-========================================================= */
+* O cartão separado "ENVIE SEU COMPROVANTE"
+* não será mais utilizado.
+  */
 
-if (abrirCartelas) {
+const cartaoComprovante =
+document.querySelector('.upload');
 
-abrirCartelas.addEventListener(
-'click',
-() => {
-
-  window.location.href =
-    'cartela.html';
-
+if (cartaoComprovante) {
+cartaoComprovante.style.display = 'none';
 }
 
-);
+/*
 
+* O PIX não fica mais no cartão azul.
+  */
+
+const pixAreaAntiga =
+document.querySelector('.search .pix-area');
+
+if (pixAreaAntiga) {
+pixAreaAntiga.style.display = 'none';
 }
 
-/* =========================================================
-🍀 SUGERIR NÚMERO
-========================================================= */
+/*
 
-if (sugerir) {
+* O botão antigo de copiar PIX no cartão azul
+* também fica oculto.
+  */
 
-sugerir.addEventListener(
-'click',
-() => {
+const copiarPixAntigo =
+document.getElementById('copiarPix');
 
-  window.location.href =
-    'cartela.html?sugerir=1';
-
-}
-
-);
-
+if (copiarPixAntigo) {
+copiarPixAntigo.style.display = 'none';
 }
 
 /* =========================================================
@@ -219,34 +205,30 @@ numeroStatus.classList.remove(
 
 }
 
-if (reservarNumero) {
+if (comprarNumero) {
 
-reservarNumero.style.display =
+comprarNumero.style.display =
   'none';
 
-reservarNumero.disabled =
+comprarNumero.disabled =
   false;
 
-reservarNumero.textContent =
+comprarNumero.textContent =
   '🛒 COMPRAR NÚMERO';
 
-delete reservarNumero.dataset.numero;
+delete comprarNumero.dataset.numero;
 
 }
 
 }
 
 /* =========================================================
-🔎 VERIFICAR SE ESTÁ OCUPADO
+🔎 NÚMERO OCUPADO?
 ========================================================= */
 
-function numeroEstaOcupado(
-dados
-) {
+function numeroEstaOcupado(dados) {
 
-if (!dados) {
-return false;
-}
+if (!dados) return false;
 
 const status =
 String(
@@ -276,33 +258,29 @@ dados.ocupado === true
 🟢 NÚMERO DISPONÍVEL
 ========================================================= */
 
-function mostrarDisponivel(
-numero
-) {
+function mostrarDisponivel(numero) {
 
 mostrarStatus(
 "🟢 NÚMERO ${numero} DISPONÍVEL",
 'disponivel'
 );
 
-if (reservarNumero) {
+if (!comprarNumero) return;
 
-reservarNumero.style.display =
-  'flex';
+comprarNumero.style.display =
+'flex';
 
-reservarNumero.hidden =
-  false;
+comprarNumero.hidden =
+false;
 
-reservarNumero.disabled =
-  false;
+comprarNumero.disabled =
+false;
 
-reservarNumero.textContent =
-  `🛒 COMPRAR ${numero}`;
+comprarNumero.textContent =
+"🛒 COMPRAR ${numero}";
 
-reservarNumero.dataset.numero =
-  numero;
-
-}
+comprarNumero.dataset.numero =
+numero;
 
 }
 
@@ -310,21 +288,19 @@ reservarNumero.dataset.numero =
 🔴 NÚMERO INDISPONÍVEL
 ========================================================= */
 
-function mostrarIndisponivel(
-numero
-) {
+function mostrarIndisponivel(numero) {
 
 mostrarStatus(
 "🔴 NÚMERO ${numero} NÃO DISPONÍVEL",
 'indisponivel'
 );
 
-if (reservarNumero) {
+if (comprarNumero) {
 
-reservarNumero.style.display =
+comprarNumero.style.display =
   'none';
 
-delete reservarNumero.dataset.numero;
+delete comprarNumero.dataset.numero;
 
 }
 
@@ -334,26 +310,22 @@ delete reservarNumero.dataset.numero;
 ⚠️ ERRO
 ========================================================= */
 
-function mostrarErro(
-mensagem
-) {
+function mostrarErro(mensagem) {
 
 mostrarStatus(
 "⚠️ ${mensagem}",
 'erro'
 );
 
-if (reservarNumero) {
-
-reservarNumero.style.display =
-  'none';
-
+if (comprarNumero) {
+comprarNumero.style.display =
+'none';
 }
 
 }
 
 /* =========================================================
-🔎 VERIFICAR NÚMERO NO FIREBASE
+🔎 VERIFICAR NÚMERO
 ========================================================= */
 
 async function verificarNumero() {
@@ -516,12 +488,10 @@ evento => {
 }
 
 /* =========================================================
-🧾 PREENCHER CONFIRMAÇÃO
+🕐 DATA E HORA
 ========================================================= */
 
-function preencherConfirmacao(
-numero
-) {
+function obterDataHora() {
 
 const agora =
 new Date();
@@ -541,75 +511,88 @@ second: '2-digit'
 }
 );
 
-compraAtual = {
-
-numero:
-  numero,
-
-valor:
-  valorPorNumero,
-
-data:
-  data,
-
-hora:
-  hora,
-
-dataHoraISO:
-  agora.toISOString()
-
+return {
+data,
+hora,
+iso:
+agora.toISOString()
 };
+
+}
+
+/* =========================================================
+📝 PREENCHER CONFIRMAÇÃO
+========================================================= */
+
+function preencherConfirmacao(
+numero,
+dataHora
+) {
 
 if (reservaNumeros) {
 
-reservaNumeros.textContent =
-  `🎟️ Número ${numero}`;
+reservaNumeros.innerHTML = `
+  🎟️ <strong>Número comprado: ${numero}</strong>
+`;
 
 }
 
 if (reservaTotal) {
 
 reservaTotal.textContent =
-  `💰 Total: R$ ${valorPorNumero.toFixed(2).replace('.', ',')}`;
+  `💰 Total: R$ ${VALOR_NUMERO.toFixed(2).replace('.', ',')}`;
 
 }
 
-if (reservaData) {
+if (pixReserva) {
 
-reservaData.textContent =
-  `📅 ${data}`;
-
-}
-
-if (reservaHora) {
-
-reservaHora.textContent =
-  `🕐 ${hora}`;
+pixReserva.value =
+  String(
+    CONFIG?.pixChave || ''
+  ).trim();
 
 }
 
-/* -----------------------------------------------
-ROLAR ATÉ CONFIRMAÇÃO
------------------------------------------------ */
+/*
 
-const cartaoConfirmacao =
-document.querySelector(
-'.reserva-inline'
-);
+* Guardamos os dados no cartão
+* para os próximos passos.
+  */
 
-if (cartaoConfirmacao) {
+if (reservaCard) {
 
-setTimeout(
-  () => {
+reservaCard.dataset.numero =
+  numero;
 
-    cartaoConfirmacao.scrollIntoView({
-      behavior: 'smooth',
-      block: 'center'
-    });
+reservaCard.dataset.dataCompra =
+  dataHora.data;
 
-  },
-  300
-);
+reservaCard.dataset.horaCompra =
+  dataHora.hora;
+
+reservaCard.dataset.valor =
+  VALOR_NUMERO.toFixed(2);
+
+reservaCard.dataset.isoCompra =
+  dataHora.iso;
+
+}
+
+/*
+
+* O cartão fica visível e
+* recebe destaque.
+  */
+
+if (reservaCard) {
+
+reservaCard.style.display =
+  'block';
+
+reservaCard.scrollIntoView({
+  behavior: 'smooth',
+  block: 'center'
+});
 
 }
 
@@ -619,18 +602,16 @@ setTimeout(
 🛒 COMPRAR NÚMERO
 ========================================================= */
 
-if (reservarNumero) {
+if (comprarNumero) {
 
-reservarNumero.addEventListener(
+comprarNumero.addEventListener(
 'click',
 async () => {
 
   const numero =
-    reservarNumero.dataset.numero;
+    comprarNumero.dataset.numero;
 
-  if (!numero) {
-    return;
-  }
+  if (!numero) return;
 
   if (!db) {
 
@@ -642,10 +623,10 @@ async () => {
 
   }
 
-  reservarNumero.disabled =
+  comprarNumero.disabled =
     true;
 
-  reservarNumero.textContent =
+  comprarNumero.textContent =
     `⏳ COMPRANDO ${numero}...`;
 
   try {
@@ -657,8 +638,8 @@ async () => {
       );
 
 
-    const agora =
-      new Date();
+    const dataHora =
+      obterDataHora();
 
 
     const resultado =
@@ -670,8 +651,7 @@ async () => {
 
             return {
 
-              numero:
-                numero,
+              numero,
 
               status:
                 'reservado',
@@ -680,7 +660,10 @@ async () => {
                 true,
 
               dataReserva:
-                agora.toISOString()
+                dataHora.iso,
+
+              dataCompra:
+                dataHora.iso
 
             };
 
@@ -688,9 +671,7 @@ async () => {
 
 
           if (
-            numeroEstaOcupado(
-              atual
-            )
+            numeroEstaOcupado(atual)
           ) {
 
             return;
@@ -702,8 +683,7 @@ async () => {
 
             ...atual,
 
-            numero:
-              numero,
+            numero,
 
             status:
               'reservado',
@@ -712,7 +692,10 @@ async () => {
               true,
 
             dataReserva:
-              agora.toISOString()
+              dataHora.iso,
+
+            dataCompra:
+              dataHora.iso
 
           };
 
@@ -737,36 +720,25 @@ async () => {
     }
 
 
-    /* -----------------------------------------------
-       PREENCHER CARTÃO
-    ----------------------------------------------- */
-
-    preencherConfirmacao(
-      numero
-    );
-
-
     mostrarStatus(
       `✅ NÚMERO ${numero} SELECIONADO`,
       'disponivel'
     );
 
 
-    reservarNumero.style.display =
+    comprarNumero.style.display =
       'none';
 
 
-    if (msgReserva) {
+    /*
+     * ⭐ PARTE PRINCIPAL:
+     * preencher automaticamente
+     * o cartão CONFIRMAR PARTICIPAÇÃO.
+     */
 
-      msgReserva.textContent =
-        '✅ Número selecionado. Preencha seu nome e WhatsApp e faça o pagamento via PIX.';
-
-    }
-
-
-    alert(
-      `✅ Número ${numero} selecionado!\n\n` +
-      `Agora faça o pagamento pelo PIX e depois envie os dados pelo WhatsApp.`
+    preencherConfirmacao(
+      numero,
+      dataHora
     );
 
 
@@ -777,13 +749,13 @@ async () => {
       erro
     );
 
-    reservarNumero.disabled =
+    comprarNumero.disabled =
       false;
 
-    reservarNumero.style.display =
+    comprarNumero.style.display =
       'flex';
 
-    reservarNumero.textContent =
+    comprarNumero.textContent =
       `🛒 COMPRAR ${numero}`;
 
     mostrarErro(
@@ -803,8 +775,66 @@ async () => {
 }
 
 /* =========================================================
-💚 COPIAR PIX
+📋 COPIAR PIX
 ========================================================= */
+
+async function copiarTexto(texto) {
+
+if (!texto) {
+return false;
+}
+
+try {
+
+await navigator.clipboard.writeText(
+  texto
+);
+
+return true;
+
+} catch {
+
+try {
+
+  const campo =
+    document.createElement(
+      'textarea'
+    );
+
+  campo.value =
+    texto;
+
+  campo.style.position =
+    'fixed';
+
+  campo.style.left =
+    '-9999px';
+
+  document.body.appendChild(
+    campo
+  );
+
+  campo.focus();
+  campo.select();
+
+  const sucesso =
+    document.execCommand(
+      'copy'
+    );
+
+  campo.remove();
+
+  return sucesso;
+
+} catch {
+
+  return false;
+
+}
+
+}
+
+}
 
 if (copiarPixReserva) {
 
@@ -813,12 +843,9 @@ copiarPixReserva.addEventListener(
 async () => {
 
   const chave =
-    CONFIG &&
-    CONFIG.pixChave
-      ? String(
-          CONFIG.pixChave
-        ).trim()
-      : '';
+    String(
+      CONFIG?.pixChave || ''
+    ).trim();
 
   if (!chave) {
 
@@ -833,20 +860,18 @@ async () => {
 
   }
 
+  const sucesso =
+    await copiarTexto(chave);
 
-  try {
-
-    await navigator.clipboard.writeText(
-      chave
-    );
+  if (sucesso) {
 
     copiarPixReserva.textContent =
-      '✅ PIX COPIADO!';
+      '✅ COPIADO!';
 
     if (pixMsgReserva) {
 
       pixMsgReserva.textContent =
-        '💚 Chave PIX copiada. Faça o pagamento e depois envie o comprovante pelo WhatsApp.';
+        '💚 Chave PIX copiada com sucesso.';
 
     }
 
@@ -857,58 +882,14 @@ async () => {
           '📋 COPIAR PIX';
 
       },
-      2000
+      1800
     );
 
-  } catch {
+  } else {
 
-    const campo =
-      document.createElement(
-        'textarea'
-      );
-
-    campo.value =
-      chave;
-
-    campo.style.position =
-      'fixed';
-
-    campo.style.left =
-      '-9999px';
-
-    document.body.appendChild(
-      campo
+    alert(
+      `Copie manualmente a chave PIX:\n\n${chave}`
     );
-
-    campo.focus();
-
-    campo.select();
-
-    try {
-
-      document.execCommand(
-        'copy'
-      );
-
-      copiarPixReserva.textContent =
-        '✅ PIX COPIADO!';
-
-      if (pixMsgReserva) {
-
-        pixMsgReserva.textContent =
-          '💚 Chave PIX copiada.';
-
-      }
-
-    } catch {
-
-      alert(
-        `Copie manualmente a chave PIX:\n\n${chave}`
-      );
-
-    }
-
-    campo.remove();
 
   }
 
@@ -919,76 +900,269 @@ async () => {
 }
 
 /* =========================================================
-📲 MONTAR MENSAGEM DA RESERVA
+📎 COMPROVANTE DENTRO DO CARTÃO DE CONFIRMAÇÃO
 ========================================================= */
 
-function montarMensagemReserva() {
+/*
 
-const nome =
-nomeReserva
-? nomeReserva.value.trim()
-: '';
+* Como o cartão separado de comprovante saiu,
+* criamos a área do comprovante automaticamente
+* dentro do cartão CONFIRMAR PARTICIPAÇÃO.
+  */
 
-const telefone =
-telefoneReserva
-? telefoneReserva.value.trim()
-: '';
+let comprovanteInput = null;
+let comprovanteNome = null;
+let comprovanteMsg = null;
 
-if (!compraAtual.numero) {
+function criarAreaComprovante() {
 
-return {
-  erro:
-    'Primeiro selecione e compre um número.'
-};
+if (!reservaCard) return;
+
+if (
+document.getElementById(
+'comprovanteReserva'
+)
+) {
+
+comprovanteInput =
+  document.getElementById(
+    'comprovanteReserva'
+  );
+
+comprovanteNome =
+  document.getElementById(
+    'comprovanteReservaNome'
+  );
+
+comprovanteMsg =
+  document.getElementById(
+    'comprovanteReservaMsg'
+  );
+
+return;
 
 }
 
+const area =
+document.createElement('div');
+
+area.className =
+'comprovante-reserva-area';
+
+area.innerHTML = `
+
+<h3>
+  📎 Comprovante de pagamento
+</h3>
+
+<p>
+  Selecione o comprovante <strong>PAGO</strong>
+  antes de enviar para o WhatsApp.
+</p>
+
+<input
+  id="comprovanteReserva"
+  type="file"
+  accept="image/*,application/pdf"
+>
+
+<p
+  id="comprovanteReservaNome"
+  class="comprovante-reserva-nome"
+>
+  Nenhum comprovante selecionado.
+</p>
+
+<p
+  id="comprovanteReservaMsg"
+  class="comprovante-reserva-msg"
+  aria-live="polite"
+></p>
+
+`;
+
+if (reservarReserva) {
+
+reservarReserva.before(
+  area
+);
+
+} else {
+
+reservaCard.appendChild(
+  area
+);
+
+}
+
+comprovanteInput =
+document.getElementById(
+'comprovanteReserva'
+);
+
+comprovanteNome =
+document.getElementById(
+'comprovanteReservaNome'
+);
+
+comprovanteMsg =
+document.getElementById(
+'comprovanteReservaMsg'
+);
+
+if (comprovanteInput) {
+
+comprovanteInput.addEventListener(
+  'change',
+  () => {
+
+    const arquivo =
+      comprovanteInput.files?.[0];
+
+    if (!arquivo) {
+
+      comprovanteNome.textContent =
+        'Nenhum comprovante selecionado.';
+
+      return;
+
+    }
+
+
+    const limite =
+      10 * 1024 * 1024;
+
+
+    if (
+      arquivo.size > limite
+    ) {
+
+      comprovanteInput.value =
+        '';
+
+      comprovanteNome.textContent =
+        'Nenhum comprovante selecionado.';
+
+      if (comprovanteMsg) {
+
+        comprovanteMsg.textContent =
+          '⚠️ O comprovante deve ter no máximo 10 MB.';
+
+      }
+
+      return;
+
+    }
+
+
+    comprovanteNome.textContent =
+      `✅ ${arquivo.name}`;
+
+    if (comprovanteMsg) {
+
+      comprovanteMsg.textContent =
+        '💚 Comprovante pronto para envio.';
+
+    }
+
+  }
+);
+
+}
+
+}
+
+/* =========================================================
+👤 VALIDAR DADOS
+========================================================= */
+
+function validarDadosCliente() {
+
+const nome =
+nomeReserva?.value.trim() || '';
+
+const telefone =
+telefoneReserva?.value.trim() || '';
+
 if (!nome) {
 
-return {
-  erro:
-    'Digite seu nome antes de enviar.'
-};
+if (msgReserva) {
+
+  msgReserva.textContent =
+    '⚠️ Digite seu nome.';
+
+}
+
+nomeReserva?.focus();
+
+return false;
 
 }
 
 if (!telefone) {
 
-return {
-  erro:
-    'Digite seu número de WhatsApp antes de enviar.'
-};
+if (msgReserva) {
+
+  msgReserva.textContent =
+    '⚠️ Digite seu número de WhatsApp.';
 
 }
 
-const valorFormatado =
-"R$ ${compraAtual.valor.toFixed(2).replace('.', ',')}";
+telefoneReserva?.focus();
 
-const mensagem =
+return false;
 
+}
+
+return true;
+
+}
+
+/* =========================================================
+📲 MONTAR MENSAGEM
+========================================================= */
+
+function montarMensagemWhatsApp() {
+
+const numero =
+reservaCard?.dataset.numero || '';
+
+const data =
+reservaCard?.dataset.dataCompra || '';
+
+const hora =
+reservaCard?.dataset.horaCompra || '';
+
+const valor =
+reservaCard?.dataset.valor || '10.00';
+
+const nome =
+nomeReserva?.value.trim() || '';
+
+const telefone =
+telefoneReserva?.value.trim() || '';
+
+return (
 `🍀 RIFA SOLIDÁRIA — GILFEST
 
-🧾 CONFIRMAÇÃO DE PARTICIPAÇÃO
+📝 CONFIRMAÇÃO DE PARTICIPAÇÃO
 
-🎟️ Número: ${compraAtual.numero}
-💰 Valor: ${valorFormatado}
-📅 Data da compra: ${compraAtual.data}
-🕐 Hora da compra: ${compraAtual.hora}
+🎟️ Número: ${numero}
+
+📅 Data da compra: ${data}
+🕐 Horário da compra: ${hora}
+
+💰 Valor: R$ ${String(valor).replace('.', ',')}
 
 👤 Nome: ${nome}
-📱 WhatsApp: ${telefone}
+📱 WhatsApp do participante: ${telefone}
 
-💚 PAGAMENTO VIA PIX
-O pagamento foi realizado e estou enviando o comprovante junto desta mensagem.
+💚 Pagamento via PIX: REALIZADO
 
-📎 COMPROVANTE DE PAGAMENTO
-Estou enviando o comprovante para confirmação.
+📎 Estou enviando o comprovante de pagamento junto com esta mensagem.
 
-🍀 Rifa Solidária em prol da saúde de Dona Bené.`;
-
-return {
-mensagem
-};
+Por favor, confirme minha participação na Rifa Solidária — GILFEST.`
+);
 
 }
 
@@ -1000,18 +1174,25 @@ if (reservarReserva) {
 
 reservarReserva.addEventListener(
 'click',
-() => {
+async () => {
 
-  const resultado =
-    montarMensagemReserva();
+  if (!reservaCard) {
+
+    return;
+
+  }
 
 
-  if (resultado.erro) {
+  const numero =
+    reservaCard.dataset.numero;
+
+
+  if (!numero) {
 
     if (msgReserva) {
 
       msgReserva.textContent =
-        `⚠️ ${resultado.erro}`;
+        '⚠️ Primeiro compre/selecione um número.';
 
     }
 
@@ -1020,17 +1201,155 @@ reservarReserva.addEventListener(
   }
 
 
-  if (msgReserva) {
+  if (!validarDadosCliente()) {
+    return;
+  }
 
-    msgReserva.textContent =
-      '📲 Abrindo o WhatsApp...';
+
+  criarAreaComprovante();
+
+
+  const arquivo =
+    comprovanteInput?.files?.[0];
+
+
+  /*
+   * O envio só pode acontecer
+   * com comprovante selecionado.
+   */
+
+  if (!arquivo) {
+
+    if (comprovanteMsg) {
+
+      comprovanteMsg.textContent =
+        '⚠️ Selecione o comprovante PAGO antes de enviar.';
+
+    }
+
+    if (msgReserva) {
+
+      msgReserva.textContent =
+        '⚠️ Falta selecionar o comprovante de pagamento.';
+
+    }
+
+    return;
 
   }
 
 
+  reservarReserva.disabled =
+    true;
+
+  reservarReserva.textContent =
+    '⏳ PREPARANDO ENVIO...';
+
+
+  const mensagem =
+    montarMensagemWhatsApp();
+
+
+  /*
+   * Primeiro tentamos o compartilhamento
+   * nativo com o arquivo.
+   *
+   * Em celulares compatíveis,
+   * o usuário poderá escolher WhatsApp.
+   */
+
+  try {
+
+    const dados = {
+
+      files: [
+        arquivo
+      ],
+
+      text:
+        mensagem,
+
+      title:
+        '🍀 Rifa Solidária — GILFEST'
+
+    };
+
+
+    if (
+      navigator.share &&
+      navigator.canShare &&
+      navigator.canShare(dados)
+    ) {
+
+      await navigator.share(
+        dados
+      );
+
+
+      if (msgReserva) {
+
+        msgReserva.textContent =
+          '✅ Dados e comprovante preparados para envio.';
+
+      }
+
+
+      reservarReserva.disabled =
+        false;
+
+      reservarReserva.textContent =
+        '📲 ENVIAR PARA WHATSAPP';
+
+
+      return;
+
+    }
+
+  } catch (erro) {
+
+    if (
+      erro &&
+      erro.name === 'AbortError'
+    ) {
+
+      if (msgReserva) {
+
+        msgReserva.textContent =
+          'Compartilhamento cancelado.';
+
+      }
+
+      reservarReserva.disabled =
+        false;
+
+      reservarReserva.textContent =
+        '📲 ENVIAR PARA WHATSAPP';
+
+      return;
+
+    }
+
+    console.log(
+      'Compartilhamento:',
+      erro
+    );
+
+  }
+
+
+  /*
+   * FALLBACK:
+   * abre a conversa do WhatsApp
+   * já com todos os dados.
+   *
+   * O arquivo precisará ser anexado
+   * manualmente porque o wa.me não permite
+   * anexar arquivos automaticamente.
+   */
+
   const url =
-    `https://wa.me/${numeroWhatsAppDestino}?text=${encodeURIComponent(
-      resultado.mensagem
+    `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(
+      mensagem
     )}`;
 
 
@@ -1043,9 +1362,16 @@ reservarReserva.addEventListener(
   if (msgReserva) {
 
     msgReserva.textContent =
-      '✅ WhatsApp aberto. Envie a mensagem junto com o comprovante PAGO.';
+      '📲 WhatsApp aberto com os dados. Anexe o comprovante selecionado e envie.';
 
   }
+
+
+  reservarReserva.disabled =
+    false;
+
+  reservarReserva.textContent =
+    '📲 ENVIAR PARA WHATSAPP';
 
 }
 
@@ -1054,7 +1380,86 @@ reservarReserva.addEventListener(
 }
 
 /* =========================================================
-🍀 RASPADINHA DA AMIZADE
+🛡️ PREPARAR ÁREA DO COMPROVANTE
+========================================================= */
+
+criarAreaComprovante();
+
+/* =========================================================
+🎟️ ESCOLHER NÚMEROS
+========================================================= */
+
+const abrirCartelas =
+document.getElementById(
+'abrirCartelas'
+);
+
+if (abrirCartelas) {
+
+abrirCartelas.addEventListener(
+'click',
+() => {
+
+  window.location.href =
+    'cartela.html';
+
+}
+
+);
+
+}
+
+/* =========================================================
+🍀 SUGERIR UM NÚMERO
+========================================================= */
+
+const sugerir =
+document.getElementById(
+'sugerir'
+);
+
+if (sugerir) {
+
+sugerir.addEventListener(
+'click',
+() => {
+
+  window.location.href =
+    'cartela.html?sugerir=1';
+
+}
+
+);
+
+}
+
+/* =========================================================
+✨ ANIMAÇÃO DOS CARTÕES
+========================================================= */
+
+document.addEventListener(
+'DOMContentLoaded',
+() => {
+
+const cards =
+  document.querySelectorAll(
+    '.card'
+  );
+
+cards.forEach(
+  (card, indice) => {
+
+    card.style.animation =
+      `cardEntrada .6s ease ${indice * 0.06}s both`;
+
+  }
+);
+
+}
+);
+
+/* =========================================================
+🍀 RASPADINHA
 ========================================================= */
 
 const canvas =
@@ -1062,20 +1467,20 @@ document.getElementById(
 'scratchCanvas'
 );
 
-const area =
+const scratchArea =
 document.querySelector(
 '.scratch-area'
 );
 
-const premio =
+const scratchPremio =
 document.getElementById(
 'scratchPremio'
 );
 
 if (
 canvas &&
-area &&
-premio
+scratchArea &&
+scratchPremio
 ) {
 
 const ctx =
@@ -1126,7 +1531,7 @@ premios.length
 function ajustarCanvas() {
 
 const rect =
-  area.getBoundingClientRect();
+  scratchArea.getBoundingClientRect();
 
 const largura =
   Math.max(
@@ -1148,6 +1553,7 @@ const escala =
   window.devicePixelRatio ||
   1;
 
+
 canvas.width =
   largura * escala;
 
@@ -1160,6 +1566,7 @@ canvas.style.width =
 canvas.style.height =
   `${altura}px`;
 
+
 ctx.setTransform(
   escala,
   0,
@@ -1168,6 +1575,7 @@ ctx.setTransform(
   0,
   0
 );
+
 
 ctx.globalCompositeOperation =
   'source-over';
@@ -1181,23 +1589,24 @@ const gradiente =
     altura
   );
 
+
 gradiente.addColorStop(
   0,
   '#d5d9dd'
 );
 
 gradiente.addColorStop(
-  0.25,
+  .25,
   '#9aa1a7'
 );
 
 gradiente.addColorStop(
-  0.5,
+  .5,
   '#cdd2d6'
 );
 
 gradiente.addColorStop(
-  0.75,
+  .75,
   '#8f969c'
 );
 
@@ -1205,6 +1614,7 @@ gradiente.addColorStop(
   1,
   '#d6dade'
 );
+
 
 ctx.fillStyle =
   gradiente;
@@ -1222,6 +1632,7 @@ ctx.strokeStyle =
 
 ctx.lineWidth =
   8;
+
 
 for (
   let x = -altura;
@@ -1280,15 +1691,14 @@ ctx.fillText(
 
 }
 
-function obterPosicao(
-evento
-) {
+function obterPosicao(evento) {
 
 const rect =
   canvas.getBoundingClientRect();
 
 let clientX;
 let clientY;
+
 
 if (
   evento.touches &&
@@ -1311,6 +1721,7 @@ if (
 
 }
 
+
 return {
 
   x:
@@ -1325,120 +1736,13 @@ return {
 
 }
 
-function raspar(
-evento
-) {
-
-if (
-  !raspando ||
-  finalizada
-) {
-
-  return;
-
-}
-
-evento.preventDefault();
-
-const pos =
-  obterPosicao(
-    evento
-  );
-
-ctx.globalCompositeOperation =
-  'destination-out';
-
-ctx.beginPath();
-
-ctx.arc(
-  pos.x,
-  pos.y,
-  28,
-  0,
-  Math.PI * 2
-);
-
-ctx.fill();
-
-verificarProgresso();
-
-}
-
-function iniciar(
-evento
-) {
-
-if (finalizada) {
-  return;
-}
-
-raspando =
-  true;
-
-evento.preventDefault();
-
-raspar(
-  evento
-);
-
-}
-
-function parar() {
-
-if (!raspando) {
-  return;
-}
-
-raspando =
-  false;
-
-verificarProgresso();
-
-}
-
-function mostrarPremio() {
-
-finalizada =
-  true;
-
-premio.innerHTML = `
-
-  <img
-    class="scratch-premio-imagem"
-    src="${premioEscolhido.imagem}"
-    alt="${premioEscolhido.nome}"
-  >
-
-  <strong>
-    🎉 ${premioEscolhido.nome}
-  </strong>
-
-  <small>
-    PARABÉNS! VOCÊ GANHOU!
-  </small>
-
-`;
-
-premio.classList.add(
-  'revelado'
-);
-
-ctx.clearRect(
-  0,
-  0,
-  canvas.width,
-  canvas.height
-);
-
-}
-
 function verificarProgresso() {
 
-if (finalizada) {
-  return;
-}
+if (finalizada) return;
+
 
 let imagem;
+
 
 try {
 
@@ -1456,12 +1760,15 @@ try {
 
 }
 
+
 let transparentes =
   0;
+
 
 const total =
   imagem.data.length /
   4;
+
 
 for (
   let i = 3;
@@ -1479,17 +1786,119 @@ for (
 
 }
 
-const porcentagem =
-  transparentes /
-  total;
 
 if (
-  porcentagem >= 0.40
+  transparentes / total >= .40
 ) {
 
   mostrarPremio();
 
 }
+
+}
+
+function raspar(evento) {
+
+if (
+  !raspando ||
+  finalizada
+) {
+
+  return;
+
+}
+
+
+evento.preventDefault();
+
+
+const pos =
+  obterPosicao(
+    evento
+  );
+
+
+ctx.globalCompositeOperation =
+  'destination-out';
+
+
+ctx.beginPath();
+
+
+ctx.arc(
+  pos.x,
+  pos.y,
+  28,
+  0,
+  Math.PI * 2
+);
+
+
+ctx.fill();
+
+
+verificarProgresso();
+
+}
+
+function iniciar(evento) {
+
+if (finalizada) return;
+
+raspando =
+  true;
+
+evento.preventDefault();
+
+raspar(evento);
+
+}
+
+function parar() {
+
+raspando =
+  false;
+
+verificarProgresso();
+
+}
+
+function mostrarPremio() {
+
+finalizada =
+  true;
+
+
+scratchPremio.innerHTML = `
+
+  <img
+    class="scratch-premio-imagem"
+    src="${premioEscolhido.imagem}"
+    alt="${premioEscolhido.nome}"
+  >
+
+  <strong>
+    🎉 ${premioEscolhido.nome}
+  </strong>
+
+  <small>
+    PARABÉNS! VOCÊ GANHOU!
+  </small>
+
+`;
+
+
+scratchPremio.classList.add(
+  'revelado'
+);
+
+
+ctx.clearRect(
+  0,
+  0,
+  canvas.width,
+  canvas.height
+);
 
 }
 
@@ -1512,8 +1921,7 @@ canvas.addEventListener(
 'touchstart',
 iniciar,
 {
-passive:
-false
+passive: false
 }
 );
 
@@ -1521,27 +1929,18 @@ canvas.addEventListener(
 'touchmove',
 raspar,
 {
-passive:
-false
+passive: false
 }
 );
 
 canvas.addEventListener(
 'touchend',
-parar,
-{
-passive:
-true
-}
+parar
 );
 
 canvas.addEventListener(
 'touchcancel',
-parar,
-{
-passive:
-true
-}
+parar
 );
 
 window.addEventListener(
@@ -1561,32 +1960,7 @@ ajustarCanvas();
 }
 
 /* =========================================================
-✨ ANIMAÇÃO DOS CARTÕES
-========================================================= */
-
-document.addEventListener(
-'DOMContentLoaded',
-() => {
-
-const cards =
-  document.querySelectorAll(
-    '.card'
-  );
-
-cards.forEach(
-  (card, indice) => {
-
-    card.style.animation =
-      `cardEntrada .6s ease ${indice * 0.06}s both`;
-
-  }
-);
-
-}
-);
-
-/* =========================================================
-🛡️ RASPADINHA VISÍVEL
+🛡️ GARANTIAS VISUAIS
 ========================================================= */
 
 const scratchCard =
@@ -1604,10 +1978,6 @@ scratchCard.style.width =
 
 }
 
-/* =========================================================
-🛡️ CARTÕES VERTICAIS
-========================================================= */
-
 const stepsGrid =
 document.querySelector(
 '.steps-grid'
@@ -1623,25 +1993,5 @@ stepsGrid.style.flexDirection =
 
 stepsGrid.style.width =
 '100%';
-
-}
-
-/* =========================================================
-🛡️ TAMANHO DA RASPADINHA
-========================================================= */
-
-if (area) {
-
-area.style.width =
-'min(100%, 700px)';
-
-area.style.margin =
-'18px auto';
-
-area.style.position =
-'relative';
-
-area.style.overflow =
-'hidden';
 
 }
