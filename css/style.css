@@ -1,1 +1,1364 @@
-:root{--blue:#0878e8;--pink:#f43b9a;--green:#22b64a;--dark:#063b74;--bg:#eaf6ff;--text:#12365b;--white:#fff}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(135deg,#04b8c9 0,#246fe8 48%,#f34ba7 100%);color:var(--text);min-height:100vh}.bg-glow{position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 20% 20%,rgba(255,255,255,.35),transparent 28%),radial-gradient(circle at 85% 70%,rgba(255,255,255,.22),transparent 30%);z-index:-1}.topbar{max-width:1100px;margin:auto;padding:16px;display:flex;justify-content:space-between;align-items:center;color:#fff;font-weight:900}.brand{font-size:1.1rem}.pill,.tag{display:inline-block;border-radius:999px;padding:7px 14px;font-weight:900;background:linear-gradient(90deg,var(--pink),#ff6fb8);color:#fff}.tag.blue{background:var(--blue)}main{width:min(calc(100% - 24px),1050px);margin:auto}.card{background:rgba(255,255,255,.97);border-radius:24px;padding:20px;margin:14px 0;box-shadow:0 14px 32px rgba(0,35,90,.18)}.hero{display:flex;align-items:center;justify-content:space-between;gap:20px;overflow:hidden;background:linear-gradient(110deg,#dff9ff,#fff 50%,#ffe7f3)}.hero h1{font-size:clamp(1.8rem,5vw,3.4rem);margin:14px 0;color:#08457f}.hero h1 strong{color:var(--pink)}.hero p{font-weight:800;color:#1766a5}.hero-photo{width:180px;height:180px;object-fit:cover;border-radius:50%;border:7px solid #fff;box-shadow:0 8px 20px #0002}.prize{display:flex;justify-content:space-between;align-items:center;gap:20px}.prize h2{font-size:clamp(1.8rem,5vw,3rem);margin:12px 0;color:#0b3e75}.prize h2 strong{color:var(--pink)}.prize img{width:280px;max-width:40%;max-height:240px;object-fit:contain}.price{font-size:1.8rem;color:var(--pink);font-weight:900}.price small{font-size:.8rem;color:#12365b}.search{display:grid;grid-template-columns:1fr 240px;gap:16px;align-items:center;background:linear-gradient(135deg,#073f91,#102b74)}.search h2,.search small{color:#fff}.search input{width:100%;padding:15px;border:0;border-radius:12px;font-size:1.1rem;margin:8px 0}.pix,.primary,.secondary{border:0;border-radius:14px;padding:15px 18px;font-weight:900;cursor:pointer}.pix{background:#fff;color:#e82f93}.primary{background:linear-gradient(90deg,#0878e8,#f43b9a);color:#fff}.secondary{background:#eaffef;color:#117334}.index-verificar,.index-reservar{width:100%;margin-top:10px}.numero-status{margin-top:10px;padding:12px;border-radius:12px;font-weight:900;text-align:center}.numero-status.disponivel{background:#e8fff0;color:#12843b;border:1px solid #8de0aa}.numero-status.indisponivel,.numero-status.erro{background:#fff0f0;color:#c62828;border:1px solid #f0a0a0}.numero-status.verificando{background:#eef6ff;color:#1766a5;border:1px solid #a8cff2}.steps-grid{display:flex;flex-direction:column;gap:0}.steps-grid>.card{width:100%;margin:14px 0}.steps ol{padding-left:24px}.steps li{margin:14px 0;font-weight:700}.scratch{text-align:center;background:linear-gradient(135deg,#fff,#e7ffe9);overflow:hidden}.scratch h2{color:#0878e8;font-size:clamp(1.6rem,4vw,2.4rem);margin:15px 0 8px}.scratch h2 strong{color:var(--pink)}.scratch-instrucao{font-weight:700;color:#47647d}.scratch-box{position:relative;width:min(100%,700px);height:220px;margin:18px auto;border-radius:20px;overflow:hidden;background:#fff;box-shadow:inset 0 0 0 3px rgba(8,120,232,.12),0 8px 22px rgba(0,35,90,.14)}#scratchCanvas{position:absolute;inset:0;width:100%;height:220px;display:block;cursor:crosshair;touch-action:none}.scratch-premio{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:7px;background:#fff;padding:12px}.scratch-premio-imagem{width:130px;height:125px;object-fit:contain}.scratch-premio strong{font-size:1.5rem;color:#0878e8}.scratch-premio small{font-weight:900;color:#e52f92}.scratch-premio.revelado{background:linear-gradient(135deg,#f4fff5,#fff)}.scratch-loading-imgs{display:flex;gap:12px;opacity:.08;position:absolute}.scratch-loading-imgs img{width:100px;height:100px;object-fit:contain}.scratch-status{font-weight:900;color:#0878e8;padding:8px}.upload{text-align:center}.upload-box{margin-top:16px;border:2px dashed #f4a6ca;border-radius:18px;padding:22px;background:#fff4fa}.upload-box input{width:100%;margin-top:14px}.comprovante-nome,.comprovante-msg{margin-top:10px;font-weight:700}.whatsapp-btn{width:100%;margin-top:12px}.whatsapp-btn:disabled{opacity:.5;cursor:not-allowed}.luck{display:flex;justify-content:center;align-items:center;gap:15px;text-align:center;background:linear-gradient(90deg,#0878e8,#f43b9a);color:#fff}.luck h2{margin:0}.luck span{font-size:3rem}.choose{text-align:center}.choose button{display:block;width:min(100%,480px);margin:10px auto}footer{text-align:center;color:#fff;padding:24px;font-weight:700}@media(max-width:700px){.hero,.prize{flex-direction:column;text-align:center}.hero-photo{width:145px;height:145px}.prize img{max-width:75%;width:220px}.search{grid-template-columns:1fr}.card{padding:16px;border-radius:20px}.scratch-box{height:220px}.scratch-premio-imagem{width:120px;height:115px}.scratch-premio strong{font-size:1.25rem}.steps-grid>.card{width:100%}}@media(min-width:701px){.steps-grid>.card{min-height:250px}.scratch-box{height:250px}#scratchCanvas{height:250px}.scratch-box{height:250px}.scratch-premio-imagem{width:155px;height:145px}}
+:root {
+  --blue: #0878e8;
+  --blue-dark: #063b74;
+  --pink: #f43b9a;
+  --pink-dark: #d92d83;
+  --green: #22b64a;
+  --green-dark: #117334;
+  --bg: #eaf6ff;
+  --text: #12365b;
+  --white: #ffffff;
+  --shadow: 0 14px 32px rgba(0, 35, 90, 0.18);
+  --radius: 24px;
+}
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
+  color: var(--text);
+  background:
+    linear-gradient(
+      135deg,
+      #04b8c9 0%,
+      #246fe8 48%,
+      #f34ba7 100%
+    );
+}
+
+/* =========================================================
+   FUNDO
+========================================================= */
+
+.bg-glow {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+
+  background:
+    radial-gradient(
+      circle at 20% 20%,
+      rgba(255, 255, 255, 0.35),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 85% 70%,
+      rgba(255, 255, 255, 0.22),
+      transparent 30%
+    );
+}
+
+/* =========================================================
+   CABEÇALHO
+========================================================= */
+
+.topbar {
+  width: min(calc(100% - 24px), 1050px);
+  margin: 14px auto;
+  padding: 15px 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  border-radius: 22px;
+
+  background: rgba(255, 255, 255, 0.97);
+  box-shadow: var(--shadow);
+
+  color: var(--blue-dark);
+}
+
+/* RIFA SOLIDÁRIA */
+
+.brand {
+  flex: 1;
+
+  display: flex;
+  align-items: center;
+
+  font-size: clamp(1.15rem, 3vw, 1.65rem);
+  font-weight: 900;
+  letter-spacing: 0.3px;
+}
+
+/* GILFEST / APOIO */
+
+.gilfest-top {
+  min-width: 210px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  padding: 7px 14px;
+
+  border-radius: 16px;
+
+  background: linear-gradient(
+    135deg,
+    #fff,
+    #f5fbff
+  );
+
+  border: 1px solid rgba(8, 120, 232, 0.12);
+}
+
+.gilfest-top small {
+  order: -1;
+
+  font-size: 0.75rem;
+  font-weight: 900;
+  color: #607890;
+  letter-spacing: 0.8px;
+}
+
+.gilfest-top img {
+  width: 125px;
+  max-width: 100%;
+  height: 58px;
+
+  object-fit: contain;
+  display: block;
+}
+
+/* =========================================================
+   CONTEÚDO
+========================================================= */
+
+main {
+  width: min(calc(100% - 24px), 1050px);
+  margin: 0 auto;
+}
+
+/* =========================================================
+   CARTÕES
+========================================================= */
+
+.card {
+  width: 100%;
+  margin: 14px 0;
+  padding: 22px;
+
+  background: rgba(255, 255, 255, 0.97);
+
+  border-radius: var(--radius);
+
+  box-shadow: var(--shadow);
+
+  animation: cardEntrada 0.65s ease both;
+}
+
+@keyframes cardEntrada {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================================================
+   ETIQUETAS
+========================================================= */
+
+.tag {
+  display: inline-block;
+
+  padding: 7px 14px;
+
+  border-radius: 999px;
+
+  font-size: 0.82rem;
+  font-weight: 900;
+  letter-spacing: 0.3px;
+
+  color: #fff;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--pink),
+      #ff6fb8
+    );
+}
+
+.tag.blue {
+  background:
+    linear-gradient(
+      90deg,
+      var(--blue),
+      #2998ff
+    );
+}
+
+/* =========================================================
+   CARTÃO PRINCIPAL
+========================================================= */
+
+.hero {
+  min-height: 260px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 28px;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      110deg,
+      #dff9ff,
+      #ffffff 50%,
+      #ffe7f3
+    );
+}
+
+.hero-copy {
+  flex: 1;
+}
+
+.hero h1 {
+  margin: 14px 0;
+
+  font-size: clamp(1.8rem, 5vw, 3.4rem);
+  line-height: 1.08;
+
+  color: #08457f;
+}
+
+.hero h1 strong {
+  color: var(--pink);
+}
+
+.hero p {
+  margin-bottom: 0;
+
+  font-size: 1.05rem;
+  font-weight: 800;
+
+  color: #1766a5;
+}
+
+.hero-photo {
+  flex: 0 0 auto;
+
+  width: 190px;
+  height: 190px;
+
+  object-fit: cover;
+
+  border-radius: 50%;
+  border: 7px solid #fff;
+
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* =========================================================
+   PRÊMIO
+========================================================= */
+
+.prize {
+  min-height: 260px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 25px;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      110deg,
+      #ffffff,
+      #f5fbff
+    );
+}
+
+.prize > div {
+  flex: 1;
+}
+
+.prize h2 {
+  margin: 12px 0;
+
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  line-height: 1.05;
+
+  color: #0b3e75;
+}
+
+.prize h2 strong {
+  color: var(--pink);
+}
+
+.prize p {
+  font-weight: 700;
+}
+
+.prize img {
+  width: 300px;
+  max-width: 42%;
+  max-height: 250px;
+
+  object-fit: contain;
+
+  display: block;
+}
+
+.price {
+  font-size: 1.8rem;
+  font-weight: 900;
+
+  color: var(--pink);
+}
+
+.price small {
+  font-size: 0.8rem;
+  color: var(--text);
+}
+
+/* =========================================================
+   COMO PARTICIPAR
+========================================================= */
+
+.steps {
+  min-height: 260px;
+}
+
+.steps ol {
+  margin: 20px 0 0;
+  padding-left: 26px;
+}
+
+.steps li {
+  margin: 14px 0;
+
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.steps li strong {
+  color: var(--pink);
+}
+
+/* =========================================================
+   CARTÃO NÚMERO / PIX
+========================================================= */
+
+.search {
+  min-height: 245px;
+
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+
+  gap: 22px;
+  align-items: center;
+
+  background:
+    linear-gradient(
+      135deg,
+      #073f91,
+      #102b74
+    );
+}
+
+.numero-area {
+  min-width: 0;
+}
+
+.search h2 {
+  margin: 0 0 12px;
+
+  color: #fff;
+
+  font-size: clamp(1.2rem, 3vw, 1.65rem);
+}
+
+.search input {
+  width: 100%;
+
+  padding: 16px;
+
+  border: 0;
+  outline: none;
+
+  border-radius: 14px;
+
+  font-size: 1.2rem;
+  font-weight: 700;
+
+  color: var(--text);
+
+  background: #fff;
+
+  box-shadow:
+    inset 0 0 0 2px rgba(8, 120, 232, 0.08);
+}
+
+.search input:focus {
+  box-shadow:
+    0 0 0 3px rgba(255, 255, 255, 0.25);
+}
+
+/* =========================================================
+   BOTÕES
+========================================================= */
+
+button {
+  font-family: inherit;
+}
+
+.verificar-numero,
+#verificarNumero {
+  width: 100%;
+
+  min-height: 54px;
+
+  margin-top: 10px;
+
+  padding: 14px 18px;
+
+  border: 0;
+  border-radius: 14px;
+
+  font-size: 0.95rem;
+  font-weight: 900;
+
+  cursor: pointer;
+
+  color: #fff;
+
+  background:
+    linear-gradient(
+      90deg,
+      #0878e8,
+      #2998ff
+    );
+
+  box-shadow:
+    0 7px 16px rgba(0, 0, 0, 0.18);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.verificar-numero:hover,
+#verificarNumero:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 10px 20px rgba(0, 0, 0, 0.22);
+}
+
+.verificar-numero:active,
+#verificarNumero:active {
+  transform: translateY(0);
+}
+
+.pix-area {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* =========================================================
+   PIX
+========================================================= */
+
+.pix {
+  width: 100%;
+
+  min-height: 54px;
+
+  padding: 14px 18px;
+
+  border: 0;
+  border-radius: 14px;
+
+  font-size: 0.95rem;
+  font-weight: 900;
+
+  cursor: pointer;
+
+  color: #d92d83;
+
+  background: #fff;
+
+  box-shadow:
+    0 7px 16px rgba(0, 0, 0, 0.16);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.pix:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* =========================================================
+   RESERVAR
+========================================================= */
+
+.reservar-numero,
+#reservarNumero {
+  width: 100%;
+
+  min-height: 54px;
+
+  padding: 14px 18px;
+
+  border: 0;
+  border-radius: 14px;
+
+  font-size: 0.95rem;
+  font-weight: 900;
+
+  cursor: pointer;
+
+  color: #fff;
+
+  background:
+    linear-gradient(
+      90deg,
+      #22b64a,
+      #0e9838
+    );
+
+  box-shadow:
+    0 7px 16px rgba(0, 0, 0, 0.18);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.reservar-numero:hover,
+#reservarNumero:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 10px 20px rgba(0, 0, 0, 0.22);
+}
+
+.reservar-numero:disabled,
+#reservarNumero:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* =========================================================
+   STATUS DO NÚMERO
+========================================================= */
+
+.numero-status {
+  display: none;
+
+  margin-top: 12px;
+  padding: 13px;
+
+  border-radius: 13px;
+
+  font-weight: 900;
+  text-align: center;
+
+  line-height: 1.3;
+}
+
+/* =========================================================
+   GRID DOS CARTÕES
+   SEMPRE UM EMBAIXO DO OUTRO
+========================================================= */
+
+.steps-grid {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  gap: 0;
+}
+
+.steps-grid > .card {
+  width: 100%;
+  margin: 14px 0;
+}
+
+/* =========================================================
+   ENVIE SEU COMPROVANTE
+========================================================= */
+
+.upload {
+  min-height: 330px;
+
+  text-align: center;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff,
+      #fff5fa
+    );
+}
+
+.upload-box {
+  margin-top: 18px;
+
+  padding: 26px;
+
+  border: 2px dashed #f4a6ca;
+
+  border-radius: 20px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fff4fa,
+      #ffffff
+    );
+}
+
+.upload-icon {
+  font-size: 3rem;
+
+  margin-bottom: 8px;
+}
+
+.upload-box strong {
+  display: block;
+
+  font-size: 1.1rem;
+
+  color: #174e7d;
+}
+
+.upload-box small {
+  display: block;
+
+  margin-top: 7px;
+
+  color: #668096;
+  font-weight: 600;
+}
+
+.upload-box input {
+  width: 100%;
+
+  margin-top: 18px;
+
+  padding: 12px;
+
+  border-radius: 12px;
+
+  background: #fff;
+}
+
+.comprovante-nome,
+.comprovante-msg {
+  margin: 10px 0 0;
+
+  font-weight: 700;
+}
+
+.whatsapp-btn {
+  width: 100%;
+
+  min-height: 54px;
+
+  margin-top: 14px;
+
+  padding: 14px 18px;
+
+  border: 0;
+  border-radius: 14px;
+
+  font-size: 0.95rem;
+  font-weight: 900;
+
+  cursor: pointer;
+
+  color: #fff;
+
+  background:
+    linear-gradient(
+      90deg,
+      #16b84e,
+      #079238
+    );
+
+  box-shadow:
+    0 7px 16px rgba(0, 0, 0, 0.14);
+}
+
+.whatsapp-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* =========================================================
+   RASPADINHA
+========================================================= */
+
+.scratch {
+  min-height: 610px;
+
+  position: relative;
+
+  padding-bottom: 30px;
+
+  text-align: center;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff,
+      #e7ffe9
+    );
+}
+
+.trevo-mini {
+  font-size: 2.3rem;
+
+  margin-bottom: 2px;
+}
+
+.scratch h2 {
+  margin: 8px 0;
+
+  color: var(--blue);
+
+  font-size: clamp(1.7rem, 4vw, 2.5rem);
+  line-height: 1.05;
+}
+
+.scratch h2 strong {
+  color: var(--pink);
+}
+
+.scratch-subtitle {
+  max-width: 680px;
+
+  margin: 10px auto 18px;
+
+  font-weight: 700;
+
+  color: #47647d;
+}
+
+/* =========================================================
+   ÁREA DA RASPADINHA
+========================================================= */
+
+.scratch-area,
+.scratch-box {
+  position: relative;
+
+  width: min(100%, 720px);
+
+  height: 300px;
+
+  margin: 20px auto;
+
+  overflow: hidden;
+
+  border-radius: 22px;
+
+  background: #fff;
+
+  box-shadow:
+    inset 0 0 0 3px rgba(8, 120, 232, 0.12),
+    0 10px 26px rgba(0, 35, 90, 0.15);
+}
+
+.scratch-result,
+.scratch-premio {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 1;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-direction: column;
+
+  gap: 8px;
+
+  padding: 15px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff,
+      #f4fff5
+    );
+}
+
+.scratch-result .icone {
+  font-size: 3rem;
+}
+
+.scratch-result strong,
+.scratch-premio strong {
+  font-size: 1.7rem;
+
+  color: var(--blue);
+}
+
+.scratch-result small,
+.scratch-premio small {
+  font-weight: 900;
+
+  color: var(--pink-dark);
+}
+
+/* =========================================================
+   CANVAS
+========================================================= */
+
+#scratchCanvas,
+.scratch-canvas {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 5;
+
+  display: block;
+
+  width: 100%;
+  height: 300px;
+
+  cursor: crosshair;
+
+  touch-action: none;
+}
+
+/* =========================================================
+   IMAGEM DO PRÊMIO REVELADO
+========================================================= */
+
+.scratch-premio-imagem {
+  width: 165px;
+  height: 155px;
+
+  object-fit: contain;
+
+  display: block;
+}
+
+.scratch-premio.revelado {
+  background:
+    linear-gradient(
+      135deg,
+      #f4fff5,
+      #ffffff
+    );
+}
+
+/* =========================================================
+   INSTRUÇÃO
+========================================================= */
+
+.scratch-instruction,
+.scratch-instrucao {
+  margin: 12px 0;
+
+  font-weight: 800;
+
+  color: #47647d;
+}
+
+/* =========================================================
+   PRÊMIOS DA RASPADINHA
+========================================================= */
+
+.scratch-prizes {
+  width: min(100%, 720px);
+
+  margin: 18px auto 0;
+
+  display: grid;
+
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: 16px;
+}
+
+.scratch-prize {
+  min-height: 125px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-direction: column;
+
+  gap: 7px;
+
+  padding: 14px;
+
+  border-radius: 18px;
+
+  background: #fff;
+
+  border: 1px solid rgba(8, 120, 232, 0.12);
+
+  box-shadow:
+    0 7px 18px rgba(0, 35, 90, 0.09);
+
+  font-weight: 900;
+
+  color: #174e7d;
+}
+
+.scratch-prize span {
+  font-size: 2.8rem;
+}
+
+/* Imagens reais dos prêmios caso sejam inseridas */
+
+.scratch-prize img {
+  width: 95px;
+  height: 80px;
+
+  object-fit: contain;
+}
+
+/* =========================================================
+   ESCOLHA / SUGERIR
+========================================================= */
+
+.choose {
+  text-align: center;
+}
+
+.choose h2 {
+  margin-top: 0;
+
+  color: var(--blue-dark);
+}
+
+.choose p {
+  font-weight: 700;
+}
+
+.choose button {
+  display: block;
+
+  width: min(100%, 480px);
+
+  min-height: 54px;
+
+  margin: 10px auto;
+}
+
+/* =========================================================
+   BOTÕES PRINCIPAIS
+========================================================= */
+
+.primary,
+.secondary {
+  border: 0;
+
+  border-radius: 14px;
+
+  padding: 15px 18px;
+
+  font-size: 0.95rem;
+  font-weight: 900;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.primary {
+  color: #fff;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--blue),
+      var(--pink)
+    );
+
+  box-shadow:
+    0 7px 16px rgba(0, 35, 90, 0.15);
+}
+
+.secondary {
+  color: var(--green-dark);
+
+  background: #eaffef;
+
+  box-shadow:
+    0 5px 12px rgba(0, 70, 30, 0.08);
+}
+
+.primary:hover,
+.secondary:hover {
+  transform: translateY(-2px);
+}
+
+/* =========================================================
+   NÚMERO DA SORTE
+========================================================= */
+
+.luck {
+  min-height: 130px;
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  gap: 18px;
+
+  text-align: center;
+
+  color: #fff;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--blue),
+      var(--pink)
+    );
+}
+
+.luck h2 {
+  margin: 0;
+
+  color: #fff;
+}
+
+.luck p {
+  margin-bottom: 0;
+
+  font-weight: 700;
+}
+
+.luck span {
+  font-size: 3.2rem;
+}
+
+/* =========================================================
+   RODAPÉ
+========================================================= */
+
+footer {
+  width: min(calc(100% - 24px), 1050px);
+
+  margin: 0 auto;
+
+  padding: 28px 15px;
+
+  text-align: center;
+
+  color: #fff;
+
+  font-weight: 700;
+}
+
+/* =========================================================
+   ANIMAÇÕES EXTRAS
+========================================================= */
+
+.hero-photo,
+.prize img {
+  animation: imagemFlutuar 4s ease-in-out infinite;
+}
+
+@keyframes imagemFlutuar {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.scratch-prize {
+  animation: premioEntrada 0.7s ease both;
+}
+
+.scratch-prize:nth-child(2) {
+  animation-delay: 0.12s;
+}
+
+@keyframes premioEntrada {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+  .topbar {
+    margin: 10px auto;
+
+    padding: 12px;
+
+    flex-direction: column;
+
+    align-items: stretch;
+
+    gap: 10px;
+  }
+
+  .brand {
+    justify-content: center;
+
+    text-align: center;
+
+    font-size: 1.25rem;
+  }
+
+  .gilfest-top {
+    width: 100%;
+
+    min-width: 0;
+
+    justify-content: center;
+  }
+
+  .gilfest-top img {
+    width: 125px;
+    height: 52px;
+  }
+
+  main {
+    width: min(calc(100% - 16px), 1050px);
+  }
+
+  .card {
+    padding: 17px;
+
+    border-radius: 20px;
+
+    margin: 10px 0;
+  }
+
+  .hero {
+    min-height: 0;
+
+    flex-direction: column;
+
+    text-align: center;
+
+    gap: 15px;
+  }
+
+  .hero h1 {
+    font-size: 2rem;
+  }
+
+  .hero-photo {
+    width: 145px;
+    height: 145px;
+  }
+
+  .prize {
+    min-height: 0;
+
+    flex-direction: column;
+
+    text-align: center;
+
+    gap: 12px;
+  }
+
+  .prize h2 {
+    font-size: 2rem;
+  }
+
+  .prize img {
+    width: 220px;
+    max-width: 85%;
+    max-height: 220px;
+  }
+
+  .steps {
+    min-height: 0;
+  }
+
+  .search {
+    min-height: 0;
+
+    grid-template-columns: 1fr;
+
+    gap: 16px;
+  }
+
+  .pix-area {
+    width: 100%;
+  }
+
+  .upload {
+    min-height: 0;
+  }
+
+  .upload-box {
+    padding: 20px 15px;
+  }
+
+  .scratch {
+    min-height: 0;
+
+    padding-bottom: 22px;
+  }
+
+  .scratch-area,
+  .scratch-box {
+    height: 270px;
+  }
+
+  #scratchCanvas,
+  .scratch-canvas {
+    height: 270px;
+  }
+
+  .scratch-premio-imagem {
+    width: 145px;
+    height: 140px;
+  }
+
+  .scratch-result strong,
+  .scratch-premio strong {
+    font-size: 1.35rem;
+  }
+
+  .scratch-prizes {
+    grid-template-columns: 1fr 1fr;
+
+    gap: 10px;
+  }
+
+  .scratch-prize {
+    min-height: 115px;
+
+    padding: 10px;
+
+    font-size: 0.9rem;
+  }
+
+  .scratch-prize span {
+    font-size: 2.3rem;
+  }
+
+  .luck {
+    flex-direction: column;
+
+    padding: 22px 15px;
+  }
+}
+
+/* =========================================================
+   TELAS MUITO PEQUENAS
+========================================================= */
+
+@media (max-width: 420px) {
+
+  .brand {
+    font-size: 1.1rem;
+  }
+
+  .gilfest-top img {
+    width: 105px;
+  }
+
+  .gilfest-top small {
+    font-size: 0.68rem;
+  }
+
+  .hero h1 {
+    font-size: 1.7rem;
+  }
+
+  .prize h2 {
+    font-size: 1.7rem;
+  }
+
+  .scratch-prizes {
+    grid-template-columns: 1fr;
+  }
+
+  .scratch-area,
+  .scratch-box {
+    height: 250px;
+  }
+
+  #scratchCanvas,
+  .scratch-canvas {
+    height: 250px;
+  }
+}
+
+/* =========================================================
+   ACESSIBILIDADE
+========================================================= */
+
+button:focus-visible,
+input:focus-visible {
+  outline: 3px solid rgba(8, 120, 232, 0.35);
+  outline-offset: 2px;
+}
+
+/* =========================================================
+   ESCONDER O BOTÃO ESCOLHER NÚMEROS
+   Mantém apenas SUGERIR UM NÚMERO
+========================================================= */
+
+#abrirCartelas {
+  display: none !important;
+}
