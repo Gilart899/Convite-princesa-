@@ -1362,3 +1362,185 @@ input:focus-visible {
 #abrirCartelas {
   display: none !important;
 }
+
+/* =========================================================
+   📝 CONFIRMAR PARTICIPAÇÃO — CARTÃO NA PÁGINA PRINCIPAL
+========================================================= */
+
+.reserva-inline {
+  width: 100%;
+  text-align: center;
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff 0%,
+      #f2f9ff 55%,
+      #fff0f8 100%
+    );
+  animation: cardEntrada .6s ease both;
+}
+
+.reserva-subtitulo {
+  margin: 14px 0;
+  font-weight: 700;
+  color: #47647d;
+}
+
+.reserva-numeros {
+  width: 100%;
+  padding: 15px;
+  margin: 14px 0 8px;
+  border-radius: 14px;
+  background: #eef7ff;
+  border: 1px solid #c9e4ff;
+  color: #0878e8;
+  font-size: 1.05rem;
+  font-weight: 900;
+  word-break: break-word;
+}
+
+.reserva-total {
+  display: block;
+  margin: 8px 0 18px;
+  color: #f43b9a;
+  font-size: 1.35rem;
+}
+
+.reserva-pix-box {
+  width: 100%;
+  padding: 18px;
+  margin: 16px 0;
+  border-radius: 18px;
+  background: linear-gradient(
+    135deg,
+    #effff4,
+    #ffffff
+  );
+  border: 1px solid #bcebc9;
+}
+
+.reserva-pix-box h3 {
+  margin: 0 0 10px;
+  color: #117334;
+}
+
+.reserva-pix-box p {
+  margin: 6px 0;
+  font-weight: 700;
+  color: #47647d;
+}
+
+.reserva-pix-row {
+  display: flex;
+  gap: 10px;
+  align-items: stretch;
+}
+
+.reserva-pix-row input {
+  flex: 1;
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid #c9ddea;
+  border-radius: 12px;
+  background: #fff;
+  color: #12365b;
+  font-weight: 800;
+}
+
+.reserva-pix-row button {
+  border: 0;
+  border-radius: 12px;
+  padding: 14px 18px;
+  background: #22b64a;
+  color: #fff;
+  font-weight: 900;
+  cursor: pointer;
+  transition: .2s ease;
+}
+
+.reserva-pix-row button:hover {
+  transform: translateY(-2px);
+}
+
+.reserva-pix-msg {
+  min-height: 20px;
+  margin: 8px 0 0 !important;
+  color: #12843b !important;
+}
+
+.reserva-dados {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.reserva-dados input {
+  width: 100%;
+  padding: 15px;
+  border: 1px solid #c9ddea;
+  border-radius: 12px;
+  background: #fff;
+  color: #12365b;
+  font-size: 1rem;
+  outline: none;
+}
+
+.reserva-dados input:focus {
+  border-color: #0878e8;
+  box-shadow: 0 0 0 3px rgba(8,120,232,.12);
+}
+
+.reserva-enviar {
+  width: 100%;
+  margin-top: 14px;
+  padding: 16px 20px;
+  border: 0;
+  border-radius: 14px;
+  background: linear-gradient(
+    90deg,
+    #0878e8,
+    #f43b9a
+  );
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 8px 18px rgba(8,120,232,.20);
+  transition: .2s ease;
+}
+
+.reserva-enviar:hover {
+  transform: translateY(-2px);
+}
+
+.reserva-enviar:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.reserva-msg {
+  min-height: 24px;
+  margin: 12px 0 0;
+  font-weight: 800;
+}
+
+@media (max-width: 700px) {
+
+  .reserva-pix-row {
+    flex-direction: column;
+  }
+
+  .reserva-pix-row button {
+    width: 100%;
+  }
+
+  .reserva-dados {
+    grid-template-columns: 1fr;
+  }
+
+}
+  );
+
+}
