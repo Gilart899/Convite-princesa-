@@ -132,19 +132,18 @@
 
     <!-- =====================================================
          COMO PARTICIPAR
-         FICA ACIMA DO CARTÃO DE NÚMERO
     ====================================================== -->
 
     <section class="card steps">
 
       <span class="tag blue">
-        COMO PARTICIPAR
+        🍀 COMO PARTICIPAR
       </span>
 
       <ol>
 
         <li>
-          Escolha seus números de 000 a 999
+          Escolha ou sugira seu número de 000 a 999
         </li>
 
         <li>
@@ -152,7 +151,7 @@
         </li>
 
         <li>
-          Envie o comprovante de pagamento
+          Envie o comprovante de pagamento pelo WhatsApp
         </li>
 
         <li>
@@ -171,17 +170,41 @@
 
 
     <!-- =====================================================
-         CARTÃO AZUL — NÚMERO / PIX / RESERVA
+         ESCOLHA / SUGESTÃO DE NÚMERO
+         FICA ACIMA DO CARTÃO AZUL
+    ====================================================== -->
+
+    <section class="card choose">
+
+      <h2>
+        🎟️ Escolha seu número da sorte
+      </h2>
+
+      <p>
+        Sugira um número disponível entre 000 e 999.
+      </p>
+
+      <button
+        class="secondary"
+        id="sugerir"
+        type="button"
+      >
+        🍀 SUGERIR UM NÚMERO
+      </button>
+
+    </section>
+
+
+    <!-- =====================================================
+         CARTÃO AZUL — DIGITAR NÚMERO
     ====================================================== -->
 
     <section class="search card">
 
-      <!-- ÁREA DO NÚMERO -->
-
       <div class="numero-area">
 
         <h2>
-          Digite seu número de 000 a 999
+          🔢 Digite seu número de 000 a 999
         </h2>
 
         <input
@@ -194,8 +217,6 @@
           aria-label="Digite seu número de 000 a 999"
         >
 
-        <!-- VERIFICAR -->
-
         <button
           id="verificarNumero"
           class="verificar-numero"
@@ -203,8 +224,6 @@
         >
           🔎 VERIFICAR DISPONIBILIDADE
         </button>
-
-        <!-- STATUS -->
 
         <div
           id="numeroStatus"
@@ -216,31 +235,26 @@
 
 
       <!-- ===================================================
-           ÁREA DOS BOTÕES
+           BOTÃO COMPRAR
       ==================================================== -->
 
       <div class="pix-area">
 
-        <!-- COPIAR PIX -->
-
         <button
-          class="pix"
           id="copiarPix"
+          class="pix"
           type="button"
         >
           💠 COPIAR CHAVE PIX
         </button>
 
-
-        <!-- RESERVAR NÚMERO -->
-
         <button
-          id="reservarNumero"
+          id="comprarNumero"
           class="reservar-numero"
           type="button"
           hidden
         >
-          🎟️ RESERVAR NÚMERO
+          🛒 COMPRAR NÚMERO
         </button>
 
       </div>
@@ -249,167 +263,141 @@
 
 
     <!-- =====================================================
-         CARTÕES PRINCIPAIS
+         CONFIRMAR PARTICIPAÇÃO
     ====================================================== -->
 
     <section class="steps-grid">
 
-      <!-- ===================================================
-     CONFIRMAR PARTICIPAÇÃO
-==================================================== -->
-
-<article class="card reserva-inline">
-
-  <span class="tag blue">
-    📝 CONFIRMAR PARTICIPAÇÃO
-  </span>
-
-  <p class="reserva-subtitulo">
-    Confira seus números e informe seus dados.
-  </p>
-
-  <div
-    id="reservaNumeros"
-    class="reserva-numeros"
-  >
-    Nenhum número selecionado
-  </div>
-
-  <strong
-    id="reservaTotal"
-    class="reserva-total"
-  >
-    Total: R$ 0,00
-  </strong>
-
-  <div class="reserva-pix-box">
-
-    <h3>
-      💚 Pagamento via PIX
-    </h3>
-
-    <p>
-      Chave PIX
-    </p>
-
-    <div class="reserva-pix-row">
-
-      <input
-        id="pixReserva"
-        type="text"
-        readonly
-      >
-
-      <button
-        id="copiarPixReserva"
-        type="button"
-      >
-        📋 COPIAR
-      </button>
-
-    </div>
-
-    <p
-      id="pixMsgReserva"
-      class="reserva-pix-msg"
-    ></p>
-
-  </div>
-
-  <div class="reserva-dados">
-
-    <input
-      id="nomeReserva"
-      type="text"
-      placeholder="Seu nome"
-      autocomplete="name"
-    >
-
-    <input
-      id="telefoneReserva"
-      type="tel"
-      inputmode="tel"
-      placeholder="WhatsApp"
-      autocomplete="tel"
-    >
-
-  </div>
-
-  <button
-    id="reservarReserva"
-    class="reserva-enviar"
-    type="button"
-  >
-    ENVIAR RESERVA
-  </button>
-
-  <p
-    id="msgReserva"
-    class="reserva-msg"
-    aria-live="polite"
-  ></p>
-
-</article>
-
-
-      <!-- ===================================================
-           1 — ENVIE SEU COMPROVANTE
-      ==================================================== -->
-
-      <article class="card upload">
+      <article class="card reserva-inline">
 
         <span class="tag blue">
-          ENVIE SEU COMPROVANTE
+          📝 CONFIRMAR PARTICIPAÇÃO
         </span>
 
-        <div class="upload-box">
+        <p class="reserva-subtitulo">
+          Confira seus números e informe seus dados.
+        </p>
 
-          <div class="upload-icon">
-            📄
+
+        <!-- NÚMEROS COMPRADOS -->
+
+        <div
+          id="reservaNumeros"
+          class="reserva-numeros"
+        >
+          Nenhum número selecionado
+        </div>
+
+
+        <!-- DATA E HORA -->
+
+        <div class="compra-info">
+
+          <div>
+            📅
+            <strong>Data da compra</strong>
+            <span id="reservaData">
+              —
+            </span>
           </div>
 
-          <strong>
-            Selecione o comprovante
-          </strong>
+          <div>
+            🕐
+            <strong>Horário da compra</strong>
+            <span id="reservaHora">
+              —
+            </span>
+          </div>
 
-          <small>
-            Foto ou PDF do comprovante de pagamento
-          </small>
+        </div>
 
-          <input
-            id="comprovante"
-            type="file"
-            accept="image/*,application/pdf"
-          >
 
-          <p
-            id="comprovanteNome"
-            class="comprovante-nome"
-          >
-            Nenhum arquivo selecionado.
-          </p>
+        <!-- TOTAL -->
+
+        <strong
+          id="reservaTotal"
+          class="reserva-total"
+        >
+          Total: R$ 0,00
+        </strong>
+
+
+        <!-- PAGAMENTO -->
+
+        <div class="reserva-pix-box">
+
+          <h3>
+            💚 Pagamento via PIX
+          </h3>
 
           <button
-            id="enviarWhatsApp"
-            class="whatsapp-btn"
+            id="copiarPixReserva"
+            class="copiar-pix-reserva"
             type="button"
-            disabled
           >
-            📲 ENVIAR PELO WHATSAPP
+            📋 COPIAR PIX
           </button>
 
           <p
-            id="comprovanteMsg"
-            class="comprovante-msg"
+            id="pixMsgReserva"
+            class="reserva-pix-msg"
           ></p>
 
         </div>
+
+
+        <!-- DADOS DO CLIENTE -->
+
+        <div class="reserva-dados">
+
+          <input
+            id="nomeReserva"
+            type="text"
+            placeholder="👤 Seu nome"
+            autocomplete="name"
+          >
+
+          <input
+            id="telefoneReserva"
+            type="tel"
+            inputmode="tel"
+            placeholder="📱 Seu WhatsApp"
+            autocomplete="tel"
+          >
+
+        </div>
+
+
+        <!-- ENVIO -->
+
+        <div class="reserva-envio">
+
+          <button
+            id="reservarReserva"
+            class="reserva-enviar"
+            type="button"
+          >
+            📲 ENVIAR PARA WHATSAPP
+          </button>
+
+          <small>
+            ⚠️ Só enviar com comprovante PAGO
+          </small>
+
+        </div>
+
+
+        <p
+          id="msgReserva"
+          class="reserva-msg"
+          aria-live="polite"
+        ></p>
 
       </article>
 
 
       <!-- ===================================================
-           2 — RASPADINHA DA AMIZADE
+           RASPADINHA DA AMIZADE
       ==================================================== -->
 
       <article class="card scratch">
@@ -427,6 +415,9 @@
           Sua amizade e solidariedade podem trazer uma surpresa!
         </p>
 
+
+        <!-- ÁREA DA RASPADINHA -->
+
         <div class="scratch-area">
 
           <div class="scratch-result">
@@ -435,9 +426,10 @@
               🎁
             </span>
 
-           <strong id="scratchPremio">
-  RASPE AQUI
-</strong>
+            <strong id="scratchPremio">
+              RASPE AQUI
+            </strong>
+
             <small>
               Descubra sua sorte
             </small>
@@ -451,68 +443,46 @@
 
         </div>
 
+
         <p class="scratch-instruction">
           👆 Raspe com o dedo para descobrir!
         </p>
+
+
+        <!-- PRÊMIOS -->
 
         <div class="scratch-prizes">
 
           <div class="scratch-prize">
 
-            <span>
-              🧉
-            </span>
+            <img
+              src="img/liquidificador.png"
+              alt="Liquidificador"
+            >
 
-            Liquidificador
+            <strong>
+              🧉 Liquidificador
+            </strong>
 
           </div>
 
+
           <div class="scratch-prize">
 
-            <span>
-              🔥
-            </span>
+            <img
+              src="img/ferro.png"
+              alt="Ferro elétrico"
+            >
 
-            Ferro elétrico
+            <strong>
+              🔥 Ferro elétrico
+            </strong>
 
           </div>
 
         </div>
 
       </article>
-
-    </section>
-
-
-    <!-- =====================================================
-         ESCOLHA DOS NÚMEROS
-    ====================================================== -->
-
-    <section class="card choose">
-
-      <h2>
-        🎟️ Escolha seus números
-      </h2>
-
-      <p>
-        Você pode selecionar de 1 a 10 números.
-      </p>
-
-      <button
-        class="primary"
-        id="abrirCartelas"
-        type="button"
-      >
-        ESCOLHER NÚMEROS →
-      </button>
-
-      <button
-        class="secondary"
-        id="sugerir"
-        type="button"
-      >
-        🍀 SUGERIR UM NÚMERO
-      </button>
 
     </section>
 
