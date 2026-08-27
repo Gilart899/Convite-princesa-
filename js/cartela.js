@@ -207,7 +207,7 @@ document.getElementById('continuar').onclick=()=>{
     JSON.stringify(selecionados)
   );
 
-  location.href='reserva.html';
+ location.href='index.html';
 };
 
 let sx=0;
