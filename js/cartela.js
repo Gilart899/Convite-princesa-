@@ -1,266 +1,709 @@
-import {db,firebaseConfigured} from './firebase.js';
-import {ref,onValue} from 'https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js';
-import {CONFIG} from './config.js';
+import { db, firebaseConfigured } from './firebase.js';
 
-const grid=document.getElementById('grid');
-const titulo=document.getElementById('titulo');
-const sel=document.getElementById('sel');
-const total=document.getElementById('total');
+import {
+  ref,
+  onValue
+} from 'https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js';
 
-let cartela=0;
-let selecionados=[];
-let status={};
+import { CONFIG } from './config.js';
 
-const pad=n=>String(n).padStart(3,'0');
 
-function render(){
-  titulo.textContent=`CARTELA ${String(cartela+1).padStart(2,'0')}`;
-  grid.innerHTML='';
+/* =========================================================
+   ELEMENTOS
+========================================================= */
 
-  const inicio=cartela*100;
+const grid =
+  document.getElementById('grid');
 
-  for(let i=0;i<100;i++){
-    const key=pad(inicio+i);
-    const b=document.createElement('button');
+const titulo =
+  document.getElementById('titulo');
 
-    b.textContent=key;
+const sel =
+  document.getElementById('sel');
 
-    const s=status[key];
+const total =
+  document.getElementById('total');
 
-    if(s && s.status!=='disponivel'){
-      b.disabled=true;
-      b.className='reserved';
-    }else{
-      if(selecionados.includes(key)){
-        b.className='selected';
-      }
 
-      b.onclick=()=>toggle(key);
+/* =========================================================
+   ESTADO
+========================================================= */
+
+let cartela = 0;
+
+let selecionados = [];
+
+let status = {};
+
+
+/* =========================================================
+   FORMATAÇÃO
+========================================================= */
+
+const pad = n =>
+  String(n).padStart(3, '0');
+
+
+/* =========================================================
+   RENDERIZAR CARTELA
+========================================================= */
+
+function render() {
+
+  if (!grid || !titulo) {
+    return;
+  }
+
+  titulo.textContent =
+    `CARTELA ${String(cartela + 1).padStart(2, '0')}`;
+
+  grid.innerHTML = '';
+
+  const inicio =
+    cartela * 100;
+
+
+  for (let i = 0; i < 100; i++) {
+
+    const key =
+      pad(inicio + i);
+
+    const b =
+      document.createElement('button');
+
+    b.type = 'button';
+
+    b.textContent = key;
+
+
+    const s =
+      status[key];
+
+
+    /* -----------------------------------------------------
+       NÚMERO OCUPADO
+    ----------------------------------------------------- */
+
+    if (
+      s &&
+      s.status !== 'disponivel'
+    ) {
+
+      b.disabled = true;
+
+      b.className = 'reserved';
+
     }
 
+
+    /* -----------------------------------------------------
+       NÚMERO DISPONÍVEL
+    ----------------------------------------------------- */
+
+    else {
+
+      if (
+        selecionados.includes(key)
+      ) {
+
+        b.className =
+          'selected';
+
+      }
+
+      b.onclick = () =>
+        toggle(key);
+
+    }
+
+
     grid.appendChild(b);
+
   }
+
 }
 
-function toggle(key){
-  if(selecionados.includes(key)){
-    selecionados=selecionados.filter(x=>x!==key);
-  }else if(selecionados.length<10){
-    selecionados.push(key);
-  }else{
-    return alert('Você pode selecionar no máximo 10 números.');
+
+/* =========================================================
+   SELECIONAR / DESMARCAR
+========================================================= */
+
+function toggle(key) {
+
+  if (
+    selecionados.includes(key)
+  ) {
+
+    selecionados =
+      selecionados.filter(
+        x => x !== key
+      );
+
   }
+
+  else if (
+    selecionados.length < 10
+  ) {
+
+    selecionados.push(key);
+
+  }
+
+  else {
+
+    alert(
+      'Você pode selecionar no máximo 10 números.'
+    );
+
+    return;
+
+  }
+
 
   update();
+
 }
 
-function update(){
-  sel.textContent=selecionados.join(', ')||'Nenhum';
 
-  total.textContent=`R$ ${(selecionados.length*CONFIG.valorNumero)
-    .toFixed(2)
-    .replace('.',',')}`;
+/* =========================================================
+   ATUALIZAR RESUMO
+========================================================= */
 
-  render();
-}
+function update() {
 
-function ir(raw,select=false){
-  const n=Number(raw);
+  if (sel) {
 
-  if(!Number.isInteger(n)||n<0||n>999){
-    return alert('Digite um número entre 000 e 999.');
+    sel.textContent =
+      selecionados.join(', ') ||
+      'Nenhum';
+
   }
 
-  cartela=Math.floor(n/100);
 
-  const key=pad(n);
+  if (total) {
+
+    total.textContent =
+      `R$ ${(selecionados.length * CONFIG.valorNumero)
+        .toFixed(2)
+        .replace('.', ',')}`;
+
+  }
+
 
   render();
 
-  const disponivel=
-    !status[key] ||
-    status[key].status==='disponivel';
+}
 
-  if(
+
+/* =========================================================
+   IR PARA UM NÚMERO
+========================================================= */
+
+function ir(raw, select = false) {
+
+  const n =
+    Number(raw);
+
+
+  if (
+    !Number.isInteger(n) ||
+    n < 0 ||
+    n > 999
+  ) {
+
+    alert(
+      'Digite um número entre 000 e 999.'
+    );
+
+    return;
+
+  }
+
+
+  cartela =
+    Math.floor(n / 100);
+
+
+  const key =
+    pad(n);
+
+
+  render();
+
+
+  const disponivel =
+    !status[key] ||
+    status[key].status === 'disponivel';
+
+
+  if (
     select &&
     disponivel &&
     !selecionados.includes(key)
-  ){
-    if(selecionados.length>=10){
-      return alert('Você pode selecionar no máximo 10 números.');
+  ) {
+
+    if (
+      selecionados.length >= 10
+    ) {
+
+      alert(
+        'Você pode selecionar no máximo 10 números.'
+      );
+
+      return;
+
     }
 
+
     selecionados.push(key);
+
   }
+
 
   update();
 
-  setTimeout(()=>{
-    document.querySelectorAll('#grid button').forEach(b=>{
-      if(b.textContent===key){
-        b.scrollIntoView({
-          behavior:'smooth',
-          block:'center'
-        });
 
-        b.animate(
-          [
-            {transform:'scale(1)'},
-            {transform:'scale(1.15)'},
-            {transform:'scale(1)'}
-          ],
-          {
-            duration:700
-          }
-        );
-      }
-    });
-  },50);
+  setTimeout(() => {
+
+    document
+      .querySelectorAll('#grid button')
+      .forEach(b => {
+
+        if (
+          b.textContent === key
+        ) {
+
+          b.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
+          });
+
+
+          b.animate(
+            [
+              {
+                transform: 'scale(1)'
+              },
+              {
+                transform: 'scale(1.15)'
+              },
+              {
+                transform: 'scale(1)'
+              }
+            ],
+            {
+              duration: 700
+            }
+          );
+
+        }
+
+      });
+
+  }, 50);
+
 }
 
-document.getElementById('prev').onclick=()=>{
-  cartela=(cartela+9)%10;
-  render();
-};
 
-document.getElementById('next').onclick=()=>{
-  cartela=(cartela+1)%10;
-  render();
-};
+/* =========================================================
+   CARTELA ANTERIOR
+========================================================= */
 
-document.getElementById('ir').onclick=()=>{
-  ir(
-    document.getElementById('numero').value,
-    true
-  );
-};
+const prev =
+  document.getElementById('prev');
 
-document.getElementById('sugerir').onclick=()=>{
-  const livres=[];
+if (prev) {
 
-  for(let n=0;n<1000;n++){
-    const k=pad(n);
+  prev.onclick = () => {
 
-    const disponivel=
-      !status[k] ||
-      status[k].status==='disponivel';
+    cartela =
+      (cartela + 9) % 10;
 
-    if(
-      disponivel &&
-      !selecionados.includes(k)
-    ){
-      livres.push(n);
+    render();
+
+  };
+
+}
+
+
+/* =========================================================
+   PRÓXIMA CARTELA
+========================================================= */
+
+const next =
+  document.getElementById('next');
+
+if (next) {
+
+  next.onclick = () => {
+
+    cartela =
+      (cartela + 1) % 10;
+
+    render();
+
+  };
+
+}
+
+
+/* =========================================================
+   IR PARA NÚMERO
+========================================================= */
+
+const irBtn =
+  document.getElementById('ir');
+
+const numeroInput =
+  document.getElementById('numero');
+
+if (
+  irBtn &&
+  numeroInput
+) {
+
+  irBtn.onclick = () => {
+
+    ir(
+      numeroInput.value,
+      true
+    );
+
+  };
+
+}
+
+
+/* =========================================================
+   SUGERIR NÚMERO
+========================================================= */
+
+const sugerir =
+  document.getElementById('sugerir');
+
+if (sugerir) {
+
+  sugerir.onclick = () => {
+
+    const livres = [];
+
+
+    for (
+      let n = 0;
+      n < 1000;
+      n++
+    ) {
+
+      const k =
+        pad(n);
+
+
+      const disponivel =
+        !status[k] ||
+        status[k].status === 'disponivel';
+
+
+      if (
+        disponivel &&
+        !selecionados.includes(k)
+      ) {
+
+        livres.push(n);
+
+      }
+
     }
-  }
 
-  if(!livres.length){
-    return alert('Não há números disponíveis.');
-  }
 
-  if(selecionados.length>=10){
-    return alert('Você pode selecionar no máximo 10 números.');
-  }
+    if (!livres.length) {
 
-  const n=
-    livres[Math.floor(Math.random()*livres.length)];
+      alert(
+        'Não há números disponíveis.'
+      );
 
-  const key=pad(n);
+      return;
 
-  cartela=Math.floor(n/100);
+    }
 
-  if(!selecionados.includes(key)){
-    selecionados.push(key);
-  }
 
-  update();
+    if (
+      selecionados.length >= 10
+    ) {
 
-  setTimeout(()=>{
-    document.querySelectorAll('#grid button').forEach(b=>{
-      if(b.textContent===key){
-        b.scrollIntoView({
-          behavior:'smooth',
-          block:'center'
+      alert(
+        'Você pode selecionar no máximo 10 números.'
+      );
+
+      return;
+
+    }
+
+
+    const n =
+      livres[
+        Math.floor(
+          Math.random() *
+          livres.length
+        )
+      ];
+
+
+    const key =
+      pad(n);
+
+
+    cartela =
+      Math.floor(n / 100);
+
+
+    if (
+      !selecionados.includes(key)
+    ) {
+
+      selecionados.push(key);
+
+    }
+
+
+    update();
+
+
+    setTimeout(() => {
+
+      document
+        .querySelectorAll('#grid button')
+        .forEach(b => {
+
+          if (
+            b.textContent === key
+          ) {
+
+            b.scrollIntoView({
+              behavior: 'smooth',
+              block: 'center'
+            });
+
+
+            b.animate(
+              [
+                {
+                  transform: 'scale(1)'
+                },
+                {
+                  transform: 'scale(1.18)'
+                },
+                {
+                  transform: 'scale(1)'
+                }
+              ],
+              {
+                duration: 800
+              }
+            );
+
+          }
+
         });
 
-        b.animate(
-          [
-            {transform:'scale(1)'},
-            {transform:'scale(1.18)'},
-            {transform:'scale(1)'}
-          ],
-          {
-            duration:800
-          }
-        );
-      }
-    });
-  },50);
-};
+    }, 50);
 
-document.getElementById('continuar').onclick=()=>{
-  if(!selecionados.length){
-    return alert('Escolha pelo menos um número.');
-  }
+  };
 
-  localStorage.setItem(
-    'rifaSelecionados',
-    JSON.stringify(selecionados)
+}
+
+
+/* =========================================================
+   CONTINUAR
+========================================================= */
+
+const continuar =
+  document.getElementById('continuar');
+
+if (continuar) {
+
+  continuar.onclick = () => {
+
+    if (
+      !selecionados.length
+    ) {
+
+      alert(
+        'Escolha pelo menos um número.'
+      );
+
+      return;
+
+    }
+
+
+    localStorage.setItem(
+      'rifaSelecionados',
+      JSON.stringify(selecionados)
+    );
+
+
+    /*
+      VOLTA PARA A PÁGINA PRINCIPAL.
+      NÃO USA MAIS reserva.html.
+    */
+
+    location.href =
+      'index.html#confirmarParticipacao';
+
+  };
+
+}
+
+
+/* =========================================================
+   DESLIZAR ENTRE CARTELAS NO CELULAR
+========================================================= */
+
+let sx = 0;
+
+
+if (grid) {
+
+  grid.addEventListener(
+    'touchstart',
+    e => {
+
+      sx =
+        e.touches[0].clientX;
+
+    },
+    {
+      passive: true
+    }
   );
 
- location.href='index.html';
-};
 
-let sx=0;
+  grid.addEventListener(
+    'touchend',
+    e => {
 
-grid.addEventListener(
-  'touchstart',
-  e=>sx=e.touches[0].clientX,
-  {passive:true}
-);
+      const dx =
+        e.changedTouches[0].clientX -
+        sx;
 
-grid.addEventListener(
-  'touchend',
-  e=>{
-    const dx=e.changedTouches[0].clientX-sx;
 
-    if(Math.abs(dx)>60){
-      cartela=
-        dx<0
-          ?Math.min(9,cartela+1)
-          :Math.max(0,cartela-1);
+      if (
+        Math.abs(dx) > 60
+      ) {
 
-      render();
+        cartela =
+          dx < 0
+            ? Math.min(
+                9,
+                cartela + 1
+              )
+            : Math.max(
+                0,
+                cartela - 1
+              );
+
+
+        render();
+
+      }
+
     }
-  }
-);
+  );
 
-const params=new URLSearchParams(location.search);
+}
 
-if(firebaseConfigured){
+
+/* =========================================================
+   PARÂMETROS DA URL
+========================================================= */
+
+const params =
+  new URLSearchParams(
+    location.search
+  );
+
+
+/* =========================================================
+   FIREBASE
+========================================================= */
+
+if (firebaseConfigured) {
 
   onValue(
-    ref(db,'rifa/numeros'),
-    s=>{
-      status=s.val()||{};
+    ref(
+      db,
+      'rifa/numeros'
+    ),
 
-      if(params.has('numero')){
-        ir(params.get('numero'),false);
-      }else if(params.get('sugerir')==='1'){
-        document.getElementById('sugerir').click();
-      }else{
-        render();
+    snapshot => {
+
+      status =
+        snapshot.val() || {};
+
+
+      if (
+        params.has('numero')
+      ) {
+
+        ir(
+          params.get('numero'),
+          false
+        );
+
       }
+
+      else if (
+        params.get('sugerir') === '1'
+      ) {
+
+        if (sugerir) {
+
+          sugerir.click();
+
+        }
+
+      }
+
+      else {
+
+        render();
+
+      }
+
     }
   );
 
-}else{
+}
 
-  if(params.has('numero')){
-    ir(params.get('numero'),false);
-  }else if(params.get('sugerir')==='1'){
-    document.getElementById('sugerir').click();
-  }else{
+else {
+
+  if (
+    params.has('numero')
+  ) {
+
+    ir(
+      params.get('numero'),
+      false
+    );
+
+  }
+
+  else if (
+    params.get('sugerir') === '1'
+  ) {
+
+    if (sugerir) {
+
+      sugerir.click();
+
+    }
+
+  }
+
+  else {
+
     render();
+
   }
 
 }
