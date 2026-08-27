@@ -254,6 +254,103 @@
 
     <section class="steps-grid">
 
+      <!-- ===================================================
+     CONFIRMAR PARTICIPAÇÃO
+==================================================== -->
+
+<article class="card reserva-inline">
+
+  <span class="tag blue">
+    📝 CONFIRMAR PARTICIPAÇÃO
+  </span>
+
+  <p class="reserva-subtitulo">
+    Confira seus números e informe seus dados.
+  </p>
+
+  <div
+    id="reservaNumeros"
+    class="reserva-numeros"
+  >
+    Nenhum número selecionado
+  </div>
+
+  <strong
+    id="reservaTotal"
+    class="reserva-total"
+  >
+    Total: R$ 0,00
+  </strong>
+
+  <div class="reserva-pix-box">
+
+    <h3>
+      💚 Pagamento via PIX
+    </h3>
+
+    <p>
+      Chave PIX
+    </p>
+
+    <div class="reserva-pix-row">
+
+      <input
+        id="pixReserva"
+        type="text"
+        readonly
+      >
+
+      <button
+        id="copiarPixReserva"
+        type="button"
+      >
+        📋 COPIAR
+      </button>
+
+    </div>
+
+    <p
+      id="pixMsgReserva"
+      class="reserva-pix-msg"
+    ></p>
+
+  </div>
+
+  <div class="reserva-dados">
+
+    <input
+      id="nomeReserva"
+      type="text"
+      placeholder="Seu nome"
+      autocomplete="name"
+    >
+
+    <input
+      id="telefoneReserva"
+      type="tel"
+      inputmode="tel"
+      placeholder="WhatsApp"
+      autocomplete="tel"
+    >
+
+  </div>
+
+  <button
+    id="reservarReserva"
+    class="reserva-enviar"
+    type="button"
+  >
+    ENVIAR RESERVA
+  </button>
+
+  <p
+    id="msgReserva"
+    class="reserva-msg"
+    aria-live="polite"
+  ></p>
+
+</article>
+
 
       <!-- ===================================================
            1 — ENVIE SEU COMPROVANTE
