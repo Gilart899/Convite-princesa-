@@ -2896,3 +2896,85 @@ height: 190px;
 .rodape-criacao-linha span {
   white-space: nowrap;
 }
+
+     /* =========================================================
+   BOTÕES — CONFIRMAR + COMPROVANTE
+========================================================= */
+
+.botoes-reserva {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  margin-top: 12px;
+}
+
+.botoes-reserva .reserva-enviar,
+.botoes-reserva .btn-comprovante {
+  flex: 1;
+  min-height: 52px;
+  border-radius: 14px;
+  font-weight: 800;
+  font-size: 13px;
+  cursor: pointer;
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease,
+    opacity .2s ease;
+}
+
+/* BOTÃO VERMELHO */
+.botoes-reserva .reserva-enviar {
+  margin: 0;
+}
+
+/* BOTÃO COMPROVANTE */
+.btn-comprovante {
+  border: 2px solid #0878e8;
+  background: linear-gradient(
+    135deg,
+    #0878e8,
+    #075bb5
+  );
+  color: #fff;
+  box-shadow:
+    0 5px 14px rgba(8, 120, 232, .25);
+}
+
+.btn-comprovante:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 8px 18px rgba(8, 120, 232, .35);
+}
+
+.btn-comprovante:active {
+  transform: scale(.97);
+}
+
+.reserva-whatsapp > small {
+  display: block;
+  margin-top: 9px;
+  text-align: center;
+  font-size: 10px;
+  opacity: .7;
+}
+
+/* =========================================================
+   CELULAR
+========================================================= */
+
+@media (max-width: 600px) {
+
+  .botoes-reserva {
+    gap: 8px;
+  }
+
+  .botoes-reserva .reserva-enviar,
+  .botoes-reserva .btn-comprovante {
+    min-height: 50px;
+    padding: 8px 7px;
+    font-size: 11px;
+  }
+
+} 
