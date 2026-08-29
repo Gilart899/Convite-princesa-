@@ -117,7 +117,7 @@ const msgReserva =
 
 
 /* =========================================================
-   🧠 DADOS DA COMPRA ATUAL
+   🧠 COMPRA ATUAL
 ========================================================= */
 
 let compraAtual = {
@@ -131,7 +131,7 @@ let compraAtual = {
 
 
 /* =========================================================
-   🎟️ IR PARA CARTELAS
+   🎟️ CARTELAS
 ========================================================= */
 
 if (abrirCartelas) {
@@ -169,13 +169,21 @@ if (sugerir) {
 
 
 /* =========================================================
-   🧹 FORMATAR NÚMERO
+   🔢 FORMATAR NÚMERO
 ========================================================= */
 
 function formatarNumero(valor) {
 
+  const texto =
+    String(valor)
+      .replace(/\D/g, '');
+
+  if (texto === '') {
+    return null;
+  }
+
   const numero =
-    Number(valor);
+    Number(texto);
 
   if (
     !Number.isInteger(numero) ||
@@ -194,7 +202,7 @@ function formatarNumero(valor) {
 
 
 /* =========================================================
-   📅 DATA E HORA DA COMPRA
+   📅 DATA E HORA
 ========================================================= */
 
 function obterDataHora() {
@@ -202,25 +210,22 @@ function obterDataHora() {
   const agora =
     new Date();
 
-  const data =
-    agora.toLocaleDateString(
-      'pt-BR'
-    );
-
-  const hora =
-    agora.toLocaleTimeString(
-      'pt-BR',
-      {
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit'
-      }
-    );
-
   return {
 
-    data,
-    hora,
+    data:
+      agora.toLocaleDateString(
+        'pt-BR'
+      ),
+
+    hora:
+      agora.toLocaleTimeString(
+        'pt-BR',
+        {
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit'
+        }
+      ),
 
     timestamp:
       agora.toISOString()
@@ -231,7 +236,7 @@ function obterDataHora() {
 
 
 /* =========================================================
-   💰 VALOR
+   💰 FORMATAR VALOR
 ========================================================= */
 
 function formatarValor(valor) {
@@ -282,7 +287,199 @@ function mostrarStatus(
 
 
 /* =========================================================
-   🧹 LIMPAR STATUS
+   🔴 NÚMERO OCUPADO?
+========================================================= */
+
+function numeroEstaOcupado(
+  dados
+) {
+
+  if (!dados) {
+    return false;
+  }
+
+  const status =
+    String(
+      dados.status ||
+      dados.situacao ||
+      ''
+    ).toLowerCase();
+
+  return (
+
+    status === 'reservado' ||
+    status === 'vendido' ||
+    status === 'pago' ||
+    status === 'ocupado' ||
+    status === 'indisponivel' ||
+
+    dados.reservado === true ||
+    dados.vendido === true ||
+    dados.pago === true ||
+    dados.ocupado === true
+
+  );
+
+}
+
+
+/* =========================================================
+   🧾 PREENCHER CONFIRMAR PARTICIPAÇÃO
+========================================================= */
+
+function mostrarConfirmacao(
+  numeros,
+  dataHora
+) {
+
+  const lista =
+    Array.isArray(numeros)
+      ? numeros
+      : [numeros];
+
+  const numerosFormatados =
+    lista
+      .map(formatarNumero)
+      .filter(Boolean);
+
+  if (!numerosFormatados.length) {
+    return;
+  }
+
+
+  const quantidade =
+    numerosFormatados.length;
+
+  const total =
+    quantidade *
+    VALOR_NUMERO;
+
+
+  compraAtual = {
+
+    numeros:
+      numerosFormatados,
+
+    quantidade,
+
+    total,
+
+    data:
+      dataHora.data,
+
+    hora:
+      dataHora.hora,
+
+    timestamp:
+      dataHora.timestamp
+
+  };
+
+
+  /* -------------------------------------------------------
+     🎟️ NÚMEROS
+  ------------------------------------------------------- */
+
+  if (reservaNumeros) {
+
+    reservaNumeros.textContent =
+      numerosFormatados.join(', ');
+
+  }
+
+
+  /* -------------------------------------------------------
+     💰 QUANTIDADE + TOTAL
+  ------------------------------------------------------- */
+
+  if (reservaTotal) {
+
+    reservaTotal.textContent =
+      `🎟️ ${quantidade} número(s) • Total: ${formatarValor(total)}`;
+
+  }
+
+
+  /* -------------------------------------------------------
+     📅 DATA
+  ------------------------------------------------------- */
+
+  if (reservaData) {
+
+    reservaData.textContent =
+      dataHora.data;
+
+  }
+
+
+  /* -------------------------------------------------------
+     🕐 HORA
+  ------------------------------------------------------- */
+
+  if (reservaHora) {
+
+    reservaHora.textContent =
+      dataHora.hora;
+
+  }
+
+
+  /* -------------------------------------------------------
+     💾 SALVAR NO NAVEGADOR
+  ------------------------------------------------------- */
+
+  try {
+
+    localStorage.setItem(
+      'rifaCompraAtual',
+      JSON.stringify(
+        compraAtual
+      )
+    );
+
+  } catch (erro) {
+
+    console.warn(
+      '⚠️ Não foi possível salvar a compra localmente.',
+      erro
+    );
+
+  }
+
+
+  /* -------------------------------------------------------
+     📍 IR PARA O CARTÃO
+  ------------------------------------------------------- */
+
+  const cartao =
+    document.querySelector(
+      '.reserva-inline'
+    );
+
+  if (cartao) {
+
+    cartao.style.display =
+      'block';
+
+    setTimeout(
+      () => {
+
+        cartao.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center'
+        });
+
+      },
+      200
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   🔄 LIMPAR STATUS
 ========================================================= */
 
 function limparNumeroStatus() {
@@ -323,197 +520,7 @@ function limparNumeroStatus() {
 
 
 /* =========================================================
-   🔎 VERIFICAR STATUS DO NÚMERO
-========================================================= */
-
-function numeroEstaOcupado(
-  dados
-) {
-
-  if (!dados) {
-    return false;
-  }
-
-  const status =
-    String(
-      dados.status ||
-      dados.situacao ||
-      ''
-    ).toLowerCase();
-
-  return (
-
-    status === 'reservado' ||
-    status === 'vendido' ||
-    status === 'pago' ||
-    status === 'ocupado' ||
-    status === 'indisponivel' ||
-
-    dados.reservado === true ||
-    dados.vendido === true ||
-    dados.pago === true ||
-    dados.ocupado === true
-
-  );
-
-}
-
-
-/* =========================================================
-   🧾 MOSTRAR CONFIRMAÇÃO
-========================================================= */
-
-function mostrarConfirmacao(
-  numeros,
-  dataHora
-) {
-
-  const lista =
-    Array.isArray(numeros)
-      ? numeros
-      : [numeros];
-
-  const numerosFormatados =
-    lista
-      .map(formatarNumero)
-      .filter(Boolean);
-
-  if (!numerosFormatados.length) {
-    return;
-  }
-
-  const quantidade =
-    numerosFormatados.length;
-
-  const total =
-    quantidade *
-    VALOR_NUMERO;
-
-  compraAtual = {
-
-    numeros:
-      numerosFormatados,
-
-    quantidade,
-
-    total,
-
-    data:
-      dataHora.data,
-
-    hora:
-      dataHora.hora,
-
-    timestamp:
-      dataHora.timestamp
-
-  };
-
-
-  /* -------------------------------------------------------
-     NÚMEROS
-  ------------------------------------------------------- */
-
-  if (reservaNumeros) {
-
-    reservaNumeros.textContent =
-      numerosFormatados.join(', ');
-
-  }
-
-
-  /* -------------------------------------------------------
-     QUANTIDADE + VALOR
-  ------------------------------------------------------- */
-
-  if (reservaTotal) {
-
-    reservaTotal.textContent =
-      `🎟️ ${quantidade} número(s) • Total: ${formatarValor(total)}`;
-
-  }
-
-
-  /* -------------------------------------------------------
-     DATA
-  ------------------------------------------------------- */
-
-  if (reservaData) {
-
-    reservaData.textContent =
-      dataHora.data;
-
-  }
-
-
-  /* -------------------------------------------------------
-     HORA
-  ------------------------------------------------------- */
-
-  if (reservaHora) {
-
-    reservaHora.textContent =
-      dataHora.hora;
-
-  }
-
-
-  /* -------------------------------------------------------
-     SALVAR COMPRA LOCALMENTE
-  ------------------------------------------------------- */
-
-  try {
-
-    localStorage.setItem(
-      'rifaCompraAtual',
-      JSON.stringify(
-        compraAtual
-      )
-    );
-
-  } catch (erro) {
-
-    console.warn(
-      'Não foi possível salvar a compra localmente.',
-      erro
-    );
-
-  }
-
-
-  /* -------------------------------------------------------
-     MOSTRAR CARTÃO
-  ------------------------------------------------------- */
-
-  const cartao =
-    document.querySelector(
-      '.reserva-inline'
-    );
-
-  if (cartao) {
-
-    cartao.style.display =
-      'block';
-
-    setTimeout(
-      () => {
-
-        cartao.scrollIntoView({
-          behavior: 'smooth',
-          block: 'center'
-        });
-
-      },
-      150
-    );
-
-  }
-
-}
-
-
-/* =========================================================
-   🟢 NÚMERO DISPONÍVEL
+   🟢 MOSTRAR DISPONÍVEL
 ========================================================= */
 
 function mostrarDisponivel(
@@ -524,6 +531,7 @@ function mostrarDisponivel(
     `🟢 NÚMERO ${numero} DISPONÍVEL`,
     'disponivel'
   );
+
 
   if (reservarNumero) {
 
@@ -548,7 +556,7 @@ function mostrarDisponivel(
 
 
 /* =========================================================
-   🔴 NÚMERO INDISPONÍVEL
+   🔴 MOSTRAR INDISPONÍVEL
 ========================================================= */
 
 function mostrarIndisponivel(
@@ -559,6 +567,7 @@ function mostrarIndisponivel(
     `🔴 NÚMERO ${numero} NÃO DISPONÍVEL`,
     'indisponivel'
   );
+
 
   if (reservarNumero) {
 
@@ -607,19 +616,26 @@ async function reservarNumeroFirebase(
 
   }
 
+
   const numeroRef =
     ref(
       db,
       `rifa/numeros/${numero}`
     );
 
+
   const dataHora =
     obterDataHora();
+
 
   const resultado =
     await runTransaction(
       numeroRef,
       atual => {
+
+        /* -----------------------------------------------
+           NÚMERO AINDA NÃO EXISTE
+        ------------------------------------------------ */
 
         if (atual === null) {
 
@@ -640,6 +656,11 @@ async function reservarNumeroFirebase(
 
         }
 
+
+        /* -----------------------------------------------
+           JÁ ESTÁ OCUPADO
+        ------------------------------------------------ */
+
         if (
           numeroEstaOcupado(
             atual
@@ -649,6 +670,11 @@ async function reservarNumeroFirebase(
           return;
 
         }
+
+
+        /* -----------------------------------------------
+           EXISTE, MAS ESTÁ LIVRE
+        ------------------------------------------------ */
 
         return {
 
@@ -679,13 +705,15 @@ async function reservarNumeroFirebase(
 
   }
 
+
   return dataHora;
 
 }
 
 
 /* =========================================================
-   🔎 VERIFICAR NÚMERO
+   🔎 VERIFICAR DISPONIBILIDADE
+   E JÁ CONVERGIR PARA CONFIRMAR PARTICIPAÇÃO
 ========================================================= */
 
 async function verificarNumero() {
@@ -694,8 +722,10 @@ async function verificarNumero() {
     return;
   }
 
+
   const valor =
     numeroDireto.value.trim();
+
 
   if (valor === '') {
 
@@ -707,10 +737,12 @@ async function verificarNumero() {
 
   }
 
+
   const numero =
     formatarNumero(
       valor
     );
+
 
   if (!numero) {
 
@@ -722,8 +754,10 @@ async function verificarNumero() {
 
   }
 
+
   numeroDireto.value =
     numero;
+
 
   mostrarStatus(
     '🔎 Verificando disponibilidade...',
@@ -750,6 +784,7 @@ async function verificarNumero() {
         `rifa/numeros/${numero}`
       );
 
+
     const snapshot =
       await get(
         numeroRef
@@ -757,52 +792,101 @@ async function verificarNumero() {
 
 
     /* -----------------------------------------------------
-       NÃO EXISTE → DISPONÍVEL
+       🔴 JÁ EXISTE
     ----------------------------------------------------- */
 
-    if (!snapshot.exists()) {
+    if (snapshot.exists()) {
 
-      mostrarDisponivel(
-        numero
-      );
-
-      return;
-
-    }
+      const dados =
+        snapshot.val();
 
 
-    const dados =
-      snapshot.val();
+      if (
+        numeroEstaOcupado(
+          dados
+        )
+      ) {
 
+        mostrarIndisponivel(
+          numero
+        );
 
-    if (
-      numeroEstaOcupado(
-        dados
-      )
-    ) {
+        return;
 
-      mostrarIndisponivel(
-        numero
-      );
-
-      return;
+      }
 
     }
 
 
-    mostrarDisponivel(
-      numero
+    /* -----------------------------------------------------
+       🟢 ESTÁ LIVRE
+       
+       IMPORTANTE:
+       Aqui já fazemos a reserva.
+       Não ficamos apenas mostrando "disponível".
+    ----------------------------------------------------- */
+
+    mostrarStatus(
+      `🟢 NÚMERO ${numero} DISPONÍVEL`,
+      'disponivel'
     );
+
+
+    const dataHora =
+      await reservarNumeroFirebase(
+        numero
+      );
+
+
+    /* -----------------------------------------------------
+       🧾 PREENCHER CONFIRMAR PARTICIPAÇÃO
+    ----------------------------------------------------- */
+
+    mostrarConfirmacao(
+      [numero],
+      dataHora
+    );
+
+
+    /* -----------------------------------------------------
+       STATUS FINAL
+    ----------------------------------------------------- */
+
+    mostrarStatus(
+      `✅ NÚMERO ${numero} RESERVADO`,
+      'disponivel'
+    );
+
+
+    /* -----------------------------------------------------
+       ESCONDER BOTÃO COMPRAR
+       Porque o número já foi reservado pelo fluxo acima.
+    ----------------------------------------------------- */
+
+    if (reservarNumero) {
+
+      reservarNumero.style.display =
+        'none';
+
+      reservarNumero.hidden =
+        true;
+
+      delete reservarNumero.dataset.numero;
+
+    }
+
 
   } catch (erro) {
 
     console.error(
-      '❌ Erro ao verificar número:',
+      '❌ Erro ao verificar/reservar número:',
       erro
     );
 
+
     mostrarErro(
-      'Não foi possível verificar o número.'
+      erro.message ||
+      'Não foi possível concluir a seleção do número.'
     );
 
   }
@@ -866,7 +950,9 @@ if (numeroDireto) {
 
 
 /* =========================================================
-   🛒 COMPRAR / CONVERGIR PARA CONFIRMAÇÃO
+   🛒 BOTÃO COMPRAR
+   Mantido como segurança caso algum fluxo antigo
+   ainda deixe o botão disponível.
 ========================================================= */
 
 if (reservarNumero) {
@@ -878,15 +964,18 @@ if (reservarNumero) {
       const numero =
         reservarNumero.dataset.numero;
 
+
       if (!numero) {
         return;
       }
+
 
       reservarNumero.disabled =
         true;
 
       reservarNumero.textContent =
         `⏳ RESERVANDO ${numero}...`;
+
 
       try {
 
@@ -895,10 +984,6 @@ if (reservarNumero) {
             numero
           );
 
-
-        /* -----------------------------------------------
-           CONFIRMAR PARTICIPAÇÃO
-        ------------------------------------------------ */
 
         mostrarConfirmacao(
           [numero],
@@ -925,6 +1010,7 @@ if (reservarNumero) {
           '❌ Erro ao reservar:',
           erro
         );
+
 
         reservarNumero.disabled =
           false;
@@ -968,6 +1054,7 @@ async function copiarChavePix(
         ).trim()
       : '';
 
+
   if (!chave) {
 
     if (pixMsgReserva) {
@@ -988,6 +1075,7 @@ async function copiarChavePix(
       chave
     );
 
+
     if (botao) {
 
       botao.textContent =
@@ -995,12 +1083,14 @@ async function copiarChavePix(
 
     }
 
+
     if (pixMsgReserva) {
 
       pixMsgReserva.textContent =
         '✅ Chave PIX copiada. Faça o pagamento antes de enviar para o WhatsApp.';
 
     }
+
 
     setTimeout(
       () => {
@@ -1016,6 +1106,7 @@ async function copiarChavePix(
       1800
     );
 
+
   } catch {
 
     try {
@@ -1024,6 +1115,7 @@ async function copiarChavePix(
         document.createElement(
           'textarea'
         );
+
 
       campo.value =
         chave;
@@ -1034,6 +1126,7 @@ async function copiarChavePix(
       campo.style.left =
         '-9999px';
 
+
       document.body.appendChild(
         campo
       );
@@ -1042,10 +1135,12 @@ async function copiarChavePix(
 
       campo.select();
 
+
       const copiou =
         document.execCommand(
           'copy'
         );
+
 
       campo.remove();
 
@@ -1071,6 +1166,7 @@ async function copiarChavePix(
         throw new Error();
 
       }
+
 
     } catch {
 
@@ -1105,15 +1201,13 @@ if (copiarPixReserva) {
 
 
 /* =========================================================
-   📲 MONTAR MENSAGEM DO WHATSAPP
+   📲 MENSAGEM WHATSAPP
 ========================================================= */
 
 function montarMensagemWhatsApp() {
 
   const numeros =
-    compraAtual.numeros.join(
-      ', '
-    );
+    compraAtual.numeros.join(', ');
 
   const quantidade =
     compraAtual.quantidade;
@@ -1156,7 +1250,7 @@ function montarMensagemWhatsApp() {
 
     `📎 *COMPROVANTE DE PAGAMENTO*\n` +
 
-    `Por favor, anexe aqui nesta conversa o comprovante do pagamento.\n\n` +
+    `Por favor, anexe nesta conversa o comprovante do pagamento.\n\n` +
 
     `⚠️ *Só enviar esta mensagem com o pagamento já realizado.*\n\n` +
 
@@ -1196,6 +1290,7 @@ if (reservarReserva) {
 
       const nome =
         nomeReserva?.value.trim();
+
 
       const telefone =
         telefoneReserva?.value.trim();
@@ -1246,7 +1341,7 @@ if (reservarReserva) {
       if (msgReserva) {
 
         msgReserva.textContent =
-          '📲 Abrindo seu WhatsApp... Anexe o comprovante na conversa antes de enviar.';
+          '📲 Abrindo seu WhatsApp... Anexe o comprovante pago na conversa antes de enviar.';
 
       }
 
@@ -1263,7 +1358,7 @@ if (reservarReserva) {
 
 
 /* =========================================================
-   🔄 RECUPERAR COMPRA SALVA
+   🔄 RECUPERAR COMPRA
 ========================================================= */
 
 function recuperarCompraSalva() {
@@ -1275,14 +1370,17 @@ function recuperarCompraSalva() {
         'rifaCompraAtual'
       );
 
+
     if (!salva) {
       return false;
     }
+
 
     const dados =
       JSON.parse(
         salva
       );
+
 
     if (
       !dados ||
@@ -1294,8 +1392,10 @@ function recuperarCompraSalva() {
 
     }
 
+
     compraAtual =
       dados;
+
 
     if (reservaNumeros) {
 
@@ -1304,12 +1404,14 @@ function recuperarCompraSalva() {
 
     }
 
+
     if (reservaTotal) {
 
       reservaTotal.textContent =
         `🎟️ ${dados.quantidade} número(s) • Total: ${formatarValor(dados.total)}`;
 
     }
+
 
     if (reservaData) {
 
@@ -1318,6 +1420,7 @@ function recuperarCompraSalva() {
 
     }
 
+
     if (reservaHora) {
 
       reservaHora.textContent =
@@ -1325,12 +1428,14 @@ function recuperarCompraSalva() {
 
     }
 
+
     return true;
+
 
   } catch (erro) {
 
     console.warn(
-      'Erro ao recuperar compra:',
+      '⚠️ Erro ao recuperar compra:',
       erro
     );
 
@@ -1342,7 +1447,7 @@ function recuperarCompraSalva() {
 
 
 /* =========================================================
-   🔗 LER NÚMEROS VINDOS DA CARTELA
+   🔗 NÚMEROS VINDOS DA CARTELA
 ========================================================= */
 
 function lerNumerosDaURL() {
@@ -1354,19 +1459,14 @@ function lerNumerosDaURL() {
 
 
   const numero =
-    params.get(
-      'numero'
-    );
+    params.get('numero');
 
 
   const numerosParam =
-    params.get(
-      'numeros'
-    );
+    params.get('numeros');
 
 
-  let numeros =
-    [];
+  let numeros = [];
 
 
   if (numerosParam) {
@@ -1376,18 +1476,15 @@ function lerNumerosDaURL() {
         .split(',')
         .map(
           n =>
-            formatarNumero(
-              n
-            )
+            formatarNumero(n)
         )
         .filter(Boolean);
 
   } else if (numero) {
 
     const formatado =
-      formatarNumero(
-        numero
-      );
+      formatarNumero(numero);
+
 
     if (formatado) {
 
@@ -1416,39 +1513,13 @@ function lerNumerosDaURL() {
   );
 
 
-  /* -------------------------------------------------------
-     APÓS VIR DA CARTELA
-  ------------------------------------------------------- */
-
-  const cartao =
-    document.querySelector(
-      '.reserva-inline'
-    );
-
-  if (cartao) {
-
-    setTimeout(
-      () => {
-
-        cartao.scrollIntoView({
-          behavior: 'smooth',
-          block: 'center'
-        });
-
-      },
-      300
-    );
-
-  }
-
-
   return true;
 
 }
 
 
 /* =========================================================
-   🛒 INICIALIZAÇÃO DA COMPRA
+   🚀 INICIALIZAÇÃO
 ========================================================= */
 
 document.addEventListener(
@@ -1457,6 +1528,7 @@ document.addEventListener(
 
     const veioDaCartela =
       lerNumerosDaURL();
+
 
     if (!veioDaCartela) {
 
@@ -1481,6 +1553,7 @@ document.addEventListener(
         '.card'
       );
 
+
     cards.forEach(
       (card, indice) => {
 
@@ -1495,13 +1568,14 @@ document.addEventListener(
 
 
 /* =========================================================
-   🛡️ GARANTIR RASPADINHA VISÍVEL
+   🛡️ RASPADINHA VISÍVEL
 ========================================================= */
 
 const scratchCard =
   document.querySelector(
     '.scratch'
   );
+
 
 if (scratchCard) {
 
@@ -1522,6 +1596,7 @@ const stepsGrid =
   document.querySelector(
     '.steps-grid'
   );
+
 
 if (stepsGrid) {
 
@@ -1545,6 +1620,7 @@ const scratchArea =
   document.querySelector(
     '.scratch-area'
   );
+
 
 if (scratchArea) {
 
