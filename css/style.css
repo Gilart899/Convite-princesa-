@@ -396,44 +396,57 @@ display: none;
 }
 
 /* =========================================================
-📝 CONFIRMAR PARTICIPAÇÃO
+   🎟️ CONFIRMAR PARTICIPAÇÃO
 ========================================================= */
 
-.steps-grid {
-display: flex;
-flex-direction: column;
-width: 100%;
+.reserva-enviar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  max-width: 380px;
+
+  margin: 18px auto 16px;
+  padding: 13px 20px;
+
+  border: 0;
+  border-radius: 12px;
+
+  background: linear-gradient(
+    135deg,
+    #e53935,
+    #c62828
+  );
+
+  color: #fff;
+
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 5px 14px rgba(198, 40, 40, 0.25);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
 }
 
-.reserva-inline {
-padding: 25px;
+.reserva-enviar:hover {
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 7px 17px rgba(198, 40, 40, 0.32);
+
+  filter: brightness(1.04);
 }
 
-.reserva-subtitulo {
-margin: 12px 0 18px;
-color: #55705c;
-}
-
-.reserva-numeros {
-min-height: 58px;
-padding: 15px;
-display: flex;
-align-items: center;
-justify-content: center;
-text-align: center;
-border-radius: 14px;
-background: rgba(8,120,232,.08);
-border: 1px solid rgba(8,120,232,.18);
-color: #145c9c;
-font-weight: 900;
-}
-
-.reserva-total {
-display: block;
-margin: 15px 0;
-font-size: 22px;
-text-align: center;
-color: #087c39;
+.reserva-enviar:active {
+  transform: scale(0.98);
 }
 
 /* =========================================================
