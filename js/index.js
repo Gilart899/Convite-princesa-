@@ -323,7 +323,7 @@ function limparNumeroStatus() {
 
 
 /* =========================================================
-   🔎 VERIFICAR SE NÚMERO ESTÁ OCUPADO
+   🔎 VERIFICAR NÚMERO OCUPADO
 ========================================================= */
 
 function numeroEstaOcupado(
@@ -412,9 +412,9 @@ function mostrarConfirmacao(
   };
 
 
-  /* -------------------------------------------------------
+  /* =====================================================
      🎟️ NÚMEROS
-  ------------------------------------------------------- */
+  ===================================================== */
 
   if (reservaNumeros) {
 
@@ -424,9 +424,9 @@ function mostrarConfirmacao(
   }
 
 
-  /* -------------------------------------------------------
+  /* =====================================================
      💰 TOTAL
-  ------------------------------------------------------- */
+  ===================================================== */
 
   if (reservaTotal) {
 
@@ -436,9 +436,9 @@ function mostrarConfirmacao(
   }
 
 
-  /* -------------------------------------------------------
+  /* =====================================================
      📅 DATA
-  ------------------------------------------------------- */
+  ===================================================== */
 
   if (reservaData) {
 
@@ -448,9 +448,9 @@ function mostrarConfirmacao(
   }
 
 
-  /* -------------------------------------------------------
+  /* =====================================================
      🕐 HORA
-  ------------------------------------------------------- */
+  ===================================================== */
 
   if (reservaHora) {
 
@@ -460,9 +460,9 @@ function mostrarConfirmacao(
   }
 
 
-  /* -------------------------------------------------------
+  /* =====================================================
      💾 SALVAR COMPRA
-  ------------------------------------------------------- */
+  ===================================================== */
 
   try {
 
@@ -483,9 +483,9 @@ function mostrarConfirmacao(
   }
 
 
-  /* -------------------------------------------------------
+  /* =====================================================
      📦 MOSTRAR CARTÃO
-  ------------------------------------------------------- */
+  ===================================================== */
 
   const cartao =
     document.querySelector(
@@ -527,14 +527,6 @@ function mostrarDisponivel(
     'disponivel'
   );
 
-
-  /*
-   * IMPORTANTE:
-   *
-   * Assim que o número é confirmado como disponível,
-   * o cartão CONFIRMAR PARTICIPAÇÃO é preenchido
-   * automaticamente.
-   */
 
   mostrarConfirmacao(
     [numero],
@@ -688,11 +680,6 @@ async function verificarNumero() {
       );
 
 
-    /* -----------------------------------------------------
-       NÚMERO NÃO EXISTE
-       → DISPONÍVEL
-    ----------------------------------------------------- */
-
     if (!snapshot.exists()) {
 
       mostrarDisponivel(
@@ -708,10 +695,6 @@ async function verificarNumero() {
       snapshot.val();
 
 
-    /* -----------------------------------------------------
-       OCUPADO
-    ----------------------------------------------------- */
-
     if (
       numeroEstaOcupado(
         dados
@@ -726,10 +709,6 @@ async function verificarNumero() {
 
     }
 
-
-    /* -----------------------------------------------------
-       EXISTE, MAS ESTÁ LIVRE
-    ----------------------------------------------------- */
 
     mostrarDisponivel(
       numero
@@ -906,7 +885,7 @@ async function reservarNumeroFirebase(
 
 
 /* =========================================================
-   🛒 BOTÃO COMPRAR / RESERVAR
+   🛒 BOTÃO COMPRAR
 ========================================================= */
 
 if (reservarNumero) {
@@ -1052,7 +1031,7 @@ async function copiarChavePix(
     if (pixMsgReserva) {
 
       pixMsgReserva.textContent =
-        '✅ Chave PIX copiada. Faça o pagamento antes de enviar para o WhatsApp.';
+        '✅ Chave PIX copiada. Faça o pagamento antes de enviar o comprovante.';
 
     }
 
@@ -1421,9 +1400,7 @@ function lerSelecionadosDaCartela() {
 
 
     if (!salva) {
-
       return false;
-
     }
 
 
@@ -1450,16 +1427,9 @@ function lerSelecionadosDaCartela() {
 
 
     if (!numerosFormatados.length) {
-
       return false;
-
     }
 
-
-    /*
-     * A data/hora é criada no momento em que
-     * o cliente chega ao cartão de confirmação.
-     */
 
     const dataHora =
       obterDataHora();
@@ -1471,24 +1441,10 @@ function lerSelecionadosDaCartela() {
     );
 
 
-    /*
-     * Depois de transferir os números para
-     * o cartão de confirmação, apagamos
-     * somente a seleção temporária da cartela.
-     *
-     * A compra continua salva em
-     * rifaCompraAtual.
-     */
-
     localStorage.removeItem(
       'rifaSelecionados'
     );
 
-
-    /*
-     * Mostra uma mensagem visual informando
-     * que os números chegaram corretamente.
-     */
 
     if (numeroStatus) {
 
@@ -1576,9 +1532,7 @@ function lerNumerosDaURL() {
 
 
   if (!numeros.length) {
-
     return false;
-
   }
 
 
@@ -1594,6 +1548,186 @@ function lerNumerosDaURL() {
 
 
 /* =========================================================
+   🗑️ LIMPAR SELEÇÃO
+========================================================= */
+
+function limparSelecaoAtual() {
+
+  if (
+    !compraAtual.numeros ||
+    !compraAtual.numeros.length
+  ) {
+
+    alert(
+      '⚠️ Não há números selecionados para limpar.'
+    );
+
+    return;
+
+  }
+
+
+  const confirmar =
+    confirm(
+      '⚠️ Deseja limpar os números atuais e escolher outros números?'
+    );
+
+
+  if (!confirmar) {
+    return;
+  }
+
+
+  /* =====================================================
+     🧹 LIMPAR OBJETO DA COMPRA
+  ===================================================== */
+
+  compraAtual = {
+
+    numeros: [],
+
+    quantidade: 0,
+
+    total: 0,
+
+    data: '',
+
+    hora: '',
+
+    timestamp: ''
+
+  };
+
+
+  /* =====================================================
+     🧹 LIMPAR LOCALSTORAGE
+  ===================================================== */
+
+  localStorage.removeItem(
+    'rifaCompraAtual'
+  );
+
+  localStorage.removeItem(
+    'rifaSelecionados'
+  );
+
+
+  /* =====================================================
+     🧹 LIMPAR CARTÃO
+  ===================================================== */
+
+  if (reservaNumeros) {
+
+    reservaNumeros.textContent =
+      'Nenhum número selecionado';
+
+  }
+
+
+  if (reservaTotal) {
+
+    reservaTotal.textContent =
+      'Total: R$ 0,00';
+
+  }
+
+
+  if (reservaData) {
+
+    reservaData.textContent =
+      '—';
+
+  }
+
+
+  if (reservaHora) {
+
+    reservaHora.textContent =
+      '—';
+
+  }
+
+
+  /* =====================================================
+     🧹 LIMPAR DADOS DO PARTICIPANTE
+  ===================================================== */
+
+  if (nomeReserva) {
+
+    nomeReserva.value =
+      '';
+
+  }
+
+
+  if (telefoneReserva) {
+
+    telefoneReserva.value =
+      '';
+
+  }
+
+
+  /* =====================================================
+     🧹 LIMPAR CAMPO DE NÚMERO
+  ===================================================== */
+
+  if (numeroDireto) {
+
+    numeroDireto.value =
+      '';
+
+  }
+
+
+  /* =====================================================
+     🧹 LIMPAR MENSAGENS
+  ===================================================== */
+
+  if (msgReserva) {
+
+    msgReserva.textContent =
+      '';
+
+  }
+
+
+  if (pixMsgReserva) {
+
+    pixMsgReserva.textContent =
+      '';
+
+  }
+
+
+  limparNumeroStatus();
+
+
+  /* =====================================================
+     🔄 VOLTAR PARA ESCOLHER NOVOS NÚMEROS
+  ===================================================== */
+
+  window.location.href =
+    'cartela.html';
+
+}
+
+
+/* =========================================================
+   🗑️ BOTÃO LIMPAR
+========================================================= */
+
+if (limparSelecao) {
+
+  limparSelecao.addEventListener(
+    'click',
+    limparSelecaoAtual
+  );
+
+}
+
+
+/* =========================================================
    🚀 INICIALIZAÇÃO
 ========================================================= */
 
@@ -1601,45 +1735,23 @@ document.addEventListener(
   'DOMContentLoaded',
   () => {
 
-    /*
-     * PRIMEIRA PRIORIDADE:
-     *
-     * Números selecionados na CARTELA.
-     */
-
     const veioDaCartela =
       lerSelecionadosDaCartela();
 
 
     if (veioDaCartela) {
-
       return;
-
     }
 
-
-    /*
-     * SEGUNDA PRIORIDADE:
-     *
-     * Número(s) enviados pela URL.
-     */
 
     const veioDaURL =
       lerNumerosDaURL();
 
 
     if (veioDaURL) {
-
       return;
-
     }
 
-
-    /*
-     * TERCEIRA PRIORIDADE:
-     *
-     * Compra já salva anteriormente.
-     */
 
     recuperarCompraSalva();
 
@@ -1743,139 +1855,5 @@ if (scratchArea) {
 
   scratchArea.style.overflow =
     'hidden';
-
-}
-
-/* =========================================================
-🗑️ LIMPAR SELEÇÃO E ESCOLHER NOVOS NÚMEROS
-========================================================= */
-
-if (limparSelecao) {
-
-limparSelecao.addEventListener(
-'click',
-() => {
-
-  if (
-    !compraAtual.numeros ||
-    !compraAtual.numeros.length
-  ) {
-
-    alert(
-      '⚠️ Não há números selecionados para limpar.'
-    );
-
-    return;
-
-  }
-
-  const confirmar =
-    confirm(
-      '⚠️ Deseja limpar os números atuais e escolher outros números?'
-    );
-
-  if (!confirmar) {
-    return;
-  }
-
-
-  /* =====================================================
-     🧹 LIMPAR COMPRA ATUAL
-  ===================================================== */
-
-  compraAtual = {
-    numeros: [],
-    quantidade: 0,
-    total: 0,
-    data: '',
-    hora: '',
-    timestamp: ''
-  };
-
-
-  /* =====================================================
-     🧹 LIMPAR SELEÇÃO SALVA
-  ===================================================== */
-
-  localStorage.removeItem(
-    'rifaCompraAtual'
-  );
-
-  localStorage.removeItem(
-    'rifaSelecionados'
-  );
-
-
-  /* =====================================================
-     🧹 LIMPAR CAMPOS
-  ===================================================== */
-
-  if (reservaNumeros) {
-
-    reservaNumeros.textContent =
-      'Nenhum número selecionado';
-
-  }
-
-  if (reservaTotal) {
-
-    reservaTotal.textContent =
-      'Total: R$ 0,00';
-
-  }
-
-  if (reservaData) {
-
-    reservaData.textContent =
-      '—';
-
-  }
-
-  if (reservaHora) {
-
-    reservaHora.textContent =
-      '—';
-
-  }
-
-  if (nomeReserva) {
-
-    nomeReserva.value = '';
-
-  }
-
-  if (telefoneReserva) {
-
-    telefoneReserva.value = '';
-
-  }
-
-  if (numeroDireto) {
-
-    numeroDireto.value = '';
-
-  }
-
-
-  /* =====================================================
-     🧹 LIMPAR STATUS DO NÚMERO
-  ===================================================== */
-
-  limparNumeroStatus();
-
-
-  /* =====================================================
-     🔄 VOLTAR PARA A CARTELA
-     
-     A cartela abrirá novamente sem os números antigos
-     selecionados.
-  ===================================================== */
-
-  window.location.href =
-    'cartela.html';
-
-}
-
-);
 
 }
