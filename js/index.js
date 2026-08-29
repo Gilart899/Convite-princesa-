@@ -150,7 +150,7 @@ if (abrirCartelas) {
 
 
 /* =========================================================
-   🍀 SUGERIR NÚMERO
+   🍀 SUGERIR
 ========================================================= */
 
 if (sugerir) {
@@ -174,16 +174,8 @@ if (sugerir) {
 
 function formatarNumero(valor) {
 
-  const texto =
-    String(valor)
-      .replace(/\D/g, '');
-
-  if (texto === '') {
-    return null;
-  }
-
   const numero =
-    Number(texto);
+    Number(valor);
 
   if (
     !Number.isInteger(numero) ||
@@ -287,7 +279,48 @@ function mostrarStatus(
 
 
 /* =========================================================
-   🔴 NÚMERO OCUPADO?
+   🧹 LIMPAR STATUS
+========================================================= */
+
+function limparNumeroStatus() {
+
+  if (numeroStatus) {
+
+    numeroStatus.style.display =
+      'none';
+
+    numeroStatus.textContent =
+      '';
+
+    numeroStatus.classList.remove(
+      'disponivel',
+      'indisponivel',
+      'verificando',
+      'erro'
+    );
+
+  }
+
+  if (reservarNumero) {
+
+    reservarNumero.style.display =
+      'none';
+
+    reservarNumero.hidden =
+      true;
+
+    reservarNumero.disabled =
+      false;
+
+    delete reservarNumero.dataset.numero;
+
+  }
+
+}
+
+
+/* =========================================================
+   🔎 VERIFICAR SE ESTÁ OCUPADO
 ========================================================= */
 
 function numeroEstaOcupado(
@@ -329,7 +362,7 @@ function numeroEstaOcupado(
 
 function mostrarConfirmacao(
   numeros,
-  dataHora
+  dataHora = obterDataHora()
 ) {
 
   const lista =
@@ -350,10 +383,15 @@ function mostrarConfirmacao(
   const quantidade =
     numerosFormatados.length;
 
+
   const total =
     quantidade *
     VALOR_NUMERO;
 
+
+  /* -------------------------------------------------------
+     GUARDAR COMPRA
+  ------------------------------------------------------- */
 
   compraAtual = {
 
@@ -377,7 +415,7 @@ function mostrarConfirmacao(
 
 
   /* -------------------------------------------------------
-     🎟️ NÚMEROS
+     NÚMERO(S)
   ------------------------------------------------------- */
 
   if (reservaNumeros) {
@@ -389,7 +427,7 @@ function mostrarConfirmacao(
 
 
   /* -------------------------------------------------------
-     💰 QUANTIDADE + TOTAL
+     QUANTIDADE + TOTAL
   ------------------------------------------------------- */
 
   if (reservaTotal) {
@@ -401,7 +439,7 @@ function mostrarConfirmacao(
 
 
   /* -------------------------------------------------------
-     📅 DATA
+     DATA
   ------------------------------------------------------- */
 
   if (reservaData) {
@@ -413,7 +451,7 @@ function mostrarConfirmacao(
 
 
   /* -------------------------------------------------------
-     🕐 HORA
+     HORA
   ------------------------------------------------------- */
 
   if (reservaHora) {
@@ -425,7 +463,7 @@ function mostrarConfirmacao(
 
 
   /* -------------------------------------------------------
-     💾 SALVAR NO NAVEGADOR
+     SALVAR
   ------------------------------------------------------- */
 
   try {
@@ -440,7 +478,7 @@ function mostrarConfirmacao(
   } catch (erro) {
 
     console.warn(
-      '⚠️ Não foi possível salvar a compra localmente.',
+      '⚠️ Não foi possível salvar a compra.',
       erro
     );
 
@@ -448,7 +486,7 @@ function mostrarConfirmacao(
 
 
   /* -------------------------------------------------------
-     📍 IR PARA O CARTÃO
+     MOSTRAR CARTÃO
   ------------------------------------------------------- */
 
   const cartao =
@@ -470,7 +508,7 @@ function mostrarConfirmacao(
         });
 
       },
-      200
+      150
     );
 
   }
@@ -479,48 +517,7 @@ function mostrarConfirmacao(
 
 
 /* =========================================================
-   🔄 LIMPAR STATUS
-========================================================= */
-
-function limparNumeroStatus() {
-
-  if (numeroStatus) {
-
-    numeroStatus.style.display =
-      'none';
-
-    numeroStatus.textContent =
-      '';
-
-    numeroStatus.classList.remove(
-      'disponivel',
-      'indisponivel',
-      'verificando',
-      'erro'
-    );
-
-  }
-
-  if (reservarNumero) {
-
-    reservarNumero.style.display =
-      'none';
-
-    reservarNumero.hidden =
-      true;
-
-    reservarNumero.disabled =
-      false;
-
-    delete reservarNumero.dataset.numero;
-
-  }
-
-}
-
-
-/* =========================================================
-   🟢 MOSTRAR DISPONÍVEL
+   🟢 NÚMERO DISPONÍVEL
 ========================================================= */
 
 function mostrarDisponivel(
@@ -530,6 +527,21 @@ function mostrarDisponivel(
   mostrarStatus(
     `🟢 NÚMERO ${numero} DISPONÍVEL`,
     'disponivel'
+  );
+
+
+  /*
+   * IMPORTANTE:
+   *
+   * Aqui NÃO reservamos o número.
+   *
+   * Apenas mostramos que está disponível
+   * e preenchemos o cartão de confirmação.
+   */
+
+  mostrarConfirmacao(
+    [numero],
+    obterDataHora()
   );
 
 
@@ -556,7 +568,7 @@ function mostrarDisponivel(
 
 
 /* =========================================================
-   🔴 MOSTRAR INDISPONÍVEL
+   🔴 INDISPONÍVEL
 ========================================================= */
 
 function mostrarIndisponivel(
@@ -601,119 +613,7 @@ function mostrarErro(
 
 
 /* =========================================================
-   🔒 RESERVAR NÚMERO NO FIREBASE
-========================================================= */
-
-async function reservarNumeroFirebase(
-  numero
-) {
-
-  if (!db) {
-
-    throw new Error(
-      'Firebase não está conectado.'
-    );
-
-  }
-
-
-  const numeroRef =
-    ref(
-      db,
-      `rifa/numeros/${numero}`
-    );
-
-
-  const dataHora =
-    obterDataHora();
-
-
-  const resultado =
-    await runTransaction(
-      numeroRef,
-      atual => {
-
-        /* -----------------------------------------------
-           NÚMERO AINDA NÃO EXISTE
-        ------------------------------------------------ */
-
-        if (atual === null) {
-
-          return {
-
-            numero,
-
-            status:
-              'reservado',
-
-            reservado:
-              true,
-
-            dataReserva:
-              dataHora.timestamp
-
-          };
-
-        }
-
-
-        /* -----------------------------------------------
-           JÁ ESTÁ OCUPADO
-        ------------------------------------------------ */
-
-        if (
-          numeroEstaOcupado(
-            atual
-          )
-        ) {
-
-          return;
-
-        }
-
-
-        /* -----------------------------------------------
-           EXISTE, MAS ESTÁ LIVRE
-        ------------------------------------------------ */
-
-        return {
-
-          ...atual,
-
-          numero,
-
-          status:
-            'reservado',
-
-          reservado:
-            true,
-
-          dataReserva:
-            dataHora.timestamp
-
-        };
-
-      }
-    );
-
-
-  if (!resultado.committed) {
-
-    throw new Error(
-      `O número ${numero} não está mais disponível.`
-    );
-
-  }
-
-
-  return dataHora;
-
-}
-
-
-/* =========================================================
-   🔎 VERIFICAR DISPONIBILIDADE
-   E JÁ CONVERGIR PARA CONFIRMAR PARTICIPAÇÃO
+   🔎 VERIFICAR NÚMERO
 ========================================================= */
 
 async function verificarNumero() {
@@ -791,102 +691,63 @@ async function verificarNumero() {
       );
 
 
-    /* -----------------------------------------------------
-       🔴 JÁ EXISTE
-    ----------------------------------------------------- */
+    /* =====================================================
+       NÚMERO NÃO EXISTE NO FIREBASE
+       → ESTÁ DISPONÍVEL
+    ===================================================== */
 
-    if (snapshot.exists()) {
+    if (!snapshot.exists()) {
 
-      const dados =
-        snapshot.val();
-
-
-      if (
-        numeroEstaOcupado(
-          dados
-        )
-      ) {
-
-        mostrarIndisponivel(
-          numero
-        );
-
-        return;
-
-      }
-
-    }
-
-
-    /* -----------------------------------------------------
-       🟢 ESTÁ LIVRE
-       
-       IMPORTANTE:
-       Aqui já fazemos a reserva.
-       Não ficamos apenas mostrando "disponível".
-    ----------------------------------------------------- */
-
-    mostrarStatus(
-      `🟢 NÚMERO ${numero} DISPONÍVEL`,
-      'disponivel'
-    );
-
-
-    const dataHora =
-      await reservarNumeroFirebase(
+      mostrarDisponivel(
         numero
       );
 
-
-    /* -----------------------------------------------------
-       🧾 PREENCHER CONFIRMAR PARTICIPAÇÃO
-    ----------------------------------------------------- */
-
-    mostrarConfirmacao(
-      [numero],
-      dataHora
-    );
-
-
-    /* -----------------------------------------------------
-       STATUS FINAL
-    ----------------------------------------------------- */
-
-    mostrarStatus(
-      `✅ NÚMERO ${numero} RESERVADO`,
-      'disponivel'
-    );
-
-
-    /* -----------------------------------------------------
-       ESCONDER BOTÃO COMPRAR
-       Porque o número já foi reservado pelo fluxo acima.
-    ----------------------------------------------------- */
-
-    if (reservarNumero) {
-
-      reservarNumero.style.display =
-        'none';
-
-      reservarNumero.hidden =
-        true;
-
-      delete reservarNumero.dataset.numero;
+      return;
 
     }
 
+
+    const dados =
+      snapshot.val();
+
+
+    /* =====================================================
+       NÚMERO OCUPADO
+    ===================================================== */
+
+    if (
+      numeroEstaOcupado(
+        dados
+      )
+    ) {
+
+      mostrarIndisponivel(
+        numero
+      );
+
+      return;
+
+    }
+
+
+    /* =====================================================
+       NÚMERO EXISTE, MAS ESTÁ LIVRE
+       → ESTÁ DISPONÍVEL
+    ===================================================== */
+
+    mostrarDisponivel(
+      numero
+    );
 
   } catch (erro) {
 
     console.error(
-      '❌ Erro ao verificar/reservar número:',
+      '❌ Erro ao verificar número:',
       erro
     );
 
-
     mostrarErro(
-      erro.message ||
-      'Não foi possível concluir a seleção do número.'
+      'Não foi possível verificar o número.'
     );
 
   }
@@ -950,9 +811,7 @@ if (numeroDireto) {
 
 
 /* =========================================================
-   🛒 BOTÃO COMPRAR
-   Mantido como segurança caso algum fluxo antigo
-   ainda deixe o botão disponível.
+   🛒 COMPRAR / RESERVAR NÚMERO
 ========================================================= */
 
 if (reservarNumero) {
@@ -967,6 +826,17 @@ if (reservarNumero) {
 
       if (!numero) {
         return;
+      }
+
+
+      if (!db) {
+
+        mostrarErro(
+          'Firebase não está conectado.'
+        );
+
+        return;
+
       }
 
 
@@ -985,6 +855,11 @@ if (reservarNumero) {
           );
 
 
+        /*
+         * Agora sim o número foi efetivamente
+         * reservado no Firebase.
+         */
+
         mostrarConfirmacao(
           [numero],
           dataHora
@@ -992,7 +867,7 @@ if (reservarNumero) {
 
 
         mostrarStatus(
-          `✅ NÚMERO ${numero} RESERVADO`,
+          `✅ NÚMERO ${numero} SELECIONADO`,
           'disponivel'
         );
 
@@ -1034,6 +909,105 @@ if (reservarNumero) {
 
     }
   );
+
+}
+
+
+/* =========================================================
+   🔒 RESERVAR NO FIREBASE
+========================================================= */
+
+async function reservarNumeroFirebase(
+  numero
+) {
+
+  if (!db) {
+
+    throw new Error(
+      'Firebase não está conectado.'
+    );
+
+  }
+
+
+  const numeroRef =
+    ref(
+      db,
+      `rifa/numeros/${numero}`
+    );
+
+
+  const dataHora =
+    obterDataHora();
+
+
+  const resultado =
+    await runTransaction(
+      numeroRef,
+      atual => {
+
+        if (atual === null) {
+
+          return {
+
+            numero,
+
+            status:
+              'reservado',
+
+            reservado:
+              true,
+
+            dataReserva:
+              dataHora.timestamp
+
+          };
+
+        }
+
+
+        if (
+          numeroEstaOcupado(
+            atual
+          )
+        ) {
+
+          return;
+
+        }
+
+
+        return {
+
+          ...atual,
+
+          numero,
+
+          status:
+            'reservado',
+
+          reservado:
+            true,
+
+          dataReserva:
+            dataHora.timestamp
+
+        };
+
+      }
+    );
+
+
+  if (!resultado.committed) {
+
+    throw new Error(
+      `O número ${numero} não está mais disponível.`
+    );
+
+  }
+
+
+  return dataHora;
 
 }
 
@@ -1126,7 +1100,6 @@ async function copiarChavePix(
       campo.style.left =
         '-9999px';
 
-
       document.body.appendChild(
         campo
       );
@@ -1151,13 +1124,6 @@ async function copiarChavePix(
 
           botao.textContent =
             '✅ PIX COPIADO!';
-
-        }
-
-        if (pixMsgReserva) {
-
-          pixMsgReserva.textContent =
-            '✅ Chave PIX copiada.';
 
         }
 
@@ -1207,7 +1173,9 @@ if (copiarPixReserva) {
 function montarMensagemWhatsApp() {
 
   const numeros =
-    compraAtual.numeros.join(', ');
+    compraAtual.numeros.join(
+      ', '
+    );
 
   const quantidade =
     compraAtual.quantidade;
@@ -1250,7 +1218,7 @@ function montarMensagemWhatsApp() {
 
     `📎 *COMPROVANTE DE PAGAMENTO*\n` +
 
-    `Por favor, anexe nesta conversa o comprovante do pagamento.\n\n` +
+    `Anexe nesta conversa o comprovante do pagamento.\n\n` +
 
     `⚠️ *Só enviar esta mensagem com o pagamento já realizado.*\n\n` +
 
@@ -1341,7 +1309,7 @@ if (reservarReserva) {
       if (msgReserva) {
 
         msgReserva.textContent =
-          '📲 Abrindo seu WhatsApp... Anexe o comprovante pago na conversa antes de enviar.';
+          '📲 Abrindo seu WhatsApp... Anexe o comprovante na conversa antes de enviar.';
 
       }
 
@@ -1431,7 +1399,6 @@ function recuperarCompraSalva() {
 
     return true;
 
-
   } catch (erro) {
 
     console.warn(
@@ -1459,14 +1426,19 @@ function lerNumerosDaURL() {
 
 
   const numero =
-    params.get('numero');
+    params.get(
+      'numero'
+    );
 
 
   const numerosParam =
-    params.get('numeros');
+    params.get(
+      'numeros'
+    );
 
 
-  let numeros = [];
+  let numeros =
+    [];
 
 
   if (numerosParam) {
@@ -1476,14 +1448,18 @@ function lerNumerosDaURL() {
         .split(',')
         .map(
           n =>
-            formatarNumero(n)
+            formatarNumero(
+              n
+            )
         )
         .filter(Boolean);
 
   } else if (numero) {
 
     const formatado =
-      formatarNumero(numero);
+      formatarNumero(
+        numero
+      );
 
 
     if (formatado) {
@@ -1503,13 +1479,16 @@ function lerNumerosDaURL() {
   }
 
 
-  const dataHora =
-    obterDataHora();
-
+  /*
+   * IMPORTANTE:
+   *
+   * Quando vier da cartela,
+   * o cartão também será preenchido.
+   */
 
   mostrarConfirmacao(
     numeros,
-    dataHora
+    obterDataHora()
   );
 
 
@@ -1589,7 +1568,7 @@ if (scratchCard) {
 
 
 /* =========================================================
-   🛡️ CARTÕES UM ABAIXO DO OUTRO
+   🛡️ CARTÕES VERTICAIS
 ========================================================= */
 
 const stepsGrid =
@@ -1613,7 +1592,7 @@ if (stepsGrid) {
 
 
 /* =========================================================
-   🛡️ TAMANHO DA RASPADINHA
+   🛡️ TAMANHO RASPADINHA
 ========================================================= */
 
 const scratchArea =
