@@ -115,6 +115,9 @@ const reservarReserva =
 const msgReserva =
   document.getElementById('msgReserva');
 
+const limparSelecao =
+  document.getElementById('limparSelecao');
+
 
 /* =========================================================
    🧠 COMPRA ATUAL
@@ -1740,5 +1743,139 @@ if (scratchArea) {
 
   scratchArea.style.overflow =
     'hidden';
+
+}
+
+/* =========================================================
+🗑️ LIMPAR SELEÇÃO E ESCOLHER NOVOS NÚMEROS
+========================================================= */
+
+if (limparSelecao) {
+
+limparSelecao.addEventListener(
+'click',
+() => {
+
+  if (
+    !compraAtual.numeros ||
+    !compraAtual.numeros.length
+  ) {
+
+    alert(
+      '⚠️ Não há números selecionados para limpar.'
+    );
+
+    return;
+
+  }
+
+  const confirmar =
+    confirm(
+      '⚠️ Deseja limpar os números atuais e escolher outros números?'
+    );
+
+  if (!confirmar) {
+    return;
+  }
+
+
+  /* =====================================================
+     🧹 LIMPAR COMPRA ATUAL
+  ===================================================== */
+
+  compraAtual = {
+    numeros: [],
+    quantidade: 0,
+    total: 0,
+    data: '',
+    hora: '',
+    timestamp: ''
+  };
+
+
+  /* =====================================================
+     🧹 LIMPAR SELEÇÃO SALVA
+  ===================================================== */
+
+  localStorage.removeItem(
+    'rifaCompraAtual'
+  );
+
+  localStorage.removeItem(
+    'rifaSelecionados'
+  );
+
+
+  /* =====================================================
+     🧹 LIMPAR CAMPOS
+  ===================================================== */
+
+  if (reservaNumeros) {
+
+    reservaNumeros.textContent =
+      'Nenhum número selecionado';
+
+  }
+
+  if (reservaTotal) {
+
+    reservaTotal.textContent =
+      'Total: R$ 0,00';
+
+  }
+
+  if (reservaData) {
+
+    reservaData.textContent =
+      '—';
+
+  }
+
+  if (reservaHora) {
+
+    reservaHora.textContent =
+      '—';
+
+  }
+
+  if (nomeReserva) {
+
+    nomeReserva.value = '';
+
+  }
+
+  if (telefoneReserva) {
+
+    telefoneReserva.value = '';
+
+  }
+
+  if (numeroDireto) {
+
+    numeroDireto.value = '';
+
+  }
+
+
+  /* =====================================================
+     🧹 LIMPAR STATUS DO NÚMERO
+  ===================================================== */
+
+  limparNumeroStatus();
+
+
+  /* =====================================================
+     🔄 VOLTAR PARA A CARTELA
+     
+     A cartela abrirá novamente sem os números antigos
+     selecionados.
+  ===================================================== */
+
+  window.location.href =
+    'cartela.html';
+
+}
+
+);
 
 }
