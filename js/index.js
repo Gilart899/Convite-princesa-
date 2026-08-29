@@ -112,6 +112,9 @@ const telefoneReserva =
 const reservarReserva =
   document.getElementById('reservarReserva');
 
+const enviarComprovante =
+  document.getElementById('enviarComprovante');
+
 const msgReserva =
   document.getElementById('msgReserva');
 
@@ -131,6 +134,13 @@ let compraAtual = {
   hora: '',
   timestamp: ''
 };
+
+
+/* =========================================================
+   📎 COMPROVANTE SELECIONADO
+========================================================= */
+
+let comprovanteSelecionado = null;
 
 
 /* =========================================================
@@ -323,7 +333,7 @@ function limparNumeroStatus() {
 
 
 /* =========================================================
-   🔎 VERIFICAR NÚMERO OCUPADO
+   🔎 VERIFICAR SE NÚMERO ESTÁ OCUPADO
 ========================================================= */
 
 function numeroEstaOcupado(
@@ -412,10 +422,6 @@ function mostrarConfirmacao(
   };
 
 
-  /* =====================================================
-     🎟️ NÚMEROS
-  ===================================================== */
-
   if (reservaNumeros) {
 
     reservaNumeros.textContent =
@@ -423,10 +429,6 @@ function mostrarConfirmacao(
 
   }
 
-
-  /* =====================================================
-     💰 TOTAL
-  ===================================================== */
 
   if (reservaTotal) {
 
@@ -436,10 +438,6 @@ function mostrarConfirmacao(
   }
 
 
-  /* =====================================================
-     📅 DATA
-  ===================================================== */
-
   if (reservaData) {
 
     reservaData.textContent =
@@ -448,10 +446,6 @@ function mostrarConfirmacao(
   }
 
 
-  /* =====================================================
-     🕐 HORA
-  ===================================================== */
-
   if (reservaHora) {
 
     reservaHora.textContent =
@@ -459,10 +453,6 @@ function mostrarConfirmacao(
 
   }
 
-
-  /* =====================================================
-     💾 SALVAR COMPRA
-  ===================================================== */
 
   try {
 
@@ -482,10 +472,6 @@ function mostrarConfirmacao(
 
   }
 
-
-  /* =====================================================
-     📦 MOSTRAR CARTÃO
-  ===================================================== */
 
   const cartao =
     document.querySelector(
@@ -831,7 +817,11 @@ async function reservarNumeroFirebase(
               true,
 
             dataReserva:
-              dataHora.timestamp
+              dataHora.timestamp,
+
+            reservaExpiraEm:
+              Date.now() +
+              (24 * 60 * 60 * 1000)
 
           };
 
@@ -862,7 +852,11 @@ async function reservarNumeroFirebase(
             true,
 
           dataReserva:
-            dataHora.timestamp
+            dataHora.timestamp,
+
+          reservaExpiraEm:
+            Date.now() +
+            (24 * 60 * 60 * 1000)
 
         };
 
@@ -936,7 +930,7 @@ if (reservarNumero) {
 
 
         mostrarStatus(
-          `✅ NÚMERO ${numero} RESERVADO`,
+          `✅ NÚMERO ${numero} RESERVADO POR 24 HORAS`,
           'disponivel'
         );
 
@@ -1190,9 +1184,9 @@ function montarMensagemWhatsApp() {
 
     `📎 *COMPROVANTE DE PAGAMENTO*\n` +
 
-    `Anexe nesta conversa o comprovante do pagamento.\n\n` +
+    `O comprovante será enviado nesta conversa.\n\n` +
 
-    `⚠️ *Só enviar esta mensagem com o pagamento já realizado.*\n\n` +
+    `🔒 Os números ficam reservados por *24 horas* após a confirmação.\n\n` +
 
     `🍀 Obrigado por participar da Rifa Solidária — GILFEST!`
 
@@ -1202,7 +1196,7 @@ function montarMensagemWhatsApp() {
 
 
 /* =========================================================
-   📲 ENVIAR PARA WHATSAPP
+   📲 CONFIRMAR PARTICIPAÇÃO
 ========================================================= */
 
 if (reservarReserva) {
@@ -1281,7 +1275,7 @@ if (reservarReserva) {
       if (msgReserva) {
 
         msgReserva.textContent =
-          '📲 Abrindo seu WhatsApp... Anexe o comprovante na conversa antes de enviar.';
+          '📲 Abrindo seu WhatsApp...';
 
       }
 
@@ -1290,6 +1284,219 @@ if (reservarReserva) {
         url,
         '_blank'
       );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   📎 ENVIAR COMPROVANTE
+========================================================= */
+
+if (enviarComprovante) {
+
+  enviarComprovante.addEventListener(
+    'click',
+    () => {
+
+      if (
+        !compraAtual.numeros ||
+        !compraAtual.numeros.length
+      ) {
+
+        if (msgReserva) {
+
+          msgReserva.textContent =
+            '⚠️ Primeiro escolha ou compre um número.';
+
+        }
+
+        return;
+
+      }
+
+
+      const nome =
+        nomeReserva?.value.trim();
+
+
+      const telefone =
+        telefoneReserva?.value.trim();
+
+
+      if (!nome) {
+
+        if (msgReserva) {
+
+          msgReserva.textContent =
+            '⚠️ Informe seu nome antes de enviar o comprovante.';
+
+        }
+
+        nomeReserva?.focus();
+
+        return;
+
+      }
+
+
+      if (!telefone) {
+
+        if (msgReserva) {
+
+          msgReserva.textContent =
+            '⚠️ Informe seu WhatsApp antes de enviar o comprovante.';
+
+        }
+
+        telefoneReserva?.focus();
+
+        return;
+
+      }
+
+
+      /*
+       * Cria o seletor de arquivo somente
+       * quando o cliente toca no botão.
+       */
+
+      const inputArquivo =
+        document.createElement('input');
+
+      inputArquivo.type =
+        'file';
+
+      inputArquivo.accept =
+        'image/*,.pdf';
+
+      inputArquivo.style.display =
+        'none';
+
+
+      document.body.appendChild(
+        inputArquivo
+      );
+
+
+      inputArquivo.addEventListener(
+        'change',
+        () => {
+
+          const arquivo =
+            inputArquivo.files?.[0];
+
+
+          if (!arquivo) {
+
+            inputArquivo.remove();
+
+            return;
+
+          }
+
+
+          comprovanteSelecionado =
+            arquivo;
+
+
+          const tamanhoMB =
+            arquivo.size /
+            (1024 * 1024);
+
+
+          /*
+           * Limite preventivo de 10 MB.
+           */
+
+          if (
+            tamanhoMB > 10
+          ) {
+
+            if (msgReserva) {
+
+              msgReserva.textContent =
+                '⚠️ O comprovante deve ter no máximo 10 MB.';
+
+            }
+
+            comprovanteSelecionado =
+              null;
+
+            inputArquivo.remove();
+
+            return;
+
+          }
+
+
+          /*
+           * Mostra o arquivo escolhido
+           * para o participante conferir.
+           */
+
+          if (msgReserva) {
+
+            msgReserva.textContent =
+              `📎 Comprovante selecionado: ${arquivo.name}`;
+
+          }
+
+
+          /*
+           * Monta a mensagem do WhatsApp.
+           */
+
+          const mensagem =
+            montarMensagemWhatsApp();
+
+
+          const url =
+            `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(
+              mensagem +
+              `\n\n📎 Comprovante selecionado: ${arquivo.name}\n` +
+              `➡️ Anexe este arquivo nesta conversa antes de enviar.`
+            )}`;
+
+
+          /*
+           * Abre o WhatsApp.
+           */
+
+          window.open(
+            url,
+            '_blank'
+          );
+
+
+          /*
+           * Explica ao usuário o último passo.
+           */
+
+          setTimeout(
+            () => {
+
+              if (msgReserva) {
+
+                msgReserva.textContent =
+                  '📎 Comprovante selecionado. No WhatsApp, toque no clipe 📎 e escolha este arquivo para enviar.';
+
+              }
+
+            },
+            700
+          );
+
+
+          inputArquivo.remove();
+
+        }
+      );
+
+
+      inputArquivo.click();
 
     }
   );
@@ -1400,7 +1607,9 @@ function lerSelecionadosDaCartela() {
 
 
     if (!salva) {
+
       return false;
+
     }
 
 
@@ -1427,7 +1636,9 @@ function lerSelecionadosDaCartela() {
 
 
     if (!numerosFormatados.length) {
+
       return false;
+
     }
 
 
@@ -1532,7 +1743,9 @@ function lerNumerosDaURL() {
 
 
   if (!numeros.length) {
+
     return false;
+
   }
 
 
@@ -1543,186 +1756,6 @@ function lerNumerosDaURL() {
 
 
   return true;
-
-}
-
-
-/* =========================================================
-   🗑️ LIMPAR SELEÇÃO
-========================================================= */
-
-function limparSelecaoAtual() {
-
-  if (
-    !compraAtual.numeros ||
-    !compraAtual.numeros.length
-  ) {
-
-    alert(
-      '⚠️ Não há números selecionados para limpar.'
-    );
-
-    return;
-
-  }
-
-
-  const confirmar =
-    confirm(
-      '⚠️ Deseja limpar os números atuais e escolher outros números?'
-    );
-
-
-  if (!confirmar) {
-    return;
-  }
-
-
-  /* =====================================================
-     🧹 LIMPAR OBJETO DA COMPRA
-  ===================================================== */
-
-  compraAtual = {
-
-    numeros: [],
-
-    quantidade: 0,
-
-    total: 0,
-
-    data: '',
-
-    hora: '',
-
-    timestamp: ''
-
-  };
-
-
-  /* =====================================================
-     🧹 LIMPAR LOCALSTORAGE
-  ===================================================== */
-
-  localStorage.removeItem(
-    'rifaCompraAtual'
-  );
-
-  localStorage.removeItem(
-    'rifaSelecionados'
-  );
-
-
-  /* =====================================================
-     🧹 LIMPAR CARTÃO
-  ===================================================== */
-
-  if (reservaNumeros) {
-
-    reservaNumeros.textContent =
-      'Nenhum número selecionado';
-
-  }
-
-
-  if (reservaTotal) {
-
-    reservaTotal.textContent =
-      'Total: R$ 0,00';
-
-  }
-
-
-  if (reservaData) {
-
-    reservaData.textContent =
-      '—';
-
-  }
-
-
-  if (reservaHora) {
-
-    reservaHora.textContent =
-      '—';
-
-  }
-
-
-  /* =====================================================
-     🧹 LIMPAR DADOS DO PARTICIPANTE
-  ===================================================== */
-
-  if (nomeReserva) {
-
-    nomeReserva.value =
-      '';
-
-  }
-
-
-  if (telefoneReserva) {
-
-    telefoneReserva.value =
-      '';
-
-  }
-
-
-  /* =====================================================
-     🧹 LIMPAR CAMPO DE NÚMERO
-  ===================================================== */
-
-  if (numeroDireto) {
-
-    numeroDireto.value =
-      '';
-
-  }
-
-
-  /* =====================================================
-     🧹 LIMPAR MENSAGENS
-  ===================================================== */
-
-  if (msgReserva) {
-
-    msgReserva.textContent =
-      '';
-
-  }
-
-
-  if (pixMsgReserva) {
-
-    pixMsgReserva.textContent =
-      '';
-
-  }
-
-
-  limparNumeroStatus();
-
-
-  /* =====================================================
-     🔄 VOLTAR PARA ESCOLHER NOVOS NÚMEROS
-  ===================================================== */
-
-  window.location.href =
-    'cartela.html';
-
-}
-
-
-/* =========================================================
-   🗑️ BOTÃO LIMPAR
-========================================================= */
-
-if (limparSelecao) {
-
-  limparSelecao.addEventListener(
-    'click',
-    limparSelecaoAtual
-  );
 
 }
 
@@ -1740,7 +1773,9 @@ document.addEventListener(
 
 
     if (veioDaCartela) {
+
       return;
+
     }
 
 
@@ -1749,7 +1784,9 @@ document.addEventListener(
 
 
     if (veioDaURL) {
+
       return;
+
     }
 
 
@@ -1784,6 +1821,7 @@ document.addEventListener(
     );
 
   }
+
 );
 
 
@@ -1855,5 +1893,146 @@ if (scratchArea) {
 
   scratchArea.style.overflow =
     'hidden';
+
+}
+
+
+/* =========================================================
+   🗑️ LIMPAR SELEÇÃO
+========================================================= */
+
+if (limparSelecao) {
+
+  limparSelecao.addEventListener(
+    'click',
+    () => {
+
+      if (
+        !compraAtual.numeros ||
+        !compraAtual.numeros.length
+      ) {
+
+        alert(
+          '⚠️ Não há números selecionados para limpar.'
+        );
+
+        return;
+
+      }
+
+
+      const confirmar =
+        confirm(
+          '⚠️ Deseja limpar os números atuais e escolher outros números?'
+        );
+
+
+      if (!confirmar) {
+        return;
+      }
+
+
+      compraAtual = {
+
+        numeros: [],
+
+        quantidade: 0,
+
+        total: 0,
+
+        data: '',
+
+        hora: '',
+
+        timestamp: ''
+
+      };
+
+
+      localStorage.removeItem(
+        'rifaCompraAtual'
+      );
+
+      localStorage.removeItem(
+        'rifaSelecionados'
+      );
+
+
+      comprovanteSelecionado =
+        null;
+
+
+      if (reservaNumeros) {
+
+        reservaNumeros.textContent =
+          'Nenhum número selecionado';
+
+      }
+
+
+      if (reservaTotal) {
+
+        reservaTotal.textContent =
+          'Total: R$ 0,00';
+
+      }
+
+
+      if (reservaData) {
+
+        reservaData.textContent =
+          '—';
+
+      }
+
+
+      if (reservaHora) {
+
+        reservaHora.textContent =
+          '—';
+
+      }
+
+
+      if (nomeReserva) {
+
+        nomeReserva.value =
+          '';
+
+      }
+
+
+      if (telefoneReserva) {
+
+        telefoneReserva.value =
+          '';
+
+      }
+
+
+      if (numeroDireto) {
+
+        numeroDireto.value =
+          '';
+
+      }
+
+
+      if (msgReserva) {
+
+        msgReserva.textContent =
+          '';
+
+      }
+
+
+      limparNumeroStatus();
+
+
+      window.location.href =
+        'cartela.html';
+
+    }
+  );
 
 }
