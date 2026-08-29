@@ -2842,3 +2842,57 @@ height: 190px;
 }
 
 }
+
+      /* =========================================================
+   RODAPÉ — CRIAÇÃO GIL ARTE + CHATGPT
+========================================================= */
+
+.rodape-criacao {
+  text-align: center;
+  padding: 18px 10px 14px;
+  margin-top: 20px;
+  opacity: 0.85;
+}
+
+.rodape-texto {
+  font-size: 11px;
+  opacity: 0.65;
+  margin-bottom: 9px;
+}
+
+.rodape-criacao-linha {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  font-size: 9px;
+  opacity: 0.75;
+}
+
+.logo-gilart-rodape {
+  width: 48px;
+  height: auto;
+  max-height: 24px;
+  object-fit: contain;
+  display: block;
+}
+
+.chatgpt-mini {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 18px;
+  height: 18px;
+
+  border: 1px solid currentColor;
+  border-radius: 50%;
+
+  font-size: 10px;
+  line-height: 1;
+}
+
+.rodape-criacao-linha span {
+  white-space: nowrap;
+}
