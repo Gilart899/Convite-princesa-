@@ -62,14 +62,6 @@ const VALOR_NUMERO =
 const WHATSAPP =
   '5579999145044';
 
-/*
- * Tempo da reserva:
- * 40 minutos
- */
-
-const TEMPO_RESERVA =
-  40 * 60 * 1000;
-
 
 /* =========================================================
    🎯 ELEMENTOS
@@ -129,28 +121,17 @@ const msgReserva =
 ========================================================= */
 
 let compraAtual = {
-
   numeros: [],
-
   quantidade: 0,
-
   total: 0,
-
   data: '',
-
   hora: '',
-
-  timestamp: '',
-
-  status: 'selecionado',
-
-  expiraEm: null
-
+  timestamp: ''
 };
 
 
 /* =========================================================
-   🎟️ CARTELAS
+   🎟️ IR PARA CARTELAS
 ========================================================= */
 
 if (abrirCartelas) {
@@ -169,7 +150,7 @@ if (abrirCartelas) {
 
 
 /* =========================================================
-   🍀 SUGERIR
+   🍀 SUGERIR NÚMERO
 ========================================================= */
 
 if (sugerir) {
@@ -247,7 +228,7 @@ function obterDataHora() {
 
 
 /* =========================================================
-   💰 VALOR
+   💰 FORMATAR VALOR
 ========================================================= */
 
 function formatarValor(valor) {
@@ -331,14 +312,6 @@ function limparNumeroStatus() {
     reservarNumero.disabled =
       false;
 
-    reservarNumero.textContent =
-      '🔴 CONFIRMAR PARTICIPAÇÃO';
-
-    reservarNumero.classList.remove(
-      'confirmar-participacao',
-      'reservado'
-    );
-
     delete reservarNumero.dataset.numero;
 
   }
@@ -347,31 +320,7 @@ function limparNumeroStatus() {
 
 
 /* =========================================================
-   ⏱️ VERIFICAR SE A RESERVA EXPIROU
-========================================================= */
-
-function reservaExpirou(dados) {
-
-  if (!dados) {
-    return false;
-  }
-
-  const expiraEm =
-    Number(
-      dados.expiraEm || 0
-    );
-
-  if (!expiraEm) {
-    return false;
-  }
-
-  return Date.now() >= expiraEm;
-
-}
-
-
-/* =========================================================
-   🔎 VERIFICAR SE ESTÁ OCUPADO
+   🔎 VERIFICAR SE NÚMERO ESTÁ OCUPADO
 ========================================================= */
 
 function numeroEstaOcupado(
@@ -382,30 +331,12 @@ function numeroEstaOcupado(
     return false;
   }
 
-  /*
-   * Se estava reservado mas os 40 minutos
-   * já acabaram, consideramos o número livre.
-   */
-
-  if (
-    String(
-      dados.status || ''
-    ).toLowerCase() === 'reservado' &&
-    reservaExpirou(dados)
-  ) {
-
-    return false;
-
-  }
-
-
   const status =
     String(
       dados.status ||
       dados.situacao ||
       ''
     ).toLowerCase();
-
 
   return (
 
@@ -439,12 +370,10 @@ function mostrarConfirmacao(
       ? numeros
       : [numeros];
 
-
   const numerosFormatados =
     lista
       .map(formatarNumero)
       .filter(Boolean);
-
 
   if (!numerosFormatados.length) {
     return;
@@ -453,7 +382,6 @@ function mostrarConfirmacao(
 
   const quantidade =
     numerosFormatados.length;
-
 
   const total =
     quantidade *
@@ -476,20 +404,14 @@ function mostrarConfirmacao(
       dataHora.hora,
 
     timestamp:
-      dataHora.timestamp,
-
-    status:
-      'selecionado',
-
-    expiraEm:
-      null
+      dataHora.timestamp
 
   };
 
 
-  /* =======================================================
-     🎟️ NÚMERO
-  ======================================================= */
+  /* -------------------------------------------------------
+     🎟️ NÚMEROS
+  ------------------------------------------------------- */
 
   if (reservaNumeros) {
 
@@ -499,9 +421,9 @@ function mostrarConfirmacao(
   }
 
 
-  /* =======================================================
-     🔢 QUANTIDADE + TOTAL
-  ======================================================= */
+  /* -------------------------------------------------------
+     💰 TOTAL
+  ------------------------------------------------------- */
 
   if (reservaTotal) {
 
@@ -511,9 +433,9 @@ function mostrarConfirmacao(
   }
 
 
-  /* =======================================================
+  /* -------------------------------------------------------
      📅 DATA
-  ======================================================= */
+  ------------------------------------------------------- */
 
   if (reservaData) {
 
@@ -523,9 +445,9 @@ function mostrarConfirmacao(
   }
 
 
-  /* =======================================================
+  /* -------------------------------------------------------
      🕐 HORA
-  ======================================================= */
+  ------------------------------------------------------- */
 
   if (reservaHora) {
 
@@ -535,9 +457,9 @@ function mostrarConfirmacao(
   }
 
 
-  /* =======================================================
-     💾 SALVAR LOCALMENTE
-  ======================================================= */
+  /* -------------------------------------------------------
+     💾 SALVAR COMPRA
+  ------------------------------------------------------- */
 
   try {
 
@@ -558,15 +480,14 @@ function mostrarConfirmacao(
   }
 
 
-  /* =======================================================
-     🧾 MOSTRAR CARTÃO
-  ======================================================= */
+  /* -------------------------------------------------------
+     📦 MOSTRAR CARTÃO
+  ------------------------------------------------------- */
 
   const cartao =
     document.querySelector(
       '.reserva-inline'
     );
-
 
   if (cartao) {
 
@@ -598,18 +519,6 @@ function mostrarDisponivel(
   numero
 ) {
 
-  /*
-   * PRIMEIRO:
-   * preenche automaticamente
-   * o cartão Confirmar Participação.
-   */
-
-  mostrarConfirmacao(
-    [numero],
-    obterDataHora()
-  );
-
-
   mostrarStatus(
     `🟢 NÚMERO ${numero} DISPONÍVEL`,
     'disponivel'
@@ -617,8 +526,18 @@ function mostrarDisponivel(
 
 
   /*
-   * AGORA MOSTRA O BOTÃO VERMELHO.
+   * IMPORTANTE:
+   *
+   * Assim que o número é confirmado como disponível,
+   * o cartão CONFIRMAR PARTICIPAÇÃO é preenchido
+   * automaticamente.
    */
+
+  mostrarConfirmacao(
+    [numero],
+    obterDataHora()
+  );
+
 
   if (reservarNumero) {
 
@@ -632,23 +551,10 @@ function mostrarDisponivel(
       false;
 
     reservarNumero.textContent =
-      '🔴 CONFIRMAR PARTICIPAÇÃO';
+      `🛒 COMPRAR ${numero}`;
 
     reservarNumero.dataset.numero =
       numero;
-
-    /*
-     * Classe para o CSS deixar
-     * o botão vermelho e diferenciado.
-     */
-
-    reservarNumero.classList.add(
-      'confirmar-participacao'
-    );
-
-    reservarNumero.classList.remove(
-      'reservado'
-    );
 
   }
 
@@ -676,11 +582,6 @@ function mostrarIndisponivel(
 
     reservarNumero.hidden =
       true;
-
-    reservarNumero.classList.remove(
-      'confirmar-participacao',
-      'reservado'
-    );
 
     delete reservarNumero.dataset.numero;
 
@@ -784,10 +685,10 @@ async function verificarNumero() {
       );
 
 
-    /*
-     * NÃO EXISTE:
-     * está disponível.
-     */
+    /* -----------------------------------------------------
+       NÚMERO NÃO EXISTE
+       → DISPONÍVEL
+    ----------------------------------------------------- */
 
     if (!snapshot.exists()) {
 
@@ -804,28 +705,9 @@ async function verificarNumero() {
       snapshot.val();
 
 
-    /*
-     * RESERVA EXPIRADA:
-     * também está disponível.
-     */
-
-    if (
-      dados.status === 'reservado' &&
-      reservaExpirou(dados)
-    ) {
-
-      mostrarDisponivel(
-        numero
-      );
-
-      return;
-
-    }
-
-
-    /*
-     * ESTÁ OCUPADO.
-     */
+    /* -----------------------------------------------------
+       OCUPADO
+    ----------------------------------------------------- */
 
     if (
       numeroEstaOcupado(
@@ -842,9 +724,9 @@ async function verificarNumero() {
     }
 
 
-    /*
-     * EXISTE MAS ESTÁ LIVRE.
-     */
+    /* -----------------------------------------------------
+       EXISTE, MAS ESTÁ LIVRE
+    ----------------------------------------------------- */
 
     mostrarDisponivel(
       numero
@@ -922,7 +804,7 @@ if (numeroDireto) {
 
 
 /* =========================================================
-   🔒 RESERVAR NÚMERO POR 40 MINUTOS
+   🔒 RESERVAR NÚMERO NO FIREBASE
 ========================================================= */
 
 async function reservarNumeroFirebase(
@@ -949,19 +831,10 @@ async function reservarNumeroFirebase(
     obterDataHora();
 
 
-  const expiraEm =
-    Date.now() +
-    TEMPO_RESERVA;
-
-
   const resultado =
     await runTransaction(
       numeroRef,
       atual => {
-
-        /*
-         * NÚMERO AINDA NÃO EXISTE.
-         */
 
         if (atual === null) {
 
@@ -976,52 +849,12 @@ async function reservarNumeroFirebase(
               true,
 
             dataReserva:
-              dataHora.timestamp,
-
-            expiraEm:
-              expiraEm
+              dataHora.timestamp
 
           };
 
         }
 
-
-        /*
-         * SE ESTAVA RESERVADO,
-         * MAS PASSOU DOS 40 MINUTOS,
-         * PODE SER RESERVADO NOVAMENTE.
-         */
-
-        if (
-          atual.status === 'reservado' &&
-          reservaExpirou(atual)
-        ) {
-
-          return {
-
-            numero,
-
-            status:
-              'reservado',
-
-            reservado:
-              true,
-
-            dataReserva:
-              dataHora.timestamp,
-
-            expiraEm:
-              expiraEm
-
-          };
-
-        }
-
-
-        /*
-         * SE JÁ ESTÁ OCUPADO,
-         * NÃO PODE RESERVAR.
-         */
 
         if (
           numeroEstaOcupado(
@@ -1033,10 +866,6 @@ async function reservarNumeroFirebase(
 
         }
 
-
-        /*
-         * NÚMERO LIVRE.
-         */
 
         return {
 
@@ -1051,10 +880,7 @@ async function reservarNumeroFirebase(
             true,
 
           dataReserva:
-            dataHora.timestamp,
-
-          expiraEm:
-            expiraEm
+            dataHora.timestamp
 
         };
 
@@ -1065,25 +891,19 @@ async function reservarNumeroFirebase(
   if (!resultado.committed) {
 
     throw new Error(
-      `O número ${numero} acabou de ser reservado por outra pessoa.`
+      `O número ${numero} não está mais disponível.`
     );
 
   }
 
 
-  return {
-
-    ...dataHora,
-
-    expiraEm
-
-  };
+  return dataHora;
 
 }
 
 
 /* =========================================================
-   🔴 CONFIRMAR PARTICIPAÇÃO
+   🛒 BOTÃO COMPRAR / RESERVAR
 ========================================================= */
 
 if (reservarNumero) {
@@ -1115,131 +935,35 @@ if (reservarNumero) {
       reservarNumero.disabled =
         true;
 
-
       reservarNumero.textContent =
         `⏳ RESERVANDO ${numero}...`;
 
 
       try {
 
-        const resultado =
+        const dataHora =
           await reservarNumeroFirebase(
             numero
           );
 
 
-        /*
-         * ATUALIZA A COMPRA.
-         */
+        mostrarConfirmacao(
+          [numero],
+          dataHora
+        );
 
-        compraAtual.status =
-          'reservado';
-
-        compraAtual.expiraEm =
-          resultado.expiraEm;
-
-        compraAtual.timestamp =
-          resultado.timestamp;
-
-
-        /*
-         * SALVA NOVAMENTE.
-         */
-
-        try {
-
-          localStorage.setItem(
-            'rifaCompraAtual',
-            JSON.stringify(
-              compraAtual
-            )
-          );
-
-        } catch (erro) {
-
-          console.warn(
-            '⚠️ Não foi possível atualizar a compra local.',
-            erro
-          );
-
-        }
-
-
-        /*
-         * STATUS VISUAL.
-         */
 
         mostrarStatus(
-          `🔒 NÚMERO ${numero} RESERVADO POR 40 MINUTOS`,
+          `✅ NÚMERO ${numero} RESERVADO`,
           'disponivel'
         );
 
 
-        /*
-         * BOTÃO MUDA DE ESTADO.
-         */
-
-        reservarNumero.textContent =
-          '✅ PARTICIPAÇÃO CONFIRMADA';
-
-        reservarNumero.classList.remove(
-          'confirmar-participacao'
-        );
-
-        reservarNumero.classList.add(
-          'reservado'
-        );
-
-
-        /*
-         * NÃO DEIXA CLICAR NOVAMENTE.
-         */
-
-        reservarNumero.disabled =
-          true;
-
         reservarNumero.style.display =
-          'flex';
+          'none';
 
-
-        /*
-         * AVISO PARA O CLIENTE.
-         */
-
-        if (msgReserva) {
-
-          msgReserva.textContent =
-            '🔒 Seu número está reservado por 40 minutos. Faça o pagamento via PIX e envie o comprovante pelo WhatsApp.';
-
-        }
-
-
-        /*
-         * LEVA O CLIENTE PARA
-         * A PARTE DO PAGAMENTO.
-         */
-
-        const cartao =
-          document.querySelector(
-            '.reserva-inline'
-          );
-
-
-        if (cartao) {
-
-          setTimeout(
-            () => {
-
-              cartao.scrollIntoView({
-                behavior: 'smooth',
-                block: 'center'
-              });
-
-            },
-            200
-          );
-
-        }
+        reservarNumero.hidden =
+          true;
 
 
       } catch (erro) {
@@ -1253,22 +977,14 @@ if (reservarNumero) {
         reservarNumero.disabled =
           false;
 
-
         reservarNumero.style.display =
           'flex';
-
 
         reservarNumero.hidden =
           false;
 
-
         reservarNumero.textContent =
-          '🔴 CONFIRMAR PARTICIPAÇÃO';
-
-
-        reservarNumero.classList.add(
-          'confirmar-participacao'
-        );
+          `🛒 COMPRAR ${numero}`;
 
 
         mostrarErro(
@@ -1362,10 +1078,8 @@ async function copiarChavePix(
           'textarea'
         );
 
-
       campo.value =
         chave;
-
 
       campo.style.position =
         'fixed';
@@ -1373,11 +1087,9 @@ async function copiarChavePix(
       campo.style.left =
         '-9999px';
 
-
       document.body.appendChild(
         campo
       );
-
 
       campo.focus();
 
@@ -1402,19 +1114,11 @@ async function copiarChavePix(
 
         }
 
-        if (pixMsgReserva) {
-
-          pixMsgReserva.textContent =
-            '✅ Chave PIX copiada.';
-
-        }
-
       } else {
 
         throw new Error();
 
       }
-
 
     } catch {
 
@@ -1500,8 +1204,6 @@ function montarMensagemWhatsApp() {
 
     `📱 WhatsApp: *${telefone}*\n\n` +
 
-    `🔒 *Número reservado por 40 minutos.*\n\n` +
-
     `💚 Pagamento via PIX realizado.\n\n` +
 
     `📎 *COMPROVANTE DE PAGAMENTO*\n` +
@@ -1535,53 +1237,7 @@ if (reservarReserva) {
         if (msgReserva) {
 
           msgReserva.textContent =
-            '⚠️ Primeiro escolha um número e confirme sua participação.';
-
-        }
-
-        return;
-
-      }
-
-
-      /*
-       * O cliente precisa ter confirmado
-       * a participação antes de enviar.
-       */
-
-      if (
-        compraAtual.status !==
-        'reservado'
-      ) {
-
-        if (msgReserva) {
-
-          msgReserva.textContent =
-            '⚠️ Clique primeiro em CONFIRMAR PARTICIPAÇÃO para reservar seu número por 40 minutos.';
-
-        }
-
-        return;
-
-      }
-
-
-      /*
-       * Verifica se os 40 minutos acabaram.
-       */
-
-      if (
-        compraAtual.expiraEm &&
-        Date.now() >=
-        Number(
-          compraAtual.expiraEm
-        )
-      ) {
-
-        if (msgReserva) {
-
-          msgReserva.textContent =
-            '⏰ O prazo de 40 minutos da sua reserva terminou. Verifique novamente a disponibilidade do número.';
+            '⚠️ Primeiro escolha ou compre um número.';
 
         }
 
@@ -1643,7 +1299,7 @@ if (reservarReserva) {
       if (msgReserva) {
 
         msgReserva.textContent =
-          '📲 Abrindo seu WhatsApp... Anexe o comprovante de pagamento na conversa antes de enviar.';
+          '📲 Abrindo seu WhatsApp... Anexe o comprovante na conversa antes de enviar.';
 
       }
 
@@ -1660,7 +1316,7 @@ if (reservarReserva) {
 
 
 /* =========================================================
-   🔄 RECUPERAR COMPRA
+   🔄 RECUPERAR COMPRA SALVA
 ========================================================= */
 
 function recuperarCompraSalva() {
@@ -1731,53 +1387,6 @@ function recuperarCompraSalva() {
     }
 
 
-    const cartao =
-      document.querySelector(
-        '.reserva-inline'
-      );
-
-
-    if (cartao) {
-
-      cartao.style.display =
-        'block';
-
-    }
-
-
-    /*
-     * Se ainda está reservado,
-     * mostra o estado correto.
-     */
-
-    if (
-      dados.status ===
-      'reservado'
-    ) {
-
-      if (
-        dados.expiraEm &&
-        Date.now() >=
-        Number(
-          dados.expiraEm
-        )
-      ) {
-
-        compraAtual.status =
-          'expirado';
-
-        if (msgReserva) {
-
-          msgReserva.textContent =
-            '⏰ A reserva anterior expirou. Verifique novamente o número.';
-
-        }
-
-      }
-
-    }
-
-
     return true;
 
   } catch (erro) {
@@ -1795,7 +1404,117 @@ function recuperarCompraSalva() {
 
 
 /* =========================================================
-   🔗 NÚMEROS VINDOS DA CARTELA
+   🆕 🔗 LER NÚMEROS VINDOS DA CARTELA
+========================================================= */
+
+function lerSelecionadosDaCartela() {
+
+  try {
+
+    const salva =
+      localStorage.getItem(
+        'rifaSelecionados'
+      );
+
+
+    if (!salva) {
+
+      return false;
+
+    }
+
+
+    const numeros =
+      JSON.parse(
+        salva
+      );
+
+
+    if (
+      !Array.isArray(numeros) ||
+      !numeros.length
+    ) {
+
+      return false;
+
+    }
+
+
+    const numerosFormatados =
+      numeros
+        .map(formatarNumero)
+        .filter(Boolean);
+
+
+    if (!numerosFormatados.length) {
+
+      return false;
+
+    }
+
+
+    /*
+     * A data/hora é criada no momento em que
+     * o cliente chega ao cartão de confirmação.
+     */
+
+    const dataHora =
+      obterDataHora();
+
+
+    mostrarConfirmacao(
+      numerosFormatados,
+      dataHora
+    );
+
+
+    /*
+     * Depois de transferir os números para
+     * o cartão de confirmação, apagamos
+     * somente a seleção temporária da cartela.
+     *
+     * A compra continua salva em
+     * rifaCompraAtual.
+     */
+
+    localStorage.removeItem(
+      'rifaSelecionados'
+    );
+
+
+    /*
+     * Mostra uma mensagem visual informando
+     * que os números chegaram corretamente.
+     */
+
+    if (numeroStatus) {
+
+      mostrarStatus(
+        `🟢 ${numerosFormatados.length} número(s) selecionado(s)`,
+        'disponivel'
+      );
+
+    }
+
+
+    return true;
+
+  } catch (erro) {
+
+    console.warn(
+      '⚠️ Erro ao ler números da cartela:',
+      erro
+    );
+
+    return false;
+
+  }
+
+}
+
+
+/* =========================================================
+   🔗 NÚMEROS VINDOS PELA URL
 ========================================================= */
 
 function lerNumerosDaURL() {
@@ -1860,14 +1579,6 @@ function lerNumerosDaURL() {
   }
 
 
-  /*
-   * Vindo da cartela:
-   *
-   * ainda NÃO reserva.
-   *
-   * Apenas preenche o cartão.
-   */
-
   mostrarConfirmacao(
     numeros,
     obterDataHora()
@@ -1887,17 +1598,50 @@ document.addEventListener(
   'DOMContentLoaded',
   () => {
 
+    /*
+     * PRIMEIRA PRIORIDADE:
+     *
+     * Números selecionados na CARTELA.
+     */
+
     const veioDaCartela =
-      lerNumerosDaURL();
+      lerSelecionadosDaCartela();
 
 
-    if (!veioDaCartela) {
+    if (veioDaCartela) {
 
-      recuperarCompraSalva();
+      return;
 
     }
 
+
+    /*
+     * SEGUNDA PRIORIDADE:
+     *
+     * Número(s) enviados pela URL.
+     */
+
+    const veioDaURL =
+      lerNumerosDaURL();
+
+
+    if (veioDaURL) {
+
+      return;
+
+    }
+
+
+    /*
+     * TERCEIRA PRIORIDADE:
+     *
+     * Compra já salva anteriormente.
+     */
+
+    recuperarCompraSalva();
+
   }
+
 );
 
 
@@ -1974,7 +1718,7 @@ if (stepsGrid) {
 
 
 /* =========================================================
-   🛡️ TAMANHO RASPADINHA
+   🛡️ TAMANHO DA RASPADINHA
 ========================================================= */
 
 const scratchArea =
