@@ -8,7 +8,9 @@ import {
   getDatabase,
   ref,
   get,
-  runTransaction
+  runTransaction,
+  push,
+  set
 } from 'https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js';
 
 
@@ -1433,6 +1435,160 @@ async function enviarComprovanteCloudinary(
 
 
 /* =========================================================
+💾 SALVAR COMPROVANTE NO FIREBASE
+========================================================= */
+
+async function salvarComprovanteFirebase() {
+
+  if (!db) {
+
+    throw new Error(
+      'Firebase não está conectado.'
+    );
+
+  }
+
+
+  /*
+   * Só permite salvar no Firebase se o Cloudinary
+   * já tiver confirmado o upload.
+   */
+
+  if (
+    !comprovanteCloudinary ||
+    !comprovanteCloudinary.url
+  ) {
+
+    throw new Error(
+      'O comprovante ainda não foi confirmado pelo Cloudinary.'
+    );
+
+  }
+
+
+  if (
+    !compraAtual.numeros ||
+    !compraAtual.numeros.length
+  ) {
+
+    throw new Error(
+      'Nenhum número foi encontrado para esta compra.'
+    );
+
+  }
+
+
+  const nome =
+    nomeReserva?.value.trim() ||
+    'Não informado';
+
+  const telefone =
+    telefoneReserva?.value.trim() ||
+    'Não informado';
+
+
+  const dataHoraEnvio =
+    obterDataHora();
+
+
+  /*
+   * Cria um identificador único para este comprovante.
+   */
+
+  const comprovanteRef =
+    push(
+      ref(
+        db,
+        'rifa/comprovantes'
+      )
+    );
+
+
+  const dadosComprovante = {
+
+    id:
+      comprovanteRef.key,
+
+    numeros:
+      compraAtual.numeros,
+
+    quantidade:
+      compraAtual.quantidade,
+
+    valor:
+      compraAtual.total,
+
+    valorFormatado:
+      formatarValor(
+        compraAtual.total
+      ),
+
+    nome:
+      nome,
+
+    whatsapp:
+      telefone,
+
+    dataCompra:
+      compraAtual.data,
+
+    horaCompra:
+      compraAtual.hora,
+
+    timestampCompra:
+      compraAtual.timestamp,
+
+    dataEnvio:
+      dataHoraEnvio.data,
+
+    horaEnvio:
+      dataHoraEnvio.hora,
+
+    timestampEnvio:
+      dataHoraEnvio.timestamp,
+
+    arquivo:
+      comprovanteCloudinary.nome,
+
+    url:
+      comprovanteCloudinary.url,
+
+    publicId:
+      comprovanteCloudinary.publicId,
+
+    armazenamento:
+      'cloudinary',
+
+    status:
+      'aguardando_confirmacao',
+
+    pagamento:
+      'aguardando_confirmacao',
+
+    criadoEm:
+      new Date().toISOString()
+
+  };
+
+
+  await set(
+    comprovanteRef,
+    dadosComprovante
+  );
+
+
+  console.log(
+    '✅ Comprovante salvo no Firebase:',
+    dadosComprovante
+  );
+
+
+  return dadosComprovante;
+
+}
+
+
+/* =========================================================
 📲 MONTAR MENSAGEM WHATSAPP
 ========================================================= */
 
@@ -1970,6 +2126,14 @@ if (enviarComprovante) {
 
 
             /* ===============================================
+            💾 SALVA NO FIREBASE
+            SOMENTE APÓS O CLOUDINARY CONFIRMAR
+            =============================================== */
+
+            await salvarComprovanteFirebase();
+
+
+            /* ===============================================
             💾 SALVA LOCALMENTE O LINK
             =============================================== */
 
@@ -1992,7 +2156,7 @@ if (enviarComprovante) {
             if (msgReserva) {
 
               msgReserva.textContent =
-                '✅ Comprovante armazenado. Abrindo o WhatsApp...';
+                '✅ Comprovante armazenado no painel. Abrindo o WhatsApp...';
 
             }
 
@@ -2050,8 +2214,10 @@ if (enviarComprovante) {
 
             /*
              * IMPORTANTE:
-             * Se o upload falhar, não abrimos o WhatsApp
-             * dizendo que o comprovante foi armazenado.
+             *
+             * Se o Cloudinary ou o Firebase falhar,
+             * não abrimos o WhatsApp dizendo que tudo
+             * foi armazenado corretamente.
              */
 
           } finally {
@@ -2777,4 +2943,8 @@ console.log(
 
 console.log(
   '☁️ Upload de comprovantes: Cloudinary / rifa_comprovantes'
+);
+
+console.log(
+  '💾 Comprovantes confirmados pelo Cloudinary são salvos em: rifa/comprovantes'
 );
