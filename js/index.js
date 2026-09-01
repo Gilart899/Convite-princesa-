@@ -8,14 +8,12 @@ import {
   getDatabase,
   ref,
   get,
-  runTransaction,
-  push,
-  set
+  runTransaction
 } from 'https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js';
 
 
 /* =========================================================
-🔥 FIREBASE
+   🔥 FIREBASE
 ========================================================= */
 
 let db = null;
@@ -55,27 +53,7 @@ try {
 
 
 /* =========================================================
-☁️ CLOUDINARY
-========================================================= */
-
-const CLOUDINARY_CLOUD_NAME =
-  'gkf0vepl';
-
-const CLOUDINARY_UPLOAD_PRESET =
-  'rifa_comprovantes';
-
-const CLOUDINARY_UPLOAD_URL =
-  `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/auto/upload`;
-
-console.log(
-  '☁️ Cloudinary configurado:',
-  CLOUDINARY_CLOUD_NAME,
-  CLOUDINARY_UPLOAD_PRESET
-);
-
-
-/* =========================================================
-⚙️ CONFIGURAÇÕES
+   ⚙️ CONFIGURAÇÕES
 ========================================================= */
 
 const VALOR_NUMERO =
@@ -85,11 +63,11 @@ const WHATSAPP =
   '5579999145044';
 
 const TEMPO_RESERVA =
-  24 * 60 * 60 * 1000;
+  40 * 60 * 1000;
 
 
 /* =========================================================
-🎯 ELEMENTOS
+   🎯 ELEMENTOS
 ========================================================= */
 
 const abrirCartelas =
@@ -137,18 +115,12 @@ const telefoneReserva =
 const reservarReserva =
   document.getElementById('reservarReserva');
 
-const enviarComprovante =
-  document.getElementById('enviarComprovante');
-
 const msgReserva =
   document.getElementById('msgReserva');
 
-const limparSelecao =
-  document.getElementById('limparSelecao');
-
 
 /* =========================================================
-🧠 COMPRA ATUAL
+   🧠 COMPRA ATUAL
 ========================================================= */
 
 let compraAtual = {
@@ -165,79 +137,15 @@ let compraAtual = {
 
   timestamp: '',
 
-  reservaExpiraEm: 0
+  status: 'selecionado',
+
+  expiraEm: null
 
 };
 
 
 /* =========================================================
-📎 COMPROVANTE
-========================================================= */
-
-let comprovanteSelecionado = null;
-
-let comprovanteCloudinary = {
-
-  url: '',
-
-  publicId: '',
-
-  nome: ''
-
-};
-
-
-/* =========================================================
-🧹 ORGANIZAR DATA + HORA
-========================================================= */
-
-function organizarDadosCompra() {
-
-  if (
-    !reservaData ||
-    !reservaHora ||
-    !limparSelecao
-  ) {
-
-    return;
-
-  }
-
-  const dataInfo =
-    reservaData.closest('.reserva-info');
-
-  const horaInfo =
-    reservaHora.closest('.reserva-info');
-
-  const limparArea =
-    limparSelecao.closest('.limpar-selecao-area');
-
-  if (
-    dataInfo &&
-    horaInfo &&
-    limparArea
-  ) {
-
-    const container =
-      dataInfo.parentElement;
-
-    if (container) {
-
-      container.appendChild(dataInfo);
-
-      container.appendChild(horaInfo);
-
-      container.appendChild(limparArea);
-
-    }
-
-  }
-
-}
-
-
-/* =========================================================
-🎟️ IR PARA CARTELAS
+   🎟️ CARTELAS
 ========================================================= */
 
 if (abrirCartelas) {
@@ -256,7 +164,7 @@ if (abrirCartelas) {
 
 
 /* =========================================================
-🍀 SUGERIR NÚMERO
+   🍀 SUGERIR NÚMERO
 ========================================================= */
 
 if (sugerir) {
@@ -275,23 +183,13 @@ if (sugerir) {
 
 
 /* =========================================================
-🔢 FORMATAR NÚMERO
+   🔢 FORMATAR NÚMERO
 ========================================================= */
 
 function formatarNumero(valor) {
 
-  const texto =
-    String(valor ?? '')
-      .trim();
-
-  if (!/^\d{1,3}$/.test(texto)) {
-
-    return null;
-
-  }
-
   const numero =
-    Number(texto);
+    Number(valor);
 
   if (
     !Number.isInteger(numero) ||
@@ -310,7 +208,7 @@ function formatarNumero(valor) {
 
 
 /* =========================================================
-📅 DATA E HORA
+   📅 DATA E HORA
 ========================================================= */
 
 function obterDataHora() {
@@ -344,7 +242,7 @@ function obterDataHora() {
 
 
 /* =========================================================
-💰 FORMATAR VALOR
+   💰 VALOR
 ========================================================= */
 
 function formatarValor(valor) {
@@ -362,7 +260,7 @@ function formatarValor(valor) {
 
 
 /* =========================================================
-🟢 STATUS
+   🟢 STATUS
 ========================================================= */
 
 function mostrarStatus(
@@ -371,9 +269,7 @@ function mostrarStatus(
 ) {
 
   if (!numeroStatus) {
-
     return;
-
   }
 
   numeroStatus.style.display =
@@ -397,7 +293,7 @@ function mostrarStatus(
 
 
 /* =========================================================
-🧹 LIMPAR STATUS
+   🧹 LIMPAR STATUS
 ========================================================= */
 
 function limparNumeroStatus() {
@@ -430,6 +326,14 @@ function limparNumeroStatus() {
     reservarNumero.disabled =
       false;
 
+    reservarNumero.textContent =
+      '🔴 CONFIRMAR PARTICIPAÇÃO';
+
+    reservarNumero.classList.remove(
+      'confirmar-participacao',
+      'reservado'
+    );
+
     delete reservarNumero.dataset.numero;
 
   }
@@ -438,14 +342,45 @@ function limparNumeroStatus() {
 
 
 /* =========================================================
-🔎 VERIFICAR SE NÚMERO ESTÁ OCUPADO
+   ⏱️ RESERVA EXPIRADA
 ========================================================= */
 
-function numeroEstaOcupado(
-  dados
-) {
+function reservaExpirou(dados) {
 
   if (!dados) {
+    return false;
+  }
+
+  const expiraEm =
+    Number(
+      dados.expiraEm || 0
+    );
+
+  if (!expiraEm) {
+    return false;
+  }
+
+  return Date.now() >= expiraEm;
+
+}
+
+
+/* =========================================================
+   🔎 NÚMERO OCUPADO
+========================================================= */
+
+function numeroEstaOcupado(dados) {
+
+  if (!dados) {
+    return false;
+  }
+
+  if (
+    String(
+      dados.status || ''
+    ).toLowerCase() === 'reservado' &&
+    reservaExpirou(dados)
+  ) {
 
     return false;
 
@@ -456,9 +391,7 @@ function numeroEstaOcupado(
       dados.status ||
       dados.situacao ||
       ''
-    )
-      .toLowerCase()
-      .trim();
+    ).toLowerCase();
 
   return (
 
@@ -479,7 +412,7 @@ function numeroEstaOcupado(
 
 
 /* =========================================================
-🧾 MOSTRAR CONFIRMAÇÃO
+   🧾 MOSTRAR CONFIRMAÇÃO
 ========================================================= */
 
 function mostrarConfirmacao(
@@ -493,18 +426,12 @@ function mostrarConfirmacao(
       : [numeros];
 
   const numerosFormatados =
-    [
-      ...new Set(
-        lista
-          .map(formatarNumero)
-          .filter(Boolean)
-      )
-    ];
+    lista
+      .map(formatarNumero)
+      .filter(Boolean);
 
   if (!numerosFormatados.length) {
-
     return;
-
   }
 
   const quantidade =
@@ -515,8 +442,6 @@ function mostrarConfirmacao(
     VALOR_NUMERO;
 
   compraAtual = {
-
-    ...compraAtual,
 
     numeros:
       numerosFormatados,
@@ -532,14 +457,15 @@ function mostrarConfirmacao(
       dataHora.hora,
 
     timestamp:
-      dataHora.timestamp
+      dataHora.timestamp,
+
+    status:
+      'selecionado',
+
+    expiraEm:
+      null
 
   };
-
-
-  /* =======================================================
-  🎟️ NÚMEROS
-  ======================================================= */
 
   if (reservaNumeros) {
 
@@ -548,22 +474,12 @@ function mostrarConfirmacao(
 
   }
 
-
-  /* =======================================================
-  💰 VALOR
-  ======================================================= */
-
   if (reservaTotal) {
 
     reservaTotal.textContent =
       `🎟️ ${quantidade} número(s) • Total: ${formatarValor(total)}`;
 
   }
-
-
-  /* =======================================================
-  📅 DATA
-  ======================================================= */
 
   if (reservaData) {
 
@@ -572,22 +488,12 @@ function mostrarConfirmacao(
 
   }
 
-
-  /* =======================================================
-  🕐 HORA
-  ======================================================= */
-
   if (reservaHora) {
 
     reservaHora.textContent =
       dataHora.hora;
 
   }
-
-
-  /* =======================================================
-  💾 SALVAR
-  ======================================================= */
 
   try {
 
@@ -606,14 +512,6 @@ function mostrarConfirmacao(
     );
 
   }
-
-
-  organizarDadosCompra();
-
-
-  /* =======================================================
-  📦 MOSTRAR CARTÃO
-  ======================================================= */
 
   const cartao =
     document.querySelector(
@@ -643,21 +541,19 @@ function mostrarConfirmacao(
 
 
 /* =========================================================
-🟢 NÚMERO DISPONÍVEL
+   🟢 NÚMERO DISPONÍVEL
 ========================================================= */
 
-function mostrarDisponivel(
-  numero
-) {
-
-  mostrarStatus(
-    `🟢 NÚMERO ${numero} DISPONÍVEL`,
-    'disponivel'
-  );
+function mostrarDisponivel(numero) {
 
   mostrarConfirmacao(
     [numero],
     obterDataHora()
+  );
+
+  mostrarStatus(
+    `🟢 NÚMERO ${numero} DISPONÍVEL`,
+    'disponivel'
   );
 
   if (reservarNumero) {
@@ -672,10 +568,18 @@ function mostrarDisponivel(
       false;
 
     reservarNumero.textContent =
-      `🛒 COMPRAR ${numero}`;
+      '🔴 CONFIRMAR PARTICIPAÇÃO';
 
     reservarNumero.dataset.numero =
       numero;
+
+    reservarNumero.classList.add(
+      'confirmar-participacao'
+    );
+
+    reservarNumero.classList.remove(
+      'reservado'
+    );
 
   }
 
@@ -683,12 +587,10 @@ function mostrarDisponivel(
 
 
 /* =========================================================
-🔴 NÚMERO INDISPONÍVEL
+   🔴 NÚMERO INDISPONÍVEL
 ========================================================= */
 
-function mostrarIndisponivel(
-  numero
-) {
+function mostrarIndisponivel(numero) {
 
   mostrarStatus(
     `🔴 NÚMERO ${numero} NÃO DISPONÍVEL`,
@@ -703,6 +605,11 @@ function mostrarIndisponivel(
     reservarNumero.hidden =
       true;
 
+    reservarNumero.classList.remove(
+      'confirmar-participacao',
+      'reservado'
+    );
+
     delete reservarNumero.dataset.numero;
 
   }
@@ -711,12 +618,10 @@ function mostrarIndisponivel(
 
 
 /* =========================================================
-⚠️ ERRO
+   ⚠️ ERRO
 ========================================================= */
 
-function mostrarErro(
-  mensagem
-) {
+function mostrarErro(mensagem) {
 
   mostrarStatus(
     `⚠️ ${mensagem}`,
@@ -727,21 +632,19 @@ function mostrarErro(
 
 
 /* =========================================================
-🔎 VERIFICAR NÚMERO
+   🔎 VERIFICAR NÚMERO
 ========================================================= */
 
 async function verificarNumero() {
 
   if (!numeroDireto) {
-
     return;
-
   }
 
   const valor =
     numeroDireto.value.trim();
 
-  if (!valor) {
+  if (valor === '') {
 
     mostrarErro(
       'Digite um número entre 000 e 999.'
@@ -795,9 +698,7 @@ async function verificarNumero() {
 
     if (!snapshot.exists()) {
 
-      mostrarDisponivel(
-        numero
-      );
+      mostrarDisponivel(numero);
 
       return;
 
@@ -807,22 +708,27 @@ async function verificarNumero() {
       snapshot.val();
 
     if (
-      numeroEstaOcupado(
-        dados
-      )
+      dados.status === 'reservado' &&
+      reservaExpirou(dados)
     ) {
 
-      mostrarIndisponivel(
-        numero
-      );
+      mostrarDisponivel(numero);
 
       return;
 
     }
 
-    mostrarDisponivel(
-      numero
-    );
+    if (
+      numeroEstaOcupado(dados)
+    ) {
+
+      mostrarIndisponivel(numero);
+
+      return;
+
+    }
+
+    mostrarDisponivel(numero);
 
   } catch (erro) {
 
@@ -841,7 +747,7 @@ async function verificarNumero() {
 
 
 /* =========================================================
-🔎 BOTÃO VERIFICAR
+   🔎 BOTÃO VERIFICAR
 ========================================================= */
 
 if (verificarNumeroBotao) {
@@ -855,7 +761,7 @@ if (verificarNumeroBotao) {
 
 
 /* =========================================================
-🔢 DIGITAÇÃO
+   🔢 DIGITAÇÃO
 ========================================================= */
 
 if (numeroDireto) {
@@ -873,7 +779,6 @@ if (numeroDireto) {
 
     }
   );
-
 
   numeroDireto.addEventListener(
     'keydown',
@@ -896,12 +801,10 @@ if (numeroDireto) {
 
 
 /* =========================================================
-🔒 RESERVAR NÚMERO NO FIREBASE
+   🔒 RESERVAR NÚMERO
 ========================================================= */
 
-async function reservarNumeroFirebase(
-  numero
-) {
+async function reservarNumeroFirebase(numero) {
 
   if (!db) {
 
@@ -944,55 +847,45 @@ async function reservarNumeroFirebase(
             dataReserva:
               dataHora.timestamp,
 
-            reservaExpiraEm:
+            expiraEm:
               expiraEm
 
           };
 
         }
 
-
         if (
-          numeroEstaOcupado(
-            atual
-          )
+          atual.status === 'reservado' &&
+          reservaExpirou(atual)
         ) {
 
-          const expiracao =
-            Number(
-              atual.reservaExpiraEm || 0
-            );
+          return {
 
-          if (
-            atual.status === 'reservado' &&
-            expiracao > 0 &&
-            expiracao <= Date.now()
-          ) {
+            numero,
 
-            return {
+            status:
+              'reservado',
 
-              numero,
+            reservado:
+              true,
 
-              status:
-                'reservado',
+            dataReserva:
+              dataHora.timestamp,
 
-              reservado:
-                true,
+            expiraEm:
+              expiraEm
 
-              dataReserva:
-                dataHora.timestamp,
+          };
 
-              reservaExpiraEm:
-                expiraEm
+        }
 
-            };
-
-          }
+        if (
+          numeroEstaOcupado(atual)
+        ) {
 
           return;
 
         }
-
 
         return {
 
@@ -1009,7 +902,7 @@ async function reservarNumeroFirebase(
           dataReserva:
             dataHora.timestamp,
 
-          reservaExpiraEm:
+          expiraEm:
             expiraEm
 
         };
@@ -1017,22 +910,19 @@ async function reservarNumeroFirebase(
       }
     );
 
-
   if (!resultado.committed) {
 
     throw new Error(
-      `O número ${numero} não está mais disponível.`
+      `O número ${numero} acabou de ser reservado por outra pessoa.`
     );
 
   }
-
 
   return {
 
     ...dataHora,
 
-    reservaExpiraEm:
-      expiraEm
+    expiraEm
 
   };
 
@@ -1040,7 +930,7 @@ async function reservarNumeroFirebase(
 
 
 /* =========================================================
-🛒 BOTÃO COMPRAR
+   🔴 CONFIRMAR PARTICIPAÇÃO
 ========================================================= */
 
 if (reservarNumero) {
@@ -1053,13 +943,7 @@ if (reservarNumero) {
         reservarNumero.dataset.numero;
 
       if (!numero) {
-
-        mostrarErro(
-          'Escolha um número primeiro.'
-        );
-
         return;
-
       }
 
       if (!db) {
@@ -1080,26 +964,83 @@ if (reservarNumero) {
 
       try {
 
-        const dataHora =
+        const resultado =
           await reservarNumeroFirebase(
             numero
           );
 
-        mostrarConfirmacao(
-          [numero],
-          dataHora
-        );
+        compraAtual.status =
+          'reservado';
+
+        compraAtual.expiraEm =
+          resultado.expiraEm;
+
+        compraAtual.timestamp =
+          resultado.timestamp;
+
+        try {
+
+          localStorage.setItem(
+            'rifaCompraAtual',
+            JSON.stringify(
+              compraAtual
+            )
+          );
+
+        } catch (erro) {
+
+          console.warn(
+            erro
+          );
+
+        }
 
         mostrarStatus(
-          `✅ NÚMERO ${numero} RESERVADO POR 24 HORAS`,
+          `🔒 NÚMERO ${numero} RESERVADO POR 40 MINUTOS`,
           'disponivel'
         );
 
-        reservarNumero.style.display =
-          'none';
+        reservarNumero.textContent =
+          '✅ PARTICIPAÇÃO CONFIRMADA';
 
-        reservarNumero.hidden =
+        reservarNumero.classList.remove(
+          'confirmar-participacao'
+        );
+
+        reservarNumero.classList.add(
+          'reservado'
+        );
+
+        reservarNumero.disabled =
           true;
+
+        if (msgReserva) {
+
+          msgReserva.textContent =
+            '🔒 Seu número está reservado por 40 minutos. Faça o pagamento via PIX e envie o comprovante pelo WhatsApp.';
+
+        }
+
+        const cartao =
+          document.querySelector(
+            '.reserva-inline'
+          );
+
+        if (cartao) {
+
+          setTimeout(
+            () => {
+
+              cartao.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+              });
+
+            },
+            200
+          );
+
+        }
 
       } catch (erro) {
 
@@ -1111,14 +1052,8 @@ if (reservarNumero) {
         reservarNumero.disabled =
           false;
 
-        reservarNumero.style.display =
-          'flex';
-
-        reservarNumero.hidden =
-          false;
-
         reservarNumero.textContent =
-          `🛒 COMPRAR ${numero}`;
+          '🔴 CONFIRMAR PARTICIPAÇÃO';
 
         mostrarErro(
           erro.message ||
@@ -1134,15 +1069,14 @@ if (reservarNumero) {
 
 
 /* =========================================================
-💠 COPIAR PIX
+   💠 COPIAR PIX
 ========================================================= */
 
-async function copiarChavePix(
-  botao
-) {
+async function copiarChavePix(botao) {
 
   const chave =
-    CONFIG?.pixChave
+    CONFIG &&
+    CONFIG.pixChave
       ? String(
           CONFIG.pixChave
         ).trim()
@@ -1177,7 +1111,7 @@ async function copiarChavePix(
     if (pixMsgReserva) {
 
       pixMsgReserva.textContent =
-        '✅ Chave PIX copiada. Faça o pagamento antes de enviar o comprovante.';
+        '✅ Chave PIX copiada.';
 
     }
 
@@ -1213,15 +1147,11 @@ async function copiarChavePix(
       campo.style.left =
         '-9999px';
 
-      campo.style.opacity =
-        '0';
-
       document.body.appendChild(
         campo
       );
 
       campo.focus();
-
       campo.select();
 
       const copiou =
@@ -1279,325 +1209,13 @@ if (copiarPixReserva) {
 
 
 /* =========================================================
-☁️ ENVIAR COMPROVANTE PARA CLOUDINARY
-========================================================= */
-
-async function enviarComprovanteCloudinary(
-  arquivo
-) {
-
-  if (!arquivo) {
-
-    throw new Error(
-      'Nenhum comprovante foi selecionado.'
-    );
-
-  }
-
-
-  console.log(
-    '☁️ Enviando comprovante para Cloudinary...'
-  );
-
-
-  const formulario =
-    new FormData();
-
-
-  formulario.append(
-    'file',
-    arquivo
-  );
-
-
-  formulario.append(
-    'upload_preset',
-    CLOUDINARY_UPLOAD_PRESET
-  );
-
-
-  /*
-   * Informações adicionais para facilitar
-   * a identificação do comprovante no painel.
-   */
-
-  const numeroTexto =
-    compraAtual.numeros.length
-      ? compraAtual.numeros.join('-')
-      : 'sem-numero';
-
-  const nomeTexto =
-    nomeReserva?.value.trim()
-      ? nomeReserva.value.trim()
-      : 'participante';
-
-
-  const nomeSeguro =
-    nomeTexto
-      .normalize('NFD')
-      .replace(
-        /[\u0300-\u036f]/g,
-        ''
-      )
-      .replace(
-        /[^a-zA-Z0-9_-]/g,
-        '_'
-      )
-      .slice(0, 40);
-
-
-  const publicId =
-    `comprovante_${numeroTexto}_${nomeSeguro}_${Date.now()}`;
-
-
-  formulario.append(
-    'public_id',
-    publicId
-  );
-
-
-  try {
-
-    const resposta =
-      await fetch(
-        CLOUDINARY_UPLOAD_URL,
-        {
-          method: 'POST',
-          body: formulario
-        }
-      );
-
-
-    const dados =
-      await resposta.json();
-
-
-    if (!resposta.ok) {
-
-      console.error(
-        '❌ Cloudinary retornou erro:',
-        dados
-      );
-
-      throw new Error(
-        dados?.error?.message ||
-        'Cloudinary não aceitou o comprovante.'
-      );
-
-    }
-
-
-    if (!dados.secure_url) {
-
-      throw new Error(
-        'Cloudinary não retornou o endereço do comprovante.'
-      );
-
-    }
-
-
-    comprovanteCloudinary = {
-
-      url:
-        dados.secure_url,
-
-      publicId:
-        dados.public_id ||
-        publicId,
-
-      nome:
-        arquivo.name
-
-    };
-
-
-    console.log(
-      '✅ Comprovante enviado para Cloudinary.',
-      comprovanteCloudinary
-    );
-
-
-    return comprovanteCloudinary;
-
-
-  } catch (erro) {
-
-    console.error(
-      '❌ Erro ao enviar comprovante:',
-      erro
-    );
-
-    throw erro;
-
-  }
-
-}
-
-
-/* =========================================================
-💾 SALVAR COMPROVANTE NO FIREBASE
-========================================================= */
-
-async function salvarComprovanteFirebase() {
-
-  if (!db) {
-
-    throw new Error(
-      'Firebase não está conectado.'
-    );
-
-  }
-
-
-  /*
-   * Só permite salvar no Firebase se o Cloudinary
-   * já tiver confirmado o upload.
-   */
-
-  if (
-    !comprovanteCloudinary ||
-    !comprovanteCloudinary.url
-  ) {
-
-    throw new Error(
-      'O comprovante ainda não foi confirmado pelo Cloudinary.'
-    );
-
-  }
-
-
-  if (
-    !compraAtual.numeros ||
-    !compraAtual.numeros.length
-  ) {
-
-    throw new Error(
-      'Nenhum número foi encontrado para esta compra.'
-    );
-
-  }
-
-
-  const nome =
-    nomeReserva?.value.trim() ||
-    'Não informado';
-
-  const telefone =
-    telefoneReserva?.value.trim() ||
-    'Não informado';
-
-
-  const dataHoraEnvio =
-    obterDataHora();
-
-
-  /*
-   * Cria um identificador único para este comprovante.
-   */
-
-  const comprovanteRef =
-    push(
-      ref(
-        db,
-        'rifa/comprovantes'
-      )
-    );
-
-
-  const dadosComprovante = {
-
-    id:
-      comprovanteRef.key,
-
-    numeros:
-      compraAtual.numeros,
-
-    quantidade:
-      compraAtual.quantidade,
-
-    valor:
-      compraAtual.total,
-
-    valorFormatado:
-      formatarValor(
-        compraAtual.total
-      ),
-
-    nome:
-      nome,
-
-    whatsapp:
-      telefone,
-
-    dataCompra:
-      compraAtual.data,
-
-    horaCompra:
-      compraAtual.hora,
-
-    timestampCompra:
-      compraAtual.timestamp,
-
-    dataEnvio:
-      dataHoraEnvio.data,
-
-    horaEnvio:
-      dataHoraEnvio.hora,
-
-    timestampEnvio:
-      dataHoraEnvio.timestamp,
-
-    arquivo:
-      comprovanteCloudinary.nome,
-
-    url:
-      comprovanteCloudinary.url,
-
-    publicId:
-      comprovanteCloudinary.publicId,
-
-    armazenamento:
-      'cloudinary',
-
-    status:
-      'aguardando_confirmacao',
-
-    pagamento:
-      'aguardando_confirmacao',
-
-    criadoEm:
-      new Date().toISOString()
-
-  };
-
-
-  await set(
-    comprovanteRef,
-    dadosComprovante
-  );
-
-
-  console.log(
-    '✅ Comprovante salvo no Firebase:',
-    dadosComprovante
-  );
-
-
-  return dadosComprovante;
-
-}
-
-
-/* =========================================================
-📲 MONTAR MENSAGEM WHATSAPP
+   📲 WHATSAPP
 ========================================================= */
 
 function montarMensagemWhatsApp() {
 
   const numeros =
-    compraAtual.numeros.join(
-      ', '
-    );
+    compraAtual.numeros.join(', ');
 
   const quantidade =
     compraAtual.quantidade;
@@ -1615,8 +1233,7 @@ function montarMensagemWhatsApp() {
     telefoneReserva?.value.trim() ||
     'Não informado';
 
-
-  let mensagem =
+  return (
 
     `🍀 *RIFA SOLIDÁRIA — GILFEST*\n\n` +
 
@@ -1636,69 +1253,22 @@ function montarMensagemWhatsApp() {
 
     `📱 WhatsApp: *${telefone}*\n\n` +
 
-    `💚 Pagamento via PIX realizado.\n\n`;
+    `🔒 *Número reservado por 40 minutos.*\n\n` +
 
+    `💚 Pagamento via PIX realizado.\n\n` +
 
-  if (
-    comprovanteCloudinary.url
-  ) {
+    `📎 *COMPROVANTE DE PAGAMENTO*\n` +
 
-    mensagem +=
+    `Anexe nesta conversa o comprovante do pagamento.\n\n` +
 
-      `📎 *COMPROVANTE DE PAGAMENTO*\n` +
+    `⚠️ *Só enviar esta mensagem com o pagamento já realizado.*\n\n` +
 
-      `Arquivo: *${comprovanteCloudinary.nome}*\n` +
+    `🍀 Obrigado por participar da Rifa Solidária — GILFEST!`
 
-      `${comprovanteCloudinary.url}\n\n`;
-
-  } else {
-
-    mensagem +=
-
-      `📎 *COMPROVANTE DE PAGAMENTO*\n` +
-
-      `O comprovante será enviado separadamente.\n\n`;
-
-  }
-
-
-  mensagem +=
-
-    `🔒 Os números ficam reservados por *24 horas* após a compra.\n\n` +
-
-    `🍀 Obrigado por participar da Rifa Solidária — GILFEST!`;
-
-
-  return mensagem;
-
-}
-
-
-/* =========================================================
-📲 ABRIR WHATSAPP
-========================================================= */
-
-function abrirWhatsApp(
-  mensagem
-) {
-
-  const url =
-    `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(
-      mensagem
-    )}`;
-
-
-  window.open(
-    url,
-    '_blank'
   );
 
 }
 
-
-/* =========================================================
-🍀 CONFIRMAR PARTICIPAÇÃO
-========================================================= */
 
 if (reservarReserva) {
 
@@ -1714,253 +1284,23 @@ if (reservarReserva) {
         if (msgReserva) {
 
           msgReserva.textContent =
-            '⚠️ Primeiro escolha ou compre um número.';
+            '⚠️ Primeiro escolha um número e confirme sua participação.';
 
         }
 
         return;
 
       }
-
-
-      const nome =
-        nomeReserva?.value.trim();
-
-      const telefone =
-        telefoneReserva?.value.trim();
-
-
-      if (!nome) {
-
-        if (msgReserva) {
-
-          msgReserva.textContent =
-            '⚠️ Informe seu nome antes de confirmar.';
-
-        }
-
-        nomeReserva?.focus();
-
-        return;
-
-      }
-
-
-      if (!telefone) {
-
-        if (msgReserva) {
-
-          msgReserva.textContent =
-            '⚠️ Informe seu WhatsApp antes de confirmar.';
-
-        }
-
-        telefoneReserva?.focus();
-
-        return;
-
-      }
-
-
-      try {
-
-        localStorage.setItem(
-          'rifaNome',
-          nome
-        );
-
-        localStorage.setItem(
-          'rifaTelefone',
-          telefone
-        );
-
-      } catch {
-
-        // Ignora.
-
-      }
-
-
-      if (msgReserva) {
-
-        msgReserva.textContent =
-          '📲 Abrindo seu WhatsApp...';
-
-      }
-
-
-      const mensagem =
-        montarMensagemWhatsApp();
-
-
-      abrirWhatsApp(
-        mensagem
-      );
-
-    }
-  );
-
-}
-
-
-/* =========================================================
-📎 ÁREA DO COMPROVANTE
-========================================================= */
-
-function criarAreaComprovante() {
-
-  let area =
-    document.getElementById(
-      'areaComprovante'
-    );
-
-
-  if (area) {
-
-    return area;
-
-  }
-
-
-  area =
-    document.createElement(
-      'div'
-    );
-
-
-  area.id =
-    'areaComprovante';
-
-  area.style.width =
-    '100%';
-
-  area.style.margin =
-    '12px 0';
-
-  area.style.padding =
-    '12px';
-
-  area.style.borderRadius =
-    '12px';
-
-  area.style.boxSizing =
-    'border-box';
-
-  area.style.background =
-    'rgba(0,0,0,.04)';
-
-  area.style.display =
-    'none';
-
-
-  const titulo =
-    document.createElement(
-      'strong'
-    );
-
-  titulo.textContent =
-    '📎 Comprovante selecionado';
-
-  titulo.style.display =
-    'block';
-
-  titulo.style.marginBottom =
-    '6px';
-
-
-  const nomeArquivo =
-    document.createElement(
-      'span'
-    );
-
-  nomeArquivo.id =
-    'nomeComprovante';
-
-  nomeArquivo.style.display =
-    'block';
-
-  nomeArquivo.style.wordBreak =
-    'break-word';
-
-
-  const aviso =
-    document.createElement(
-      'small'
-    );
-
-  aviso.id =
-    'avisoComprovante';
-
-  aviso.style.display =
-    'block';
-
-  aviso.style.marginTop =
-    '8px';
-
-
-  aviso.textContent =
-    '☁️ O comprovante será armazenado com segurança no painel do administrador.';
-
-
-  area.appendChild(
-    titulo
-  );
-
-  area.appendChild(
-    nomeArquivo
-  );
-
-  area.appendChild(
-    aviso
-  );
-
-
-  if (msgReserva?.parentElement) {
-
-    msgReserva.parentElement.insertBefore(
-      area,
-      msgReserva
-    );
-
-  } else if (enviarComprovante?.parentElement) {
-
-    enviarComprovante.parentElement.appendChild(
-      area
-    );
-
-  } else {
-
-    document.body.appendChild(
-      area
-    );
-
-  }
-
-
-  return area;
-
-}
-
-
-/* =========================================================
-📎 ENVIAR COMPROVANTE
-========================================================= */
-
-if (enviarComprovante) {
-
-  enviarComprovante.addEventListener(
-    'click',
-    () => {
 
       if (
-        !compraAtual.numeros ||
-        !compraAtual.numeros.length
+        compraAtual.status !==
+        'reservado'
       ) {
 
         if (msgReserva) {
 
           msgReserva.textContent =
-            '⚠️ Primeiro escolha ou compre um número.';
+            '⚠️ Clique primeiro em CONFIRMAR PARTICIPAÇÃO.';
 
         }
 
@@ -1968,6 +1308,24 @@ if (enviarComprovante) {
 
       }
 
+      if (
+        compraAtual.expiraEm &&
+        Date.now() >=
+        Number(
+          compraAtual.expiraEm
+        )
+      ) {
+
+        if (msgReserva) {
+
+          msgReserva.textContent =
+            '⏰ O prazo da reserva terminou.';
+
+        }
+
+        return;
+
+      }
 
       const nome =
         nomeReserva?.value.trim();
@@ -1975,15 +1333,10 @@ if (enviarComprovante) {
       const telefone =
         telefoneReserva?.value.trim();
 
-
       if (!nome) {
 
-        if (msgReserva) {
-
-          msgReserva.textContent =
-            '⚠️ Informe seu nome antes de enviar o comprovante.';
-
-        }
+        msgReserva.textContent =
+          '⚠️ Informe seu nome antes de enviar.';
 
         nomeReserva?.focus();
 
@@ -1991,15 +1344,10 @@ if (enviarComprovante) {
 
       }
 
-
       if (!telefone) {
 
-        if (msgReserva) {
-
-          msgReserva.textContent =
-            '⚠️ Informe seu WhatsApp antes de enviar o comprovante.';
-
-        }
+        msgReserva.textContent =
+          '⚠️ Informe seu WhatsApp antes de enviar.';
 
         telefoneReserva?.focus();
 
@@ -2007,233 +1355,21 @@ if (enviarComprovante) {
 
       }
 
+      const mensagem =
+        montarMensagemWhatsApp();
 
-      const inputArquivo =
-        document.createElement(
-          'input'
-        );
+      const url =
+        `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(
+          mensagem
+        )}`;
 
+      msgReserva.textContent =
+        '📲 Abrindo seu WhatsApp...';
 
-      inputArquivo.type =
-        'file';
-
-
-      inputArquivo.accept =
-        'image/*,.pdf,application/pdf';
-
-
-      inputArquivo.style.display =
-        'none';
-
-
-      document.body.appendChild(
-        inputArquivo
+      window.open(
+        url,
+        '_blank'
       );
-
-
-      inputArquivo.addEventListener(
-        'change',
-        async () => {
-
-          const arquivo =
-            inputArquivo.files?.[0];
-
-
-          if (!arquivo) {
-
-            inputArquivo.remove();
-
-            return;
-
-          }
-
-
-          /* =================================================
-          📦 LIMITE
-          ================================================= */
-
-          if (
-            arquivo.size >
-            10 * 1024 * 1024
-          ) {
-
-            if (msgReserva) {
-
-              msgReserva.textContent =
-                '⚠️ O comprovante deve ter no máximo 10 MB.';
-
-            }
-
-            inputArquivo.remove();
-
-            return;
-
-          }
-
-
-          comprovanteSelecionado =
-            arquivo;
-
-
-          const area =
-            criarAreaComprovante();
-
-
-          area.style.display =
-            'block';
-
-
-          const nomeArquivo =
-            document.getElementById(
-              'nomeComprovante'
-            );
-
-
-          if (nomeArquivo) {
-
-            nomeArquivo.textContent =
-              arquivo.name;
-
-          }
-
-
-          if (msgReserva) {
-
-            msgReserva.textContent =
-              '☁️ Enviando comprovante...';
-
-          }
-
-
-          /*
-           * Desabilita temporariamente o botão
-           * para impedir dois uploads.
-           */
-
-          enviarComprovante.disabled =
-            true;
-
-
-          try {
-
-            /* ===============================================
-            ☁️ ENVIA PARA CLOUDINARY
-            =============================================== */
-
-            await enviarComprovanteCloudinary(
-              arquivo
-            );
-
-
-            /* ===============================================
-            💾 SALVA NO FIREBASE
-            SOMENTE APÓS O CLOUDINARY CONFIRMAR
-            =============================================== */
-
-            await salvarComprovanteFirebase();
-
-
-            /* ===============================================
-            💾 SALVA LOCALMENTE O LINK
-            =============================================== */
-
-            try {
-
-              localStorage.setItem(
-                'rifaComprovanteCloudinary',
-                JSON.stringify(
-                  comprovanteCloudinary
-                )
-              );
-
-            } catch {
-
-              // Ignora.
-
-            }
-
-
-            if (msgReserva) {
-
-              msgReserva.textContent =
-                '✅ Comprovante armazenado no painel. Abrindo o WhatsApp...';
-
-            }
-
-
-            /* ===============================================
-            📲 MONTA MENSAGEM
-            =============================================== */
-
-            const mensagem =
-              montarMensagemWhatsApp();
-
-
-            /* ===============================================
-            📲 ABRE WHATSAPP
-            =============================================== */
-
-            abrirWhatsApp(
-              mensagem
-            );
-
-
-            setTimeout(
-              () => {
-
-                if (msgReserva) {
-
-                  msgReserva.textContent =
-                    '✅ Comprovante armazenado no painel. WhatsApp aberto para finalizar o envio.';
-
-                }
-
-              },
-              1200
-            );
-
-
-          } catch (erro) {
-
-            console.error(
-              '❌ Falha no envio do comprovante:',
-              erro
-            );
-
-
-            if (msgReserva) {
-
-              msgReserva.textContent =
-                `⚠️ Não foi possível armazenar o comprovante: ${
-                  erro.message ||
-                  'erro desconhecido'
-                }`;
-
-            }
-
-
-            /*
-             * IMPORTANTE:
-             *
-             * Se o Cloudinary ou o Firebase falhar,
-             * não abrimos o WhatsApp dizendo que tudo
-             * foi armazenado corretamente.
-             */
-
-          } finally {
-
-            enviarComprovante.disabled =
-              false;
-
-            inputArquivo.remove();
-
-          }
-
-        }
-      );
-
-
-      inputArquivo.click();
 
     }
   );
@@ -2242,7 +1378,7 @@ if (enviarComprovante) {
 
 
 /* =========================================================
-🔄 RECUPERAR COMPRA SALVA
+   🔄 RECUPERAR COMPRA
 ========================================================= */
 
 function recuperarCompraSalva() {
@@ -2254,19 +1390,14 @@ function recuperarCompraSalva() {
         'rifaCompraAtual'
       );
 
-
     if (!salva) {
-
       return false;
-
     }
-
 
     const dados =
       JSON.parse(
         salva
       );
-
 
     if (
       !dados ||
@@ -2278,15 +1409,8 @@ function recuperarCompraSalva() {
 
     }
 
-
-    compraAtual = {
-
-      ...compraAtual,
-
-      ...dados
-
-    };
-
+    compraAtual =
+      dados;
 
     if (reservaNumeros) {
 
@@ -2295,14 +1419,12 @@ function recuperarCompraSalva() {
 
     }
 
-
     if (reservaTotal) {
 
       reservaTotal.textContent =
         `🎟️ ${dados.quantidade} número(s) • Total: ${formatarValor(dados.total)}`;
 
     }
-
 
     if (reservaData) {
 
@@ -2311,7 +1433,6 @@ function recuperarCompraSalva() {
 
     }
 
-
     if (reservaHora) {
 
       reservaHora.textContent =
@@ -2319,69 +1440,19 @@ function recuperarCompraSalva() {
 
     }
 
+    const cartao =
+      document.querySelector(
+        '.reserva-inline'
+      );
 
-    try {
+    if (cartao) {
 
-      const nomeSalvo =
-        localStorage.getItem(
-          'rifaNome'
-        );
-
-      const telefoneSalvo =
-        localStorage.getItem(
-          'rifaTelefone'
-        );
-
-
-      if (
-        nomeReserva &&
-        nomeSalvo
-      ) {
-
-        nomeReserva.value =
-          nomeSalvo;
-
-      }
-
-
-      if (
-        telefoneReserva &&
-        telefoneSalvo
-      ) {
-
-        telefoneReserva.value =
-          telefoneSalvo;
-
-      }
-
-
-      const comprovanteSalvo =
-        localStorage.getItem(
-          'rifaComprovanteCloudinary'
-        );
-
-
-      if (comprovanteSalvo) {
-
-        comprovanteCloudinary =
-          JSON.parse(
-            comprovanteSalvo
-          );
-
-      }
-
-    } catch {
-
-      // Ignora.
+      cartao.style.display =
+        'block';
 
     }
 
-
-    organizarDadosCompra();
-
-
     return true;
-
 
   } catch (erro) {
 
@@ -2398,103 +1469,7 @@ function recuperarCompraSalva() {
 
 
 /* =========================================================
-🆕 🔗 LER NÚMEROS DA CARTELA
-========================================================= */
-
-function lerSelecionadosDaCartela() {
-
-  try {
-
-    const salva =
-      localStorage.getItem(
-        'rifaSelecionados'
-      );
-
-
-    if (!salva) {
-
-      return false;
-
-    }
-
-
-    const numeros =
-      JSON.parse(
-        salva
-      );
-
-
-    if (
-      !Array.isArray(numeros) ||
-      !numeros.length
-    ) {
-
-      return false;
-
-    }
-
-
-    const numerosFormatados =
-      [
-        ...new Set(
-          numeros
-            .map(formatarNumero)
-            .filter(Boolean)
-        )
-      ];
-
-
-    if (!numerosFormatados.length) {
-
-      return false;
-
-    }
-
-
-    const dataHora =
-      obterDataHora();
-
-
-    mostrarConfirmacao(
-      numerosFormatados,
-      dataHora
-    );
-
-
-    localStorage.removeItem(
-      'rifaSelecionados'
-    );
-
-
-    if (numeroStatus) {
-
-      mostrarStatus(
-        `🟢 ${numerosFormatados.length} número(s) selecionado(s)`,
-        'disponivel'
-      );
-
-    }
-
-
-    return true;
-
-
-  } catch (erro) {
-
-    console.warn(
-      '⚠️ Erro ao ler números da cartela:',
-      erro
-    );
-
-    return false;
-
-  }
-
-}
-
-
-/* =========================================================
-🔗 LER NÚMEROS DA URL
+   🔗 NÚMEROS VINDOS DA CARTELA
 ========================================================= */
 
 function lerNumerosDaURL() {
@@ -2504,38 +1479,29 @@ function lerNumerosDaURL() {
       window.location.search
     );
 
-
   const numero =
-    params.get(
-      'numero'
-    );
-
+    params.get('numero');
 
   const numerosParam =
-    params.get(
-      'numeros'
-    );
+    params.get('numeros');
 
-
-  let numeros =
-    [];
-
+  let numeros = [];
 
   if (numerosParam) {
 
     numeros =
       numerosParam
         .split(',')
-        .map(formatarNumero)
+        .map(
+          n =>
+            formatarNumero(n)
+        )
         .filter(Boolean);
 
   } else if (numero) {
 
     const formatado =
-      formatarNumero(
-        numero
-      );
-
+      formatarNumero(numero);
 
     if (formatado) {
 
@@ -2546,27 +1512,16 @@ function lerNumerosDaURL() {
 
   }
 
-
-  numeros =
-    [
-      ...new Set(
-        numeros
-      )
-    ];
-
-
   if (!numeros.length) {
 
     return false;
 
   }
 
-
   mostrarConfirmacao(
     numeros,
     obterDataHora()
   );
-
 
   return true;
 
@@ -2574,377 +1529,737 @@ function lerNumerosDaURL() {
 
 
 /* =========================================================
-🗑️ LIMPAR SELEÇÃO
+   🍀🍀🍀
+   RASPADINHA DA AMIZADE
+   🍀🍀🍀
 ========================================================= */
 
-if (limparSelecao) {
-
-  limparSelecao.addEventListener(
-    'click',
-    () => {
-
-      if (
-        !compraAtual.numeros ||
-        !compraAtual.numeros.length
-      ) {
-
-        alert(
-          '⚠️ Não há números selecionados para limpar.'
-        );
-
-        return;
-
-      }
-
-
-      const confirmar =
-        confirm(
-          '⚠️ Deseja limpar os números atuais e escolher outros números?'
-        );
-
-
-      if (!confirmar) {
-
-        return;
-
-      }
-
-
-      compraAtual = {
-
-        numeros: [],
-
-        quantidade: 0,
-
-        total: 0,
-
-        data: '',
-
-        hora: '',
-
-        timestamp: '',
-
-        reservaExpiraEm: 0
-
-      };
-
-
-      comprovanteSelecionado =
-        null;
-
-
-      comprovanteCloudinary = {
-
-        url: '',
-
-        publicId: '',
-
-        nome: ''
-
-      };
-
-
-      localStorage.removeItem(
-        'rifaCompraAtual'
-      );
-
-      localStorage.removeItem(
-        'rifaSelecionados'
-      );
-
-      localStorage.removeItem(
-        'rifaNome'
-      );
-
-      localStorage.removeItem(
-        'rifaTelefone'
-      );
-
-      localStorage.removeItem(
-        'rifaComprovanteCloudinary'
-      );
-
-
-      if (reservaNumeros) {
-
-        reservaNumeros.textContent =
-          'Nenhum número selecionado';
-
-      }
-
-
-      if (reservaTotal) {
-
-        reservaTotal.textContent =
-          'Total: R$ 0,00';
-
-      }
-
-
-      if (reservaData) {
-
-        reservaData.textContent =
-          '—';
-
-      }
-
-
-      if (reservaHora) {
-
-        reservaHora.textContent =
-          '—';
-
-      }
-
-
-      if (nomeReserva) {
-
-        nomeReserva.value =
-          '';
-
-      }
-
-
-      if (telefoneReserva) {
-
-        telefoneReserva.value =
-          '';
-
-      }
-
-
-      if (numeroDireto) {
-
-        numeroDireto.value =
-          '';
-
-      }
-
-
-      if (msgReserva) {
-
-        msgReserva.textContent =
-          '';
-
-      }
-
-
-      const area =
-        document.getElementById(
-          'areaComprovante'
-        );
-
-
-      if (area) {
-
-        area.remove();
-
-      }
-
-
-      limparNumeroStatus();
-
-
-      window.location.href =
-        'cartela.html';
-
-    }
-  );
-
-}
-
-
-/* =========================================================
-🚀 INICIALIZAÇÃO
-========================================================= */
-
-document.addEventListener(
-  'DOMContentLoaded',
-  () => {
-
-    organizarDadosCompra();
-
-
-    try {
-
-      const nomeSalvo =
-        localStorage.getItem(
-          'rifaNome'
-        );
-
-      const telefoneSalvo =
-        localStorage.getItem(
-          'rifaTelefone'
-        );
-
-
-      if (
-        nomeReserva &&
-        nomeSalvo
-      ) {
-
-        nomeReserva.value =
-          nomeSalvo;
-
-      }
-
-
-      if (
-        telefoneReserva &&
-        telefoneSalvo
-      ) {
-
-        telefoneReserva.value =
-          telefoneSalvo;
-
-      }
-
-    } catch {
-
-      // Ignora.
-
-    }
-
-
-    const veioDaCartela =
-      lerSelecionadosDaCartela();
-
-
-    if (veioDaCartela) {
-
-      return;
-
-    }
-
-
-    const veioDaURL =
-      lerNumerosDaURL();
-
-
-    if (veioDaURL) {
-
-      return;
-
-    }
-
-
-    recuperarCompraSalva();
+function iniciarRaspadinha() {
+
+  const scratchCard =
+    document.querySelector(
+      '.scratch'
+    );
+
+  const canvas =
+    document.getElementById(
+      'scratchCanvas'
+    );
+
+  const resultado =
+    document.getElementById(
+      'scratchPremio'
+    );
+
+  const scratchArea =
+    document.querySelector(
+      '.scratch-area'
+    );
+
+  if (
+    !scratchCard ||
+    !canvas ||
+    !resultado ||
+    !scratchArea
+  ) {
+
+    console.warn(
+      '⚠️ Elementos da raspadinha não encontrados.'
+    );
+
+    return;
 
   }
-);
 
 
-/* =========================================================
-✨ ANIMAÇÃO DOS CARTÕES
-========================================================= */
+  /* =======================================================
+     🖼️ TAMANHO
+  ======================================================= */
 
-document.addEventListener(
-  'DOMContentLoaded',
-  () => {
+  const largura =
+    scratchArea.clientWidth;
 
-    const cards =
-      document.querySelectorAll(
-        '.card'
-      );
+  const altura =
+    scratchArea.clientHeight;
+
+  const dpr =
+    Math.max(
+      1,
+      window.devicePixelRatio || 1
+    );
+
+  canvas.width =
+    largura * dpr;
+
+  canvas.height =
+    altura * dpr;
+
+  canvas.style.width =
+    `${largura}px`;
+
+  canvas.style.height =
+    `${altura}px`;
 
 
-    cards.forEach(
-      (card, indice) => {
-
-        card.style.animation =
-          `cardEntrada .6s ease ${indice * 0.06}s both`;
-
+  const ctx =
+    canvas.getContext(
+      '2d',
+      {
+        willReadFrequently: true
       }
     );
 
+  ctx.scale(
+    dpr,
+    dpr
+  );
+
+
+  /* =======================================================
+     🥈 CAPA PRATEADA
+  ======================================================= */
+
+  const gradiente =
+    ctx.createLinearGradient(
+      0,
+      0,
+      largura,
+      altura
+    );
+
+  gradiente.addColorStop(
+    0,
+    '#777'
+  );
+
+  gradiente.addColorStop(
+    0.15,
+    '#eeeeee'
+  );
+
+  gradiente.addColorStop(
+    0.3,
+    '#999'
+  );
+
+  gradiente.addColorStop(
+    0.5,
+    '#f8f8f8'
+  );
+
+  gradiente.addColorStop(
+    0.7,
+    '#8c8c8c'
+  );
+
+  gradiente.addColorStop(
+    0.85,
+    '#eeeeee'
+  );
+
+  gradiente.addColorStop(
+    1,
+    '#707070'
+  );
+
+
+  ctx.fillStyle =
+    gradiente;
+
+  ctx.fillRect(
+    0,
+    0,
+    largura,
+    altura
+  );
+
+
+  /* =======================================================
+     ✨ TEXTURA METÁLICA
+  ======================================================= */
+
+  for (
+    let i = 0;
+    i < 700;
+    i++
+  ) {
+
+    const x =
+      Math.random() *
+      largura;
+
+    const y =
+      Math.random() *
+      altura;
+
+    const tamanho =
+      Math.random() *
+      2 + 0.5;
+
+    ctx.fillStyle =
+      Math.random() > .5
+        ? 'rgba(255,255,255,.22)'
+        : 'rgba(0,0,0,.12)';
+
+    ctx.fillRect(
+      x,
+      y,
+      tamanho,
+      tamanho
+    );
+
   }
-);
 
 
-/* =========================================================
-🛡️ RASPADINHA VISÍVEL
-========================================================= */
+  /* =======================================================
+     🍀 TEXTO DA CAPA
+  ======================================================= */
 
-const scratchCard =
-  document.querySelector(
-    '.scratch'
+  ctx.save();
+
+  ctx.fillStyle =
+    'rgba(30,30,30,.72)';
+
+  ctx.textAlign =
+    'center';
+
+  ctx.textBaseline =
+    'middle';
+
+  ctx.font =
+    '900 25px Arial';
+
+  ctx.fillText(
+    '🍀 RASPE AQUI 🍀',
+    largura / 2,
+    altura / 2 - 15
+  );
+
+  ctx.font =
+    '700 13px Arial';
+
+  ctx.fillText(
+    'Descubra sua sorte!',
+    largura / 2,
+    altura / 2 + 20
+  );
+
+  ctx.restore();
+
+
+  /* =======================================================
+     🎁 PRÊMIOS
+  ======================================================= */
+
+  const premios = [
+
+    {
+      nome:
+        'LIQUIDIFICADOR',
+      emoji:
+        '🎁'
+    },
+
+    {
+      nome:
+        'FERRO ELÉTRICO',
+      emoji:
+        '✨'
+    }
+
+  ];
+
+
+  /* =======================================================
+     🎲 ESCOLHER PRÊMIO
+  ======================================================= */
+
+  let premioEscolhido =
+    premios[
+      Math.floor(
+        Math.random() *
+        premios.length
+      )
+    ];
+
+
+  /* =======================================================
+     🖼️ ATUALIZAR RESULTADO
+  ======================================================= */
+
+  const alterarResultado =
+    () => {
+
+      resultado.textContent =
+        `${premioEscolhido.emoji} ${premioEscolhido.nome}`;
+
+    };
+
+
+  /* =======================================================
+     🔒 ESTADO
+  ======================================================= */
+
+  let raspando =
+    false;
+
+  let raspagemIniciada =
+    false;
+
+  let finalizado =
+    false;
+
+  let ultimaX =
+    0;
+
+  let ultimaY =
+    0;
+
+
+  /* =======================================================
+     🖌️ RASPAGEM
+  ======================================================= */
+
+  function raspar(
+    x,
+    y
+  ) {
+
+    if (finalizado) {
+      return;
+    }
+
+    ctx.save();
+
+    ctx.globalCompositeOperation =
+      'destination-out';
+
+    ctx.beginPath();
+
+    ctx.arc(
+      x,
+      y,
+      24,
+      0,
+      Math.PI * 2
+    );
+
+    ctx.fill();
+
+    ctx.restore();
+
+    raspagemIniciada =
+      true;
+
+    verificarPercentual();
+
+  }
+
+
+  /* =======================================================
+     🖌️ LINHA CONTÍNUA
+  ======================================================= */
+
+  function rasparLinha(
+    x1,
+    y1,
+    x2,
+    y2
+  ) {
+
+    const distancia =
+      Math.hypot(
+        x2 - x1,
+        y2 - y1
+      );
+
+    const passos =
+      Math.max(
+        1,
+        Math.ceil(
+          distancia / 8
+        )
+      );
+
+    for (
+      let i = 0;
+      i <= passos;
+      i++
+    ) {
+
+      const t =
+        i / passos;
+
+      const x =
+        x1 +
+        (x2 - x1) *
+        t;
+
+      const y =
+        y1 +
+        (y2 - y1) *
+        t;
+
+      raspar(
+        x,
+        y
+      );
+
+    }
+
+  }
+
+
+  /* =======================================================
+     📊 PERCENTUAL RASPADO
+  ======================================================= */
+
+  let ultimaVerificacao =
+    0;
+
+
+  function verificarPercentual() {
+
+    const agora =
+      Date.now();
+
+    if (
+      agora -
+      ultimaVerificacao <
+      120
+    ) {
+
+      return;
+
+    }
+
+    ultimaVerificacao =
+      agora;
+
+    const dados =
+      ctx.getImageData(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+      );
+
+    let transparentes =
+      0;
+
+    const total =
+      dados.data.length /
+      4;
+
+    /*
+     * Verificamos apenas
+     * alguns pixels para
+     * deixar o celular leve.
+     */
+
+    const passo =
+      16;
+
+    let analisados =
+      0;
+
+    for (
+      let i = 3;
+      i < dados.data.length;
+      i +=
+        4 * passo
+    ) {
+
+      analisados++;
+
+      if (
+        dados.data[i] <
+        80
+      ) {
+
+        transparentes++;
+
+      }
+
+    }
+
+    if (!analisados) {
+      return;
+    }
+
+    const percentual =
+      (
+        transparentes /
+        analisados
+      ) * 100;
+
+
+    /*
+     * Ao atingir 55%,
+     * revela automaticamente.
+     */
+
+    if (
+      percentual >= 55
+    ) {
+
+      revelarRaspadinha();
+
+    }
+
+  }
+
+
+  /* =======================================================
+     🎉 REVELAR
+  ======================================================= */
+
+  function revelarRaspadinha() {
+
+    if (finalizado) {
+      return;
+    }
+
+    finalizado =
+      true;
+
+    alterarResultado();
+
+
+    /*
+     * Remove a camada prateada
+     * com uma animação simples.
+     */
+
+    canvas.style.transition =
+      'opacity .45s ease';
+
+    canvas.style.opacity =
+      '0';
+
+
+    const instrucao =
+      scratchCard.querySelector(
+        '.scratch-instruction'
+      );
+
+    if (instrucao) {
+
+      instrucao.textContent =
+        `🎉 PARABÉNS! Você descobriu: ${premioEscolhido.nome}`;
+
+    }
+
+
+    /*
+     * Guarda localmente apenas
+     * que esta raspadinha já foi
+     * revelada neste navegador.
+     */
+
+    try {
+
+      localStorage.setItem(
+        'raspadinhaRevelada',
+        JSON.stringify({
+          premio:
+            premioEscolhido.nome,
+
+          data:
+            new Date().toISOString()
+        })
+      );
+
+    } catch (erro) {
+
+      console.warn(
+        erro
+      );
+
+    }
+
+  }
+
+
+  /* =======================================================
+     🖱️ MOUSE
+  ======================================================= */
+
+  canvas.addEventListener(
+    'mousedown',
+    evento => {
+
+      if (finalizado) {
+        return;
+      }
+
+      raspando =
+        true;
+
+      const rect =
+        canvas.getBoundingClientRect();
+
+      ultimaX =
+        evento.clientX -
+        rect.left;
+
+      ultimaY =
+        evento.clientY -
+        rect.top;
+
+      raspar(
+        ultimaX,
+        ultimaY
+      );
+
+    }
   );
 
 
-if (scratchCard) {
+  canvas.addEventListener(
+    'mousemove',
+    evento => {
 
-  scratchCard.style.display =
-    'block';
+      if (!raspando) {
+        return;
+      }
 
-  scratchCard.style.width =
-    '100%';
+      const rect =
+        canvas.getBoundingClientRect();
 
-}
+      const x =
+        evento.clientX -
+        rect.left;
 
+      const y =
+        evento.clientY -
+        rect.top;
 
-/* =========================================================
-🛡️ CARTÕES VERTICAIS
-========================================================= */
+      rasparLinha(
+        ultimaX,
+        ultimaY,
+        x,
+        y
+      );
 
-const stepsGrid =
-  document.querySelector(
-    '.steps-grid'
+      ultimaX =
+        x;
+
+      ultimaY =
+        y;
+
+    }
   );
 
 
-if (stepsGrid) {
+  window.addEventListener(
+    'mouseup',
+    () => {
 
-  stepsGrid.style.display =
-    'flex';
+      raspando =
+        false;
 
-  stepsGrid.style.flexDirection =
-    'column';
-
-  stepsGrid.style.width =
-    '100%';
-
-}
-
-
-/* =========================================================
-🛡️ TAMANHO DA RASPADINHA
-========================================================= */
-
-const scratchArea =
-  document.querySelector(
-    '.scratch-area'
+    }
   );
 
 
-if (scratchArea) {
+  /* =======================================================
+     📱 TOUCH
+  ======================================================= */
 
-  scratchArea.style.width =
-    'min(100%, 700px)';
+  canvas.addEventListener(
+    'touchstart',
+    evento => {
 
-  scratchArea.style.margin =
-    '18px auto';
+      if (finalizado) {
+        return;
+      }
 
-  scratchArea.style.position =
-    'relative';
+      evento.preventDefault();
 
-  scratchArea.style.overflow =
-    'hidden';
+      raspando =
+        true;
 
-}
+      const toque =
+        evento.touches[0];
+
+      const rect =
+        canvas.getBoundingClientRect();
+
+      ultimaX =
+        toque.clientX -
+        rect.left;
+
+      ultimaY =
+        toque.clientY -
+        rect.top;
+
+      raspar(
+        ultimaX,
+        ultimaY
+      );
+
+    },
+    {
+      passive: false
+    }
+  );
 
 
-/* =========================================================
-🧾 FINAL
-========================================================= */
+  canvas.addEventListener(
+    'touchmove',
+    evento => {
 
-console.log(
-  '🍀 RIFA SOLIDÁRIA — GILFEST carregada.'
-);
+      if (!raspando) {
+        return;
+      }
 
-console.log(
-  '☁️ Upload de comprovantes: Cloudinary / rifa_comprovantes'
-);
+      evento.preventDefault();
 
-console.log(
-  '💾 Comprovantes confirmados pelo Cloudinary são salvos em: rifa/comprovantes'
-);
+      const toque =
+        evento.touches[0];
+
+      const rect =
+        canvas.getBoundingClientRect();
+
+      const x =
+        toque.clientX -
+        rect.left;
+
+      const y =
+        toque.clientY -
+        rect.top;
+
+      rasparLinha(
+        ultimaX,
+        ultimaY,
+        x,
+        y
+      );
+
+      ultimaX =
+        x;
+
+      ultimaY =
+        y;
+
+    },
+    {
+      passive: false
+    }
+  );
+
+
+  canvas.addEventListener(
+    'touchend',
+    () => {
+
+      raspando =
+        false;
+
+    }
+  );
+
+
+  /* =======================================================
+     📱 REDIMENSIONAMENTO
