@@ -2263,3 +2263,170 @@ function iniciarRaspadinha() {
 
   /* =======================================================
      📱 REDIMENSIONAMENTO
+  ======================================================= */
+
+  window.addEventListener(
+    'resize',
+    () => {
+
+      /*
+       * Não reiniciamos automaticamente
+       * depois que o usuário começou a raspar.
+       */
+
+      if (
+        !raspagemIniciada
+      ) {
+
+        iniciarRaspadinha();
+
+      }
+
+    }
+  );
+
+
+  /* =======================================================
+     🔒 BLOQUEAR MENU CONTEXTUAL
+  ======================================================= */
+
+  canvas.addEventListener(
+    'contextmenu',
+    evento => {
+
+      evento.preventDefault();
+
+    }
+  );
+
+
+  /* =======================================================
+     🎉 ESTADO INICIAL
+  ======================================================= */
+
+  resultado.textContent =
+    '🥈 RASPE AQUI';
+
+  console.log(
+    '🍀 Raspadinha da Amizade pronta.'
+  );
+
+}
+
+
+/* =========================================================
+   🚀 INICIALIZAÇÃO
+========================================================= */
+
+document.addEventListener(
+  'DOMContentLoaded',
+  () => {
+
+    const veioDaCartela =
+      lerNumerosDaURL();
+
+    if (!veioDaCartela) {
+
+      recuperarCompraSalva();
+
+    }
+
+    iniciarRaspadinha();
+
+  }
+);
+
+
+/* =========================================================
+   ✨ ANIMAÇÃO DOS CARTÕES
+========================================================= */
+
+document.addEventListener(
+  'DOMContentLoaded',
+  () => {
+
+    const cards =
+      document.querySelectorAll(
+        '.card'
+      );
+
+    cards.forEach(
+      (card, indice) => {
+
+        card.style.animation =
+          `cardEntrada .6s ease ${indice * 0.06}s both`;
+
+      }
+    );
+
+  }
+);
+
+
+/* =========================================================
+   🛡️ RASPADINHA VISÍVEL
+========================================================= */
+
+const scratchCard =
+  document.querySelector(
+    '.scratch'
+  );
+
+if (scratchCard) {
+
+  scratchCard.style.display =
+    'block';
+
+  scratchCard.style.width =
+    '100%';
+
+}
+
+
+/* =========================================================
+   🛡️ CARTÕES VERTICAIS
+========================================================= */
+
+const stepsGrid =
+  document.querySelector(
+    '.steps-grid'
+  );
+
+if (stepsGrid) {
+
+  stepsGrid.style.display =
+    'flex';
+
+  stepsGrid.style.flexDirection =
+    'column';
+
+  stepsGrid.style.width =
+    '100%';
+
+}
+
+
+/* =========================================================
+   🛡️ TAMANHO DA RASPADINHA
+========================================================= */
+
+const scratchArea =
+  document.querySelector(
+    '.scratch-area'
+  );
+
+if (scratchArea) {
+
+  scratchArea.style.width =
+    'min(100%, 700px)';
+
+  scratchArea.style.margin =
+    '18px auto';
+
+  scratchArea.style.position =
+    'relative';
+
+  scratchArea.style.overflow =
+    'hidden';
+
+}
